@@ -2,6 +2,11 @@
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
 
+foreach filename {const.tcl main_window.tcl} {
+    source -encoding "utf-8" $filename
+}
+
+
 proc main {} {
     wm withdraw .
     wm title . $const::APPNAME
@@ -11,11 +16,6 @@ proc main {} {
     wm protocol . WM_DELETE_WINDOW main_window::on_quit
     main_window::make_window
     wm deiconify .
-}
-
-
-foreach filename {const.tcl main_window.tcl} {
-    source $filename
 }
 
 
