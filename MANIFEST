@@ -1,4 +1,7 @@
+~/app/gravitate/cpp/MANIFEST
+
 gravitate.tcl
 main_window.tcl
+const.tcl
 
 st.sh

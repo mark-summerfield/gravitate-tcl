@@ -9,7 +9,19 @@ namespace eval main_window {
 
     proc make_window {} {
         ttk::frame .main
+        make_widgets
+        make_layout
         make_bindings
+    }
+
+
+    proc make_widgets {} {
+        puts make_widgets
+    }
+
+
+    proc make_layout {} {
+        puts make_layout
     }
 
 
