@@ -1,9 +1,12 @@
-~/app/gravitate/cpp/MANIFEST
+# ~/app/gravitate/cpp/MANIFEST
 
 gravitate.tcl
 main_window.tcl
+actions.tcl
 const.tcl
 
 makewin.sh
-maketclico.py
+maketclico.py # TODO maketclico.tcl
 st.sh
+
+# vim: syn=yaml

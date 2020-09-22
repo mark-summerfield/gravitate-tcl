@@ -6,6 +6,7 @@ namespace eval main_window {
 
     variable score 0
     variable high_score 0
+    variable status_timer_id {}
 
     proc make_window {} {
         make_widgets
@@ -16,13 +17,18 @@ namespace eval main_window {
 
 
     proc make_widgets {} {
+        set IMG_PATH "$::APP_PATH/images"
         ttk::frame .main
         ttk::frame .main.toolbar
         ttk::button .main.toolbar.new -text New -style Toolbutton \
-            -command main_window::on_new
-        tk::canvas .main.canvas -background $const::BACKGROUND_COLOR
-        ttk::label .main.status_label -text $::APP_PATH
-        # TODO configure
+            -image [image create photo icon -file $IMG_PATH/new.png] \
+            -command actions::on_new
+        # TODO
+        tk::canvas .main.board -background $const::BACKGROUND_COLOR
+        ttk::frame .main.status_bar
+        ttk::label .main.status_bar.label
+        ttk::label .main.status_bar.score_label -text "0 • 0"
+        status_message "Click a tile to play…"
     }
 
 
@@ -30,8 +36,11 @@ namespace eval main_window {
         grid .main -sticky nsew
         grid .main.toolbar -sticky ew
         grid .main.toolbar.new -sticky w
-        grid .main.canvas -sticky nsew -pady $const::PAD
-        grid .main.status_label -sticky ew
+        grid .main.board -sticky nsew -pady $const::PAD
+        grid .main.status_bar -sticky ew
+        grid .main.status_bar.label -row 0 -column 0 -sticky we
+        grid .main.status_bar.score_label -row 0 -column 1 -sticky e
+        grid columnconfigure .main.status_bar 0 -weight 1
         grid columnconfigure .main 0 -weight 1
         grid rowconfigure .main 1 -weight 1
         grid columnconfigure . 0 -weight 1
@@ -40,20 +49,23 @@ namespace eval main_window {
 
 
     proc make_bindings {} {
-        bind . <Control-q> { main_window::on_quit }
-        bind . <Escape> { main_window::on_quit }
+        bind . <Control-q> { actions::on_quit }
+        bind . <Escape> { actions::on_quit }
         # TODO complete
     }
 
 
-    proc on_new {} {
-        puts "on_new" ;# TODO
+    proc status_message {msg {ms 5000}} {
+        after cancel $main_window::status_timer_id
+        .main.status_bar.label configure -text $msg
+        if {$ms > 0} {
+            set main_window::status_timer_id \
+                [after $ms main_window::clear_status_message]
+        }
     }
 
-
-    proc on_quit {} {
-        puts on_quit ;# TODO save win size/pos
-        exit
+    
+    proc clear_status_message {} {
+        .main.status_bar.label configure -text ""
     }
-
 }

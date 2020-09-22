@@ -1,9 +1,10 @@
 #!/bin/bash
-freewrap gravitate.tcl \
-    -o Gravitate.exe \
+MAIN=gravitate.tcl
+freewrap $MAIN \
+    -o `basename $MAIN .tcl`.exe \
     -w ~/opt/freewrap/win32/freewrap.exe \
     -i images/icon.ico \
     -9 \
-    const.tcl \
-    main_window.tcl \
+    `ls *.tcl|grep -v $MAIN` \
     images/*.png
+
