@@ -2,9 +2,6 @@
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
 
-source -encoding "utf-8" const.tcl
-
-
 namespace eval main_window {
 
     variable score 0
@@ -23,8 +20,8 @@ namespace eval main_window {
         ttk::frame .main.toolbar
         ttk::button .main.toolbar.new -text New -style Toolbutton \
             -command main_window::on_new
-        tk::canvas .main.canvas -background "#FFFEE0"
-        ttk::label .main.status_label
+        tk::canvas .main.canvas -background $const::BACKGROUND_COLOR
+        ttk::label .main.status_label -text $::APP_PATH
         # TODO configure
     }
 

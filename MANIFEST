@@ -4,4 +4,6 @@ gravitate.tcl
 main_window.tcl
 const.tcl
 
+makewin.sh
+maketclico.py
 st.sh
