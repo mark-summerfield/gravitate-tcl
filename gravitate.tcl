@@ -9,9 +9,12 @@ if {[info exists ::freewrap::runMode] &&
 }
 set ::IMG_PATH "$::APP_PATH/images"
 
-foreach filename {const.tcl
-                  main_window.tcl
-                  actions.tcl} {
+foreach filename {
+        const.tcl
+        main_window.tcl
+        actions.tcl
+        util.tcl
+    } {
     source -encoding "utf-8" $::APP_PATH/$filename
 }
 
@@ -19,7 +22,7 @@ foreach filename {const.tcl
 proc main {} {
     wm withdraw .
     wm title . $const::APPNAME
-    wm iconphoto . [image create photo icon -file $::IMG_PATH/icon.png]
+    wm iconphoto . [image create photo -file $::IMG_PATH/icon.png]
     wm minsize . 260 300
     wm protocol . WM_DELETE_WINDOW actions::on_quit
     main_window::make_window

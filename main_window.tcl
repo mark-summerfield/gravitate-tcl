@@ -1,7 +1,6 @@
 #!/usr/bin/env wish
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
-
 namespace eval main_window {
 
     variable score 0
@@ -12,7 +11,9 @@ namespace eval main_window {
         make_widgets
         make_layout
         make_bindings
-        # TODO load win size/pos & high score
+        set_size_and_pos
+        actions::on_new
+        status_message "Click a tile to play…"
     }
 
 
@@ -20,21 +21,37 @@ namespace eval main_window {
         ttk::frame .main
         ttk::frame .main.toolbar
         ttk::button .main.toolbar.new -text New -style Toolbutton \
-            -image [image create photo icon -file $::IMG_PATH/new.png] \
+            -image [image create photo -file $::IMG_PATH/new.png] \
             -command actions::on_new
-        # TODO
+        ttk::button .main.toolbar.options -text Options -style Toolbutton \
+            -image [image create photo -file $::IMG_PATH/options.png] \
+            -command actions::on_options
+        ttk::button .main.toolbar.about -text About -style Toolbutton \
+            -image [image create photo -file $::IMG_PATH/about.png] \
+            -command actions::on_about
+        ttk::button .main.toolbar.help -text Help -style Toolbutton \
+            -image [image create photo -file $::IMG_PATH/help.png] \
+            -command actions::on_help
+        ttk::button .main.toolbar.quit -text Quit -style Toolbutton \
+            -image [image create photo -file $::IMG_PATH/shutdown.png] \
+            -command actions::on_quit
         tk::canvas .main.board -background $const::BACKGROUND_COLOR
         ttk::frame .main.status_bar
         ttk::label .main.status_bar.label
         ttk::label .main.status_bar.score_label -text "0 • 0"
-        status_message "Click a tile to play…"
     }
 
 
     proc make_layout {} {
         grid .main -sticky nsew
         grid .main.toolbar -sticky ew
-        grid .main.toolbar.new -sticky w
+        grid .main.toolbar.new -row 0 -column 0 -sticky w
+        grid .main.toolbar.options -row 0 -column 1 -sticky w
+        grid .main.toolbar.about -row 0 -column 2 -sticky w
+        grid .main.toolbar.help -row 0 -column 3 -sticky w
+        grid .main.toolbar.quit -row 0 -column 4 -sticky e
+        grid columnconfigure .main.toolbar 1 -weight 1
+        grid columnconfigure .main.toolbar 4 -weight 1
         grid .main.board -sticky nsew -pady $const::PAD
         grid .main.status_bar -sticky ew
         grid .main.status_bar.label -row 0 -column 0 -sticky we
@@ -48,9 +65,20 @@ namespace eval main_window {
 
 
     proc make_bindings {} {
-        bind . <Control-q> { actions::on_quit }
+        bind . <n> { actions::on_new }
+        bind . <o> { actions::on_options }
+        bind . <a> { actions::on_about }
+        bind . <h> { actions::on_help }
+        bind . <F1> { actions::on_help }
+        bind . <q> { actions::on_quit }
         bind . <Escape> { actions::on_quit }
-        # TODO complete
+    }
+
+
+    proc set_size_and_pos {} {
+        # TODO load win size/pos & high score
+        set inifile [util::get_ini_filename]
+        puts "set_size_and_pos inifile=$inifile"
     }
 
 

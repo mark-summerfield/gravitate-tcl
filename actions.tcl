@@ -9,6 +9,21 @@ namespace eval actions {
     }
 
 
+    proc on_options {} {
+        puts "on_options" ;# TODO
+    }
+
+
+    proc on_about {} {
+        puts "on_about" ;# TODO
+    }
+
+
+    proc on_help {} {
+        puts "on_help" ;# TODO
+    }
+
+
     proc on_quit {} {
         puts on_quit ;# TODO save win size/pos
         exit

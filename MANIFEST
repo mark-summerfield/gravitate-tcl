@@ -1,8 +1,9 @@
 # ~/app/gravitate/cpp/MANIFEST
 
 gravitate.tcl
-main_window.tcl
+main_window.tcl # TODO load/save window size/pos
 actions.tcl
+util.tcl # TODO complete
 const.tcl
 
 makewin.sh
