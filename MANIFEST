@@ -6,7 +6,6 @@ actions.tcl
 const.tcl
 
 makewin.sh
-maketclico.py # TODO maketclico.tcl
 st.sh
 
 # vim: syn=yaml
