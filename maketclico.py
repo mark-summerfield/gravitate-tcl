@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# TODO replace with makeico.tcl !
 
 import subprocess
 

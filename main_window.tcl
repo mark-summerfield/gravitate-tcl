@@ -17,11 +17,10 @@ namespace eval main_window {
 
 
     proc make_widgets {} {
-        set IMG_PATH "$::APP_PATH/images"
         ttk::frame .main
         ttk::frame .main.toolbar
         ttk::button .main.toolbar.new -text New -style Toolbutton \
-            -image [image create photo icon -file $IMG_PATH/new.png] \
+            -image [image create photo icon -file $::IMG_PATH/new.png] \
             -command actions::on_new
         # TODO
         tk::canvas .main.board -background $const::BACKGROUND_COLOR
