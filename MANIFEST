@@ -2,6 +2,7 @@
 
 gravitate.tcl
 main_window.tcl
+help_form.tcl
 actions.tcl
 util.tcl
 const.tcl

@@ -20,7 +20,7 @@ namespace eval actions {
 
 
     proc on_help {} {
-        puts "on_help" ;# TODO
+        help_form::show_window
     }
 
 
