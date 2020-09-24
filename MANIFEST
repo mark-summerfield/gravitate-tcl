@@ -4,6 +4,7 @@ gravitate.tcl
 main_window.tcl
 about_form.tcl # TODO
 help_form.tcl # TODO
+# TODO need a global modal result or e.g., ::options_ok
 options_form.tcl # TODO
 actions.tcl
 util.tcl

@@ -3,6 +3,7 @@
 
 namespace eval options_form {
 
+    # TODO doesn't work; needs ::options_ok
     variable ok false
 
     proc show_window {} {
@@ -25,6 +26,10 @@ namespace eval options_form {
 
     proc make_widgets {} {
         tk::toplevel .options
+        # TODO start with OK disabled?
+        ttk::button .options.ok_button -text OK -compound left \
+            -image [image create photo -file $::IMG_PATH/ok.png] \
+            -command { options_form::on_ok } -underline 0 
         ttk::button .options.close_button -text Close -compound left \
             -image [image create photo -file $::IMG_PATH/close.png] \
             -command { options_form::on_close } -underline 0 
@@ -32,21 +37,35 @@ namespace eval options_form {
 
 
     proc make_layout {} {
-        grid .options.close_button -row 1 -column 0 -columnspan 2
+        grid .options.ok_button -row 1 -column 0
+        grid .options.close_button -row 1 -column 1
         grid columnconfigure .options 0 -weight 1
         grid rowconfigure .options 0 -weight 1
     }
 
 
     proc make_bindings {} {
+        bind .options <Alt-o> { options_form::on_ok }
         bind .options <Alt-c> { options_form::on_close }
         bind .options <Escape> { options_form::on_close }
+    }
+
+
+    proc on_ok {} {
+        variable ok
+        set ok true
+        do_close
     }
 
 
     proc on_close {} {
         variable ok
         set ok false
+        do_close
+    }
+
+
+    proc do_close {} {
         grab release .options
         destroy .options
     }
