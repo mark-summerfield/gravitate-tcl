@@ -6,7 +6,8 @@ actions.tcl
 util.tcl # TODO complete
 const.tcl
 
-makewin.sh
 st.sh
+
+makewin.sh
 
 # vim: syn=yaml

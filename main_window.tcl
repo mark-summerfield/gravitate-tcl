@@ -1,6 +1,9 @@
 #!/usr/bin/env wish
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
+package require lambda
+
+
 namespace eval main_window {
 
     variable score 0
@@ -65,12 +68,12 @@ namespace eval main_window {
 
 
     proc make_bindings {} {
-        bind . <n> { actions::on_new }
-        bind . <o> { actions::on_options }
-        bind . <a> { actions::on_about }
-        bind . <h> { actions::on_help }
+        bind . n { actions::on_new }
+        bind . o { actions::on_options }
+        bind . a { actions::on_about }
+        bind . h { actions::on_help }
         bind . <F1> { actions::on_help }
-        bind . <q> { actions::on_quit }
+        bind . q { actions::on_quit }
         bind . <Escape> { actions::on_quit }
     }
 
@@ -87,12 +90,8 @@ namespace eval main_window {
         .main.status_bar.label configure -text $msg
         if {$ms > 0} {
             set main_window::status_timer_id \
-                [after $ms main_window::clear_status_message]
+                [after $ms [::lambda {} {
+                    .main.status_bar.label configure -text "" }]]
         }
-    }
-
-    
-    proc clear_status_message {} {
-        .main.status_bar.label configure -text ""
     }
 }
