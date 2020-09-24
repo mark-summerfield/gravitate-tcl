@@ -7,11 +7,13 @@ namespace eval help_form {
         make_widgets
         make_layout
         make_bindings
-        wm transient .help .
+        # Help should be modeless TODO delete commented out once we have
+        # a modal dialog done
+        # wm transient .help .
         wm protocol .help WM_DELETE_WINDOW help_form::on_close
         raise .help
         focus .help
-        grab .help
+        # grab .help
         focus .help.text
     }
 
