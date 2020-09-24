@@ -7,11 +7,8 @@ namespace eval help_form {
         make_widgets
         make_layout
         make_bindings
-        wm protocol .help WM_DELETE_WINDOW help_form::on_close
-        wm title .help "Help — $const::APPNAME"
-        wm iconphoto .help [image create photo -file $::IMG_PATH/icon.png]
-        raise .help
-        focus .help
+        util::prepare_dialog .help "Help — $const::APPNAME" \
+            $::IMG_PATH/icon.png { help_form::on_close } false
         focus .help.text
     }
 

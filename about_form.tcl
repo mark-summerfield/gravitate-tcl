@@ -7,13 +7,8 @@ namespace eval about_form {
         make_widgets
         make_layout
         make_bindings
-        wm transient .about .
-        wm protocol .about WM_DELETE_WINDOW about_form::on_close
-        wm title .about "About — $const::APPNAME"
-        wm iconphoto .about [image create photo -file $::IMG_PATH/icon.png]
-        raise .about
-        focus .about
-        grab .about
+        util::prepare_dialog .about "About — $const::APPNAME" \
+            $::IMG_PATH/icon.png { about_form::on_close }
         focus .about.text
     }
 

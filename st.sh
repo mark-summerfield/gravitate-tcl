@@ -9,5 +9,6 @@ nagelfar.tcl *.tcl \
     | grep -v Unknown.command.*main_window::make_window \
     | grep -v Unknown.command.*_form::show.* \
     | grep -v Unknown.command.*util::commas \
-    | grep -v Unknown.command.*util::get_ini_filename
+    | grep -v Unknown.command.*util::get_ini_filename \
+    | grep -v Unknown.command.*util::prepare_dialog
 git st

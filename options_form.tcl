@@ -10,14 +10,8 @@ namespace eval options_form {
         make_widgets
         make_layout
         make_bindings
-        wm transient .options .
-        wm protocol .options WM_DELETE_WINDOW options_form::on_close
-        wm title .options "Options — $const::APPNAME"
-        wm iconphoto .options [image create photo \
-                               -file $::IMG_PATH/icon.png]
-        raise .options
-        focus .options
-        grab .options
+        util::prepare_dialog .options "Options — $const::APPNAME" \
+            $::IMG_PATH/icon.png { options_form::on_close }
         # focus .options.? # TODO
         tkwait window .options
         return $ok
