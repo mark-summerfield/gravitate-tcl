@@ -7,20 +7,17 @@ namespace eval help_form {
         make_widgets
         make_layout
         make_bindings
-        # Help should be modeless TODO delete commented out once we have
-        # a modal dialog done
-        # wm transient .help .
         wm protocol .help WM_DELETE_WINDOW help_form::on_close
+        wm title .help "Help — $const::APPNAME"
+        wm iconphoto .help [image create photo -file $::IMG_PATH/icon.png]
         raise .help
         focus .help
-        # grab .help
         focus .help.text
     }
 
 
     proc make_widgets {} {
         tk::toplevel .help
-        # -title "Help — $const::APPNAME" # TODO
         tk::text .help.text -width 50 -height 24 -wrap word \
             -background "#F0F0F0" -yscrollcommand { .help.vbar set }
         populate_help_text
@@ -62,8 +59,6 @@ namespace eval help_form {
 
 
     proc create_text_tags {} {
-        font create title_font -family Helvetica -size 14 -weight bold
-        font create body_font -family Helvetica -size 12
         .help.text tag configure title -foreground navy -justify center \
             -font title_font
         .help.text tag configure strapline -foreground navy \

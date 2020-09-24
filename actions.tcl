@@ -10,12 +10,13 @@ namespace eval actions {
 
 
     proc on_options {} {
-        puts "on_options" ;# TODO
+        set ok [options_form::show_window]
+        puts "on_options $ok" ;# TODO
     }
 
 
     proc on_about {} {
-        puts "on_about" ;# TODO
+        about_form::show_window
     }
 
 

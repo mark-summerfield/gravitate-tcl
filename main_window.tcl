@@ -16,6 +16,7 @@ namespace eval main_window {
         make_layout
         make_bindings
         set_size_and_pos
+        make_fonts
         actions::on_new
         status_message "Click a tile to play…"
     }
@@ -107,6 +108,12 @@ namespace eval main_window {
         } finally {
             ::ini::close $ini
         }
+    }
+
+
+    proc make_fonts {} {
+        font create title_font -family Helvetica -size 14 -weight bold
+        font create body_font -family Helvetica -size 12
     }
 
 

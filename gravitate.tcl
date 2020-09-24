@@ -12,7 +12,9 @@ set ::IMG_PATH "$::APP_PATH/images"
 foreach filename {
         const.tcl
         main_window.tcl
+        about_form.tcl
         help_form.tcl
+        options_form.tcl
         actions.tcl
         util.tcl
     } {

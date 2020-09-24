@@ -7,6 +7,7 @@ nagelfar.tcl *.tcl \
     | grep -v Unknown.command.*::ini:: \
     | grep -v Wrong.number.of.arguments.*to..ini::open \
     | grep -v Unknown.command.*main_window::make_window \
+    | grep -v Unknown.command.*_form::show_window \
     | grep -v Unknown.command.*util::commify \
     | grep -v Unknown.command.*util::get_ini_filename
 git st
