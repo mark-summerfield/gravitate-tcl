@@ -6,7 +6,7 @@ package require inifile
 
 namespace eval util {
 
-    proc commify {x} {
+    proc commas {x} {
         regsub -all \\d(?=(\\d{3})+([regexp -inline {\.\d*$} $x]$)) $x {\0,}
     }
 

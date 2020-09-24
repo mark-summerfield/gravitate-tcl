@@ -3,7 +3,7 @@
 
 namespace eval about_form {
 
-    proc show_window {} {
+    proc show {} {
         make_widgets
         make_layout
         make_bindings
@@ -50,11 +50,13 @@ namespace eval about_form {
     proc populate_about_text {} {
         create_text_tags
         .about.text insert end "Gravitate\n" title
+        # TODO
     }
 
 
     proc create_text_tags {} {
         .about.text tag configure title -foreground navy -justify center \
             -font title_font
+        # TODO
     }
 }

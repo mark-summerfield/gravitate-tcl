@@ -92,7 +92,7 @@ namespace eval main_window {
                     $const::HIGH_SCORE_COMPAT $const::HIGH_SCORE_DEFAULT]
             }
             .main.status_bar.score_label configure \
-                -text "0 • [util::commify $high_score]"
+                -text "0 • [util::commas $high_score]"
             set section $const::WINDOW
             set invalid $const::WINDOW_INVALID
             set width [::ini::value $ini $section $const::WINDOW_WIDTH \

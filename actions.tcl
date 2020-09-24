@@ -10,18 +10,18 @@ namespace eval actions {
 
 
     proc on_options {} {
-        set ok [options_form::show_window]
-        puts "on_options $ok" ;# TODO
+        set ok [options_form::show_modal]
+        puts "on_options [expr {$ok ? "OK" : "Cancel"}]" ;# TODO
     }
 
 
     proc on_about {} {
-        about_form::show_window
+        about_form::show
     }
 
 
     proc on_help {} {
-        help_form::show_window
+        help_form::show
     }
 
 

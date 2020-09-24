@@ -3,10 +3,9 @@
 
 namespace eval options_form {
 
-    # TODO doesn't work; needs ::options_ok
     variable ok false
 
-    proc show_window {} {
+    proc show_modal {} {
         variable ok
         make_widgets
         make_layout
@@ -19,18 +18,19 @@ namespace eval options_form {
         raise .options
         focus .options
         grab .options
-        # focus .options.text
+        # focus .options.? # TODO
+        tkwait window .options
         return $ok
     }
 
 
     proc make_widgets {} {
         tk::toplevel .options
-        # TODO start with OK disabled?
+        # TODO labels & entries|spins
         ttk::button .options.ok_button -text OK -compound left \
             -image [image create photo -file $::IMG_PATH/ok.png] \
             -command { options_form::on_ok } -underline 0 
-        ttk::button .options.close_button -text Close -compound left \
+        ttk::button .options.close_button -text Cancel -compound left \
             -image [image create photo -file $::IMG_PATH/close.png] \
             -command { options_form::on_close } -underline 0 
     }

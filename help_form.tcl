@@ -3,7 +3,7 @@
 
 namespace eval help_form {
 
-    proc show_window {} {
+    proc show {} {
         make_widgets
         make_layout
         make_bindings
@@ -55,6 +55,7 @@ namespace eval help_form {
         .help.text insert end "Gravitate\n" title
         .help.text insert end "The purpose of the game is to\
                                remove all the tiles.\n" strapline
+        # TODO
     }
 
 
@@ -63,6 +64,7 @@ namespace eval help_form {
             -font title_font
         .help.text tag configure strapline -foreground navy \
             -justify center -font body_font
+        # TODO
     }
 }
 #<body style="background-color: %s;">
