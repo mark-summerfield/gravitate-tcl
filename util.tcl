@@ -1,8 +1,14 @@
 #!/usr/bin/env wish
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
+package require inifile
+
 
 namespace eval util {
+
+    proc commify {x} {
+        regsub -all \\d(?=(\\d{3})+([regexp -inline {\.\d*$} $x]$)) $x {\0,}
+    }
 
     proc get_ini_filename {} {
         if {$::tcl_platform(platform) == "windows"} {
@@ -20,8 +26,33 @@ namespace eval util {
             }
         }
         set name [lindex $names $index]
-        # TODO none exist so create it with defaults
+        make_default_ini $name
         return $name
+    }
+
+
+    proc make_default_ini {name} {
+        set ini [::ini::open $name -encoding "utf-8" w]
+        try {
+            set section $const::BOARD
+            ::ini::set $ini $section $const::COLUMNS $const::COLUMNS_DEFAULT
+            ::ini::set $ini $section $const::ROWS $const::ROWS_DEFAULT
+            ::ini::set $ini $section $const::MAX_COLORS \
+                $const::MAX_COLORS_DEFAULT
+            ::ini::set $ini $section $const::DELAY_MS \
+                $const::DELAY_MS_DEFAULT
+            ::ini::set $ini $section $const::HIGH_SCORE \
+                $const::HIGH_SCORE_DEFAULT
+            set section $const::WINDOW
+            set invalid $const::WINDOW_INVALID
+            ::ini::set $ini $section $const::WINDOW_HEIGHT $invalid
+            ::ini::set $ini $section $const::WINDOW_WIDTH $invalid
+            ::ini::set $ini $section $const::WINDOW_X $invalid
+            ::ini::set $ini $section $const::WINDOW_Y $invalid
+            ::ini::commit $ini
+        } finally {
+            ::ini::close $ini
+        }
     }
 
 }

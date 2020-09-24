@@ -1,6 +1,7 @@
 #!/usr/bin/env wish
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
+package require inifile
 package require lambda
 
 
@@ -41,7 +42,7 @@ namespace eval main_window {
         tk::canvas .main.board -background $const::BACKGROUND_COLOR
         ttk::frame .main.status_bar
         ttk::label .main.status_bar.label
-        ttk::label .main.status_bar.score_label -text "0 • 0"
+        ttk::label .main.status_bar.score_label
     }
 
 
@@ -79,9 +80,33 @@ namespace eval main_window {
 
 
     proc set_size_and_pos {} {
-        # TODO load win size/pos & high score
-        set inifile [util::get_ini_filename]
-        puts "set_size_and_pos inifile=$inifile"
+        variable high_score
+        set ini [::ini::open [util::get_ini_filename] -encoding "utf-8" r]
+        try {
+            set section $const::BOARD
+            set high_score [::ini::value $ini $section $const::HIGH_SCORE \
+                            -1]
+            if {$high_score == -1} {
+                set high_score [::ini::value $ini $section \
+                    $const::HIGH_SCORE_COMPAT $const::HIGH_SCORE_DEFAULT]
+            }
+            .main.status_bar.score_label configure \
+                -text "0 • [util::commify $high_score]"
+            set section $const::WINDOW
+            set invalid $const::WINDOW_INVALID
+            set width [::ini::value $ini $section $const::WINDOW_WIDTH \
+                       $invalid]
+            set height [::ini::value $ini $section $const::WINDOW_HEIGHT \
+                        $invalid] 
+            set x [::ini::value $ini $section $const::WINDOW_X $invalid] 
+            set y [::ini::value $ini $section $const::WINDOW_Y $invalid] 
+            if {$width != $invalid && $height != $invalid &&
+                    $x != $invalid && $y != $invalid} {
+                wm geometry . "${width}x$height+$x+$y"
+            }
+        } finally {
+            ::ini::close $ini
+        }
     }
 
 
