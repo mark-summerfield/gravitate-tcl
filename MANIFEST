@@ -2,6 +2,7 @@
 
 gravitate.tcl
 main_window.tcl
+# TODO bind <Double-1> and if double-clicked text is http:...
 about_form.tcl # TODO horiz rule? hyperlink to www.qtrac.eu/...?
 help_form.tcl # TODO
 options_form.tcl # TODO
