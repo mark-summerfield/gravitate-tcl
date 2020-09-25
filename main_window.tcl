@@ -113,10 +113,11 @@ namespace eval main_window {
 
     proc make_fonts {} {
         set win [expr {$::tcl_platform(platform) == "unix"}]
-        set big [expr {$win ? 14 : 13}]
-        set std [expr {$win ? 12 : 11}]
-        font create title_font -family Helvetica -size $big -weight bold
-        font create body_font -family Helvetica -size $std
+        set h1 [expr {$win ? 14 : 12}]
+        set body [expr {$win ? 12 : 10}]
+        font create h1 -family Helvetica -size $h1 -weight bold
+        font create body -family Helvetica -size $body
+        font create italic -family Helvetica -size $body -slant italic
     }
 
 

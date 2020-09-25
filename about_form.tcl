@@ -15,25 +15,26 @@ namespace eval about_form {
 
     proc make_widgets {} {
         tk::toplevel .about
-        tk::text .about.text -width 50 -height 14 -wrap word \
-            -background "#F0F0F0" 
+        tk::text .about.text -width 50 -height 9 -wrap word \
+            -background "#F0F0F0" -font body -spacing3 4
         populate_about_text
         .about.text configure -state disabled
-        ttk::button .about.close_button -text Close -compound left \
-            -image [image create photo -file $::IMG_PATH/close.png] \
+        ttk::button .about.ok_button -text OK -compound left \
+            -image [image create photo -file $::IMG_PATH/ok.png] \
             -command { about_form::on_close } -underline 0 
     }
 
 
     proc make_layout {} {
         grid .about.text -sticky nsew
-        grid .about.close_button
+        grid .about.ok_button
     }
 
 
     proc make_bindings {} {
-        bind .about <Alt-c> { about_form::on_close }
+        bind .about <Alt-o> { about_form::on_close }
         bind .about <Escape> { about_form::on_close }
+        bind .about <Return> { about_form::on_close }
     }
 
 
@@ -46,27 +47,32 @@ namespace eval about_form {
         create_text_tags
         set img [.about.text image create end -align center \
                  -image [image create photo -file $::IMG_PATH/icon.png]]
-        .about.text tag add img $img
-        .about.text insert end "\nGravitate v$const::VERSION\n" title
+        .about.text tag add body $img
+        .about.text insert end "\nGravitate v$const::VERSION\n" {body title}
         .about.text insert end "A TileFall/SameGame-like game.\n" \
-            strapline
-        set year 2020 ;# TODO fix
+            {body navy}
+        set year [clock format [clock seconds] -format %Y]
+        if {$year > 2020} {
+            set year "2020-[string range $year end-1 end]"
+        }
+        set bits [expr {8 * $::tcl_platform(wordSize)}]
+        .about.text insert end "http://www.qtrac.eu/gravitate.html\n" \
+            {body green url}
         .about.text insert end "Copyright © $year Mark Summerfield.\
-                                \nAll Rights Reserved.\n" body
-        .about.text insert end "License: GPLv3\n" body
-        .about.text insert end "Tcl v$::tcl_patchLevel on\
+                                \nAll Rights Reserved.\n" {body green}
+        .about.text insert end "License: GPLv3.\n" {body green}
+        .about.text insert end "Tcl v$::tcl_patchLevel ${bits}-bit on\
             $::tcl_platform(os) $::tcl_platform(osVersion)\
-            $::tcl_platform(machine)" body
+            $::tcl_platform(machine)." body
     }
 
 
     proc create_text_tags {} {
-        .about.text tag configure title -foreground navy -justify center \
-            -font title_font
-        .about.text tag configure strapline -foreground navy \
-            -justify center -font body_font
-        .about.text tag configure body -foreground darkgreen \
-            -justify center -font body_font
-        .about.text tag configure img -justify center
+        .about.text tag configure body -justify center
+        .about.text tag configure title -foreground navy -font h1
+        .about.text tag configure navy -foreground navy
+        .about.text tag configure green -foreground darkgreen
+        .about.text tag configure italic -font italic
+        .about.text tag configure url -underline true
     }
 }

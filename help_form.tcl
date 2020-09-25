@@ -19,13 +19,14 @@ namespace eval help_form {
 
     proc make_widgets {} {
         tk::toplevel .help
-        tk::text .help.text -width 50 -height 24 -wrap word \
-            -background "#F0F0F0" -yscrollcommand { .help.vbar set }
+        tk::text .help.text -width 50 -height 16 -wrap word \
+            -background "#F0F0F0" -yscrollcommand { .help.vbar set } \
+            -font body -spacing3 2
         populate_help_text
         .help.text configure -state disabled
         ttk::scrollbar .help.vbar -command { .help.text yview }
-        ttk::button .help.close_button -text Close -compound left \
-            -image [image create photo -file $::IMG_PATH/close.png] \
+        ttk::button .help.ok_button -text OK -compound left \
+            -image [image create photo -file $::IMG_PATH/ok.png] \
             -command { help_form::on_close } -underline 0 
     }
 
@@ -33,15 +34,16 @@ namespace eval help_form {
     proc make_layout {} {
         grid .help.text -row 0 -column 0 -sticky nsew
         grid .help.vbar -row 0 -column 1 -sticky ns
-        grid .help.close_button -row 1 -column 0 -columnspan 2
+        grid .help.ok_button -row 1 -column 0 -columnspan 2
         grid columnconfigure .help 0 -weight 1
         grid rowconfigure .help 0 -weight 1
     }
 
 
     proc make_bindings {} {
-        bind .help <Alt-c> { help_form::on_close }
+        bind .help <Alt-o> { help_form::on_close }
         bind .help <Escape> { help_form::on_close }
+        bind .help <Return> { help_form::on_close }
     }
 
 
@@ -53,18 +55,20 @@ namespace eval help_form {
 
     proc populate_help_text {} {
         create_text_tags
-        .help.text insert end "Gravitate\n" title
+        .help.text insert end "Gravitate\n" {body title}
         .help.text insert end "The purpose of the game is to\
-                               remove all the tiles.\n" strapline
+                               remove all the tiles.\n" {body navy}
         # TODO
     }
 
 
     proc create_text_tags {} {
-        .help.text tag configure title -foreground navy -justify center \
-            -font title_font
-        .help.text tag configure strapline -foreground navy \
-            -justify center -font body_font
+        .help.text tag configure body -justify center
+        .help.text tag configure title -foreground navy -font h1
+        .help.text tag configure navy -foreground navy
+        .help.text tag configure green -foreground darkgreen
+        .help.text tag configure italic -font italic
+        .help.text tag configure underline -underline true
         # TODO
     }
 }
