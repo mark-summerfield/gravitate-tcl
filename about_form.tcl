@@ -44,14 +44,19 @@ namespace eval about_form {
 
     proc populate_about_text {} {
         create_text_tags
-        .about.text insert end "Gravitate v$const::VERSION\n" title
+        set img [.about.text image create end -align center \
+                 -image [image create photo -file $::IMG_PATH/icon.png]]
+        .about.text tag add img $img
+        .about.text insert end "\nGravitate v$const::VERSION\n" title
         .about.text insert end "A TileFall/SameGame-like game.\n" \
             strapline
+        set year 2020 ;# TODO fix
+        .about.text insert end "Copyright © $year Mark Summerfield.\
+                                \nAll Rights Reserved.\n" body
         .about.text insert end "License: GPLv3\n" body
         .about.text insert end "Tcl v$::tcl_patchLevel on\
             $::tcl_platform(os) $::tcl_platform(osVersion)\
             $::tcl_platform(machine)" body
-        # TODO copyright etc.
     }
 
 
@@ -62,5 +67,6 @@ namespace eval about_form {
             -justify center -font body_font
         .about.text tag configure body -foreground darkgreen \
             -justify center -font body_font
+        .about.text tag configure img -justify center
     }
 }
