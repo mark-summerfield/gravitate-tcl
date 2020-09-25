@@ -9,7 +9,7 @@ actions.tcl # TODO options
 # board.tcl # TODO
 util.tcl
 ui.tcl
-const.tcl
+const.tcl # VERSION
 
 st.sh
 
