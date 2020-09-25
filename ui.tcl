@@ -23,4 +23,14 @@ namespace eval ui {
         }
         wm deiconify $window
     }
+
+
+    proc create_text_tags {widget} {
+        $widget tag configure body -justify center
+        $widget tag configure title -foreground navy -font h1
+        $widget tag configure navy -foreground navy
+        $widget tag configure green -foreground darkgreen
+        $widget tag configure italic -font italic
+        $widget tag configure url -underline true -underlinefg darkgreen
+    }
 }

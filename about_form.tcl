@@ -44,7 +44,7 @@ namespace eval about_form {
     }
 
     proc populate_about_text {} {
-        create_text_tags
+        ui::create_text_tags .about.text
         set img [.about.text image create end -align center \
                  -image [image create photo -file $::IMG_PATH/icon.png]]
         .about.text tag add body $img
@@ -67,12 +67,4 @@ namespace eval about_form {
     }
 
 
-    proc create_text_tags {} {
-        .about.text tag configure body -justify center
-        .about.text tag configure title -foreground navy -font h1
-        .about.text tag configure navy -foreground navy
-        .about.text tag configure green -foreground darkgreen
-        .about.text tag configure italic -font italic
-        .about.text tag configure url -underline true
-    }
 }

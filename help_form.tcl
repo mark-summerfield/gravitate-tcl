@@ -54,7 +54,7 @@ namespace eval help_form {
 
 
     proc populate_help_text {} {
-        create_text_tags
+        ui::create_text_tags .help.text
         .help.text insert end "Gravitate\n" {body title}
         .help.text insert end "The purpose of the game is to\
                                remove all the tiles.\n" {body navy}
@@ -62,15 +62,6 @@ namespace eval help_form {
     }
 
 
-    proc create_text_tags {} {
-        .help.text tag configure body -justify center
-        .help.text tag configure title -foreground navy -font h1
-        .help.text tag configure navy -foreground navy
-        .help.text tag configure green -foreground darkgreen
-        .help.text tag configure italic -font italic
-        .help.text tag configure underline -underline true
-        # TODO
-    }
 }
 #<body style="background-color: %s;">
 #<center><font size=+2 color=navy><b>Gravitate</b></font></center>
