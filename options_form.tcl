@@ -40,26 +40,25 @@ namespace eval options_form {
 
     proc make_bindings {} {
         bind .options <Alt-o> { options_form::on_ok }
+        bind .options <Return> { options_form::on_ok }
         bind .options <Alt-c> { options_form::on_close }
         bind .options <Escape> { options_form::on_close }
     }
 
 
     proc on_ok {} {
-        variable ok
-        set ok true
-        do_close
+        do_close true
     }
 
 
     proc on_close {} {
-        variable ok
-        set ok false
         do_close
     }
 
 
-    proc do_close {} {
+    proc do_close {{result false}} {
+        variable ok
+        set ok $result
         grab release .options
         destroy .options
     }
