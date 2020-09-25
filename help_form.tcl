@@ -10,8 +10,8 @@ namespace eval help_form {
             make_widgets
             make_layout
             make_bindings
-            util::prepare_dialog .help "Help — $const::APPNAME" \
-                $::IMG_PATH/icon.png { help_form::on_close } false
+            ui::prepare_form .help "Help — $const::APPNAME" \
+                { help_form::on_close } false
         }
         focus .help.text
     }

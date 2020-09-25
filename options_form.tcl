@@ -10,8 +10,8 @@ namespace eval options_form {
         make_widgets
         make_layout
         make_bindings
-        util::prepare_dialog .options "Options — $const::APPNAME" \
-            $::IMG_PATH/icon.png { options_form::on_close }
+        ui::prepare_form .options "Options — $const::APPNAME" \
+            { options_form::on_close }
         # focus .options.? # TODO
         tkwait window .options
         return $ok

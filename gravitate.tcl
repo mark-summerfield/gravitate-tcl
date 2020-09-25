@@ -17,6 +17,7 @@ foreach filename {
         options_form.tcl
         actions.tcl
         util.tcl
+        ui.tcl
     } {
     source -encoding "utf-8" $::APP_PATH/$filename
 }
@@ -25,7 +26,7 @@ foreach filename {
 proc main {} {
     wm withdraw .
     wm title . $const::APPNAME
-    wm iconphoto . [image create photo -file $::IMG_PATH/icon.png]
+    wm iconphoto . -default [image create photo -file $::IMG_PATH/icon.png]
     wm minsize . 260 300
     wm protocol . WM_DELETE_WINDOW actions::on_quit
     main_window::make_window

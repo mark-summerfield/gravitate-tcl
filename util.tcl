@@ -54,23 +54,4 @@ namespace eval util {
             ::ini::close $ini
         }
     }
-
-    proc prepare_dialog {window title icon on_close {modal true}} {
-        wm withdraw $window
-        if {$modal} {
-            wm transient $window .
-        }
-        set x [expr {[winfo x [winfo parent $window]] + 20}]
-        set y [expr {[winfo y [winfo parent $window]] + 40}]
-        wm geometry $window "+$x+$y"
-        wm title $window $title
-        wm iconphoto $window [image create photo -file $icon]
-        wm protocol $window WM_DELETE_WINDOW $on_close
-        raise $window
-        focus $window
-        if {$modal} {
-            grab $window
-        }
-        wm deiconify $window
-    }
 }

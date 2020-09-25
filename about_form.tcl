@@ -7,8 +7,8 @@ namespace eval about_form {
         make_widgets
         make_layout
         make_bindings
-        util::prepare_dialog .about "About — $const::APPNAME" \
-            $::IMG_PATH/icon.png { about_form::on_close }
+        ui::prepare_form .about "About — $const::APPNAME" \
+            { about_form::on_close }
         focus .about.text
     }
 
