@@ -4,11 +4,15 @@
 namespace eval help_form {
 
     proc show {} {
-        make_widgets
-        make_layout
-        make_bindings
-        util::prepare_dialog .help "Help — $const::APPNAME" \
-            $::IMG_PATH/icon.png { help_form::on_close } false
+        if {[winfo exists .help]} {
+            wm deiconify .help
+        } else {
+            make_widgets
+            make_layout
+            make_bindings
+            util::prepare_dialog .help "Help — $const::APPNAME" \
+                $::IMG_PATH/icon.png { help_form::on_close } false
+        }
         focus .help.text
     }
 
@@ -43,7 +47,7 @@ namespace eval help_form {
 
     proc on_close {} {
         grab release .help
-        destroy .help
+        wm withdraw .help
     }
 
 
