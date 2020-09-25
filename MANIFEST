@@ -2,7 +2,7 @@
 
 gravitate.tcl
 main_window.tcl
-about_form.tcl # TODO
+about_form.tcl # TODO horiz rule?
 help_form.tcl # TODO
 options_form.tcl # TODO
 actions.tcl # TODO options
