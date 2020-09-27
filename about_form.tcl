@@ -35,6 +35,24 @@ namespace eval about_form {
         bind .about <Alt-o> { about_form::on_close }
         bind .about <Escape> { about_form::on_close }
         bind .about <Return> { about_form::on_close }
+        .about.text tag bind url <Double-1> {
+            about_form::on_click_url @%x,%y
+        }
+    }
+
+    proc on_click_url {index} {
+        set start $index
+        while {$start > 0 && [.about.text get $start] != " " &&
+                [.about.text get $start] != "\n"} {
+            set start [.about.text index "$start -1c"]
+        }
+        set end $index
+        while {[.about.text get $end] != " " &&
+                [.about.text get $end] != "\n"} {
+            set end [.about.text index "$end +1c"]
+        }
+        set word [string trim [.about.text get $start $end]]
+        puts "<$word>" ; # TODO
     }
 
 
@@ -56,7 +74,7 @@ namespace eval about_form {
             set year "2020-[string range $year end-1 end]"
         }
         set bits [expr {8 * $::tcl_platform(wordSize)}]
-        .about.text insert end "http://www.qtrac.eu/gravitate.html\n" \
+        .about.text insert end "www.qtrac.eu/gravitate.html\n" \
             {body green url}
         .about.text insert end "Copyright © $year Mark Summerfield.\
                                 \nAll Rights Reserved.\n" {body green}
