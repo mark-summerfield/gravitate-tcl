@@ -21,7 +21,7 @@ namespace eval help_form {
         tk::toplevel .help
         tk::text .help.text -width 50 -height 16 -wrap word \
             -background "#F0F0F0" -yscrollcommand { .help.vbar set } \
-            -font body -spacing3 2
+            -font body -spacing3 6
         populate_help_text
         .help.text configure -state disabled
         ttk::scrollbar .help.vbar -command { .help.text yview }
@@ -55,9 +55,9 @@ namespace eval help_form {
 
     proc populate_help_text {} {
         ui::create_text_tags .help.text
-        .help.text insert end "Gravitate\n" {body title}
+        .help.text insert end "Gravitate\n" {center title}
         .help.text insert end "The purpose of the game is to\
-                               remove all the tiles.\n" {body navy}
+                               remove all the tiles.\n" {center navy}
         # TODO
     }
 

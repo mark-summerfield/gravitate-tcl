@@ -31,6 +31,8 @@ proc main {} {
     wm protocol . WM_DELETE_WINDOW actions::on_quit
     main_window::make_window
     wm deiconify .
+    raise .
+    focus .
 }
 
 

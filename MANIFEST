@@ -2,9 +2,10 @@
 
 gravitate.tcl
 main_window.tcl
-about_form.tcl # TODO horiz rule? hyperlink to www.qtrac.eu/...?
+about_form.tcl
 help_form.tcl # TODO
-options_form.tcl # TODO
+options_form.tcl # TODO: columns rows maxColors delayMs fontFamily fontSize
+		 # if user changes font details try to propagate immediately
 actions.tcl # TODO options
 # board.tcl # TODO
 util.tcl

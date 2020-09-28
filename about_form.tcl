@@ -16,7 +16,7 @@ namespace eval about_form {
     proc make_widgets {} {
         tk::toplevel .about
         tk::text .about.text -width 50 -height 9 -wrap word \
-            -background "#F0F0F0" -font body -spacing3 4
+            -background "#F0F0F0" -font body -spacing3 6
         populate_about_text
         .about.text configure -state disabled
         ttk::button .about.ok_button -text OK -compound left \
@@ -41,18 +41,14 @@ namespace eval about_form {
     }
 
     proc on_click_url {index} {
-        set start $index
-        while {$start > 0 && [.about.text get $start] != " " &&
-                [.about.text get $start] != "\n"} {
-            set start [.about.text index "$start -1c"]
+        set indexes [.about.text tag prevrange url $index]
+        set url [string trim [.about.text get {*}$indexes]]
+        if {$url ne ""} {
+            if {![regexp -nocase {^http://} $url]} {
+                set url [string cat http:// $url]
+            }
+            util::open_webpage $url
         }
-        set end $index
-        while {[.about.text get $end] != " " &&
-                [.about.text get $end] != "\n"} {
-            set end [.about.text index "$end +1c"]
-        }
-        set word [string trim [.about.text get $start $end]]
-        puts "<$word>" ; # TODO
     }
 
 
@@ -65,23 +61,24 @@ namespace eval about_form {
         ui::create_text_tags .about.text
         set img [.about.text image create end -align center \
                  -image [image create photo -file $::IMG_PATH/icon.png]]
-        .about.text tag add body $img
-        .about.text insert end "\nGravitate v$const::VERSION\n" {body title}
+        .about.text tag add center $img
+        .about.text insert end "\nGravitate v$const::VERSION\n" \
+            {center title}
         .about.text insert end "A TileFall/SameGame-like game.\n" \
-            {body navy}
+            {center navy}
         set year [clock format [clock seconds] -format %Y]
         if {$year > 2020} {
             set year "2020-[string range $year end-1 end]"
         }
         set bits [expr {8 * $::tcl_platform(wordSize)}]
         .about.text insert end "www.qtrac.eu/gravitate.html\n" \
-            {body green url}
+            {center green url}
         .about.text insert end "Copyright © $year Mark Summerfield.\
-                                \nAll Rights Reserved.\n" {body green}
-        .about.text insert end "License: GPLv3.\n" {body green}
+                                \nAll Rights Reserved.\n" {center green}
+        .about.text insert end "License: GPLv3.\n" {center green}
         .about.text insert end "Tcl v$::tcl_patchLevel ${bits}-bit on\
             $::tcl_platform(os) $::tcl_platform(osVersion)\
-            $::tcl_platform(machine)." body
+            $::tcl_platform(machine)." center
     }
 
 

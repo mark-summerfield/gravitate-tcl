@@ -32,6 +32,7 @@ namespace eval util {
 
 
     proc make_default_ini {name} {
+        set font_data [ui::font_data false]
         set ini [::ini::open $name -encoding "utf-8" w]
         try {
             set section $const::BOARD
@@ -49,9 +50,27 @@ namespace eval util {
             ::ini::set $ini $section $const::WINDOW_WIDTH $invalid
             ::ini::set $ini $section $const::WINDOW_X $invalid
             ::ini::set $ini $section $const::WINDOW_Y $invalid
+            ::ini::set $ini $section $const::FONTFAMILY \
+                [dict get $font_data -family]
+            ::ini::set $ini $section $const::FONTSIZE \
+                [dict get $font_data -size]
             ::ini::commit $ini
         } finally {
             ::ini::close $ini
+        }
+    }
+
+
+    proc open_webpage {url} {
+        if {$::tcl_platform(platform) == "windows"} {
+            set cmd [list {*}[auto_execok start] {}]
+        } else {
+            set cmd [auto_execok xdg-open]
+        }
+        try {
+            exec {*}$cmd $url &
+        } trap CHILDSTATUS {err opts} {
+            puts "failed to open $url: $err"
         }
     }
 }

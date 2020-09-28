@@ -21,6 +21,8 @@ namespace eval const {
         variable WINDOW_WIDTH width
         variable WINDOW_X x
         variable WINDOW_Y y
+        variable FONTFAMILY fontFamily
+        variable FONTSIZE fontSize
 
     variable COLUMNS_DEFAULT 9
     variable ROWS_DEFAULT 9
