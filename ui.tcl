@@ -6,13 +6,13 @@ package require inifile
 
 namespace eval ui {
 
-    proc prepare_form {window title on_close {modal true}} {
+    proc prepare_form {window title on_close {modal true} {dx 20} {dy 40}} {
         wm withdraw $window
         if {$modal} {
             wm transient $window .
         }
-        set x [expr {[winfo x [winfo parent $window]] + 20}]
-        set y [expr {[winfo y [winfo parent $window]] + 40}]
+        set x [expr {[winfo x [winfo parent $window]] + $dx}]
+        set y [expr {[winfo y [winfo parent $window]] + $dy}]
         wm geometry $window "+$x+$y"
         wm title $window $title
         wm protocol $window WM_DELETE_WINDOW $on_close
@@ -26,11 +26,15 @@ namespace eval ui {
 
 
     proc create_text_tags {widget} {
+	set margin 12
         $widget tag configure spaceabove -spacing1 [expr {$const::VGAP * 2}]
+        $widget tag configure margins -lmargin1 $margin -lmargin2 \
+	    $margin -rmargin $margin
         $widget tag configure center -justify center
         $widget tag configure title -foreground navy -font h1
         $widget tag configure navy -foreground navy
         $widget tag configure green -foreground darkgreen
+        $widget tag configure bold -font bold
         $widget tag configure italic -font italic
         $widget tag configure url -underline true -underlinefg darkgreen
         $widget tag configure hr -overstrike true -overstrikefg lightgray \
@@ -38,7 +42,7 @@ namespace eval ui {
     }
 
 
-    proc font_info {family_ size_ {read_ini true}} {
+    proc font_info_ {family_ size_ {read_ini true}} {
         upvar $family_ family $size_ size
         set size [expr {$::tcl_platform(platform) eq "unix" ? 12 : 10}]
         set family Helvetica
@@ -68,12 +72,11 @@ namespace eval ui {
 
 
     proc make_fonts {} {
-        font_info family size
+        font_info_ family size
         set h1 [expr {int(ceil($size * 1.2))}]
         font create h1 -family $family -size $h1 -weight bold
-        font create body -family $family -size $size
+        font create default -family $family -size $size
+        font create bold -family $family -size $size -weight bold
         font create italic -family $family -size $size -slant italic
     }
-
-
 }

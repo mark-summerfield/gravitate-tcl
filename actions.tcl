@@ -16,7 +16,7 @@ namespace eval actions {
 
 
     proc on_about {} {
-        about_form::show
+        about_form::show_modal
     }
 
 
@@ -41,5 +41,4 @@ namespace eval actions {
         }
         exit
     }
-
 }

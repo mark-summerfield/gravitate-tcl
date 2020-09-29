@@ -21,7 +21,7 @@ namespace eval help_form {
         tk::toplevel .help
         tk::text .help.text -width 50 -height 16 -wrap word \
             -background "#F0F0F0" -yscrollcommand { .help.vbar set } \
-            -font body -spacing3 6
+            -font default -spacing3 6 -tabs 4c
         populate_help_text
         .help.text configure -state disabled
         ttk::scrollbar .help.vbar -command { .help.text yview }
@@ -32,9 +32,10 @@ namespace eval help_form {
 
 
     proc make_layout {} {
-        grid .help.text -row 0 -column 0 -sticky nsew
-        grid .help.vbar -row 0 -column 1 -sticky ns
-        grid .help.ok_button -row 1 -column 0 -columnspan 2
+        set pad $const::PAD
+        grid .help.text -row 0 -column 0 -sticky nsew -pady $pad
+        grid .help.vbar -row 0 -column 1 -sticky ns -pady $pad
+        grid .help.ok_button -row 1 -column 0 -columnspan 2 -pady $pad
         grid columnconfigure .help 0 -weight 1
         grid rowconfigure .help 0 -weight 1
     }
@@ -58,42 +59,48 @@ namespace eval help_form {
         .help.text insert end "Gravitate\n" {center title spaceabove}
         .help.text insert end "The purpose of the game is to\
                                remove all the tiles.\n" {center navy}
-        # TODO
+	.help.text insert end "Click a tile that has at least one\
+	    vertically or horizontally adjoining tile of the same color\
+	    to remove it and any vertically or horizontally adjoining\
+	    tiles of the same color, and "
+	.help.text insert end their italic
+	.help.text insert end " vertically or horizontally adjoining\
+			       tiles, and so on."
+	.help.text insert end " (So clicking a tile with no adjoining\
+			       tiles of the same color does nothing.) " \
+			       italic
+	.help.text insert end "The more tiles that are removed in one\
+			       go, the higher the score.\n"
+	.help.text insert end "Gravitate works like TileFall and the\
+	    SameGame except that instead of tiles falling to the bottom\
+	    and moving off to the left, they “gravitate” to the\
+	    middle.\n"
+	.help.text insert end "[string repeat " " 60]\n" {center hr}
+	.help.text insert end "Key\tAction\n" green
+	.help.text insert end "a\t" bold
+	.help.text insert end "Show About box\n"
+	.help.text insert end "h" bold
+	.help.text insert end " or "
+	.help.text insert end "F1\t" bold
+	.help.text insert end "Show Help (this window)\n"
+	.help.text insert end "n\t" bold
+	.help.text insert end "New game\n"
+	.help.text insert end "o\t" bold
+	.help.text insert end "View or edit options\n"
+	.help.text insert end "q" bold
+	.help.text insert end " or "
+	.help.text insert end "Esc\t" bold
+	.help.text insert end "Quit\n"
+	.help.text insert end "←\t" bold
+	.help.text insert end "Move focus left\n"
+	.help.text insert end "→\t" bold
+	.help.text insert end "Move focus right\n"
+	.help.text insert end "↑\t" bold
+	.help.text insert end "Move focus up\n"
+	.help.text insert end "↓\t" bold
+	.help.text insert end "Move focus down\n"
+	.help.text insert end "Space\t" bold
+	.help.text insert end "Click focused tile\n"
+	.help.text tag add margins 1.0 end
     }
-
-
 }
-#<body style="background-color: %s;">
-#<center><font size=+2 color=navy><b>Gravitate</b></font></center>
-#<p><font size=+1 color=navy><center>
-#The purpose of the game is to remove all the tiles.</center></font>
-#</p>
-#<p>
-#Click a tile that has at least one vertically or
-#horizontally adjoining tile of the same color to remove it and any
-#vertically or horizontally adjoining tiles of the same color, and
-#<i>their</i> vertically or horizontally adjoining tiles, and so on.
-#<i>(So clicking a tile with no adjoining tiles of the same color does
-#nothing.)</i> The more tiles that are removed in one go, the higher
-#the score.
-#</p>
-#<p>
-#Gravitate works like TileFall and the SameGame except that instead of
-#tiles falling to the bottom and moving off to the left, they
-#“gravitate” to the middle.
-#</p>
-#<hr>
-#<table>
-#<tr><td><font color="#004E00">Key</font></td>
-#    <td><font color="#004E00">Action</font></td></tr>
-#<tr><td><b>a</b></td><td>Show About box</td></tr>
-#<tr><td><b>h</b> or <b>F1</b></td><td>Show Help (this window)</td></tr>
-#<tr><td><b>n</b></td><td>New game</td></tr>
-#<tr><td><b>o</b></td><td>View or edit options</td></tr>
-#<tr><td><b>q</b></td><td>Quit</td></tr>
-#<tr><td><b>←</b></td><td>Move focus left</td></tr>
-#<tr><td><b>→</b></td><td>Move focus right</td></tr>
-#<tr><td><b>↑</b></td><td>Move focus up</td></tr>
-#<tr><td><b>↓</b></td><td>Move focus down</td></tr>
-#<tr><td><b>Space</b></td><td>Click focused tile</td></tr>
-#</table>

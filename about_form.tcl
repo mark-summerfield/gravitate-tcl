@@ -3,7 +3,7 @@
 
 namespace eval about_form {
 
-    proc show {} {
+    proc show_modal {} {
         make_widgets
         make_layout
         make_bindings
@@ -16,7 +16,7 @@ namespace eval about_form {
     proc make_widgets {} {
         tk::toplevel .about
         tk::text .about.text -width 50 -height 11 -wrap word \
-            -background "#F0F0F0" -font body -spacing3 $const::VGAP
+            -background "#F0F0F0" -font default -spacing3 $const::VGAP
         populate_about_text
         .about.text configure -state disabled
         ttk::button .about.ok_button -text OK -compound left \
@@ -26,8 +26,8 @@ namespace eval about_form {
 
 
     proc make_layout {} {
-        grid .about.text -sticky nsew
-        grid .about.ok_button
+        grid .about.text -sticky nsew -pady $const::PAD
+        grid .about.ok_button -pady $const::PAD
     }
 
 
@@ -84,6 +84,4 @@ namespace eval about_form {
             $::tcl_platform(os) $::tcl_platform(osVersion)\
             $::tcl_platform(machine)." center
     }
-
-
 }

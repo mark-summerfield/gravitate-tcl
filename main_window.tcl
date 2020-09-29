@@ -16,7 +16,6 @@ namespace eval main_window {
         make_layout
         make_bindings
         set_size_and_pos
-        ui::make_fonts
         actions::on_new
         status_message "Click a tile to play…"
     }
