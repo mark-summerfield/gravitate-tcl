@@ -45,7 +45,7 @@ namespace eval about_form {
         set indexes [.about.text tag prevrange url $index]
         set url [string trim [.about.text get {*}$indexes]]
         if {$url ne ""} {
-            if {![regexp -nocase {^http://} $url]} {
+            if {![string match -nocase http://* $url]} {
                 set url [string cat http:// $url]
             }
             util::open_webpage $url
