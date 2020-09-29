@@ -32,7 +32,7 @@ namespace eval util {
 
 
     proc make_default_ini {name} {
-        set font_data [ui::font_data false]
+        lassign [font_info] family size
         set ini [::ini::open $name -encoding "utf-8" w]
         try {
             set section $const::BOARD
@@ -50,10 +50,8 @@ namespace eval util {
             ::ini::set $ini $section $const::WINDOW_WIDTH $invalid
             ::ini::set $ini $section $const::WINDOW_X $invalid
             ::ini::set $ini $section $const::WINDOW_Y $invalid
-            ::ini::set $ini $section $const::FONTFAMILY \
-                [dict get $font_data -family]
-            ::ini::set $ini $section $const::FONTSIZE \
-                [dict get $font_data -size]
+            ::ini::set $ini $section $const::FONTFAMILY $family
+            ::ini::set $ini $section $const::FONTSIZE $size
             ::ini::commit $ini
         } finally {
             ::ini::close $ini

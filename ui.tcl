@@ -38,7 +38,7 @@ namespace eval ui {
     }
 
 
-    proc font_data {{read_ini true}} {
+    proc font_info {{read_ini true}} {
         set size [expr {$::tcl_platform(platform) eq "unix" ? 12 : 10}]
         set family Helvetica
         set font_data [font actual TkDefaultFont]
@@ -61,14 +61,13 @@ namespace eval ui {
                 ::ini::close $ini
             }
         }
-        return $font_data
+        return [list [dict get $font_data -family] \
+                     [dict get $font_data -size]]
     }
 
 
     proc make_fonts {} {
-        set font_data [ui::font_data]
-        set family [dict get $font_data -family]
-        set size [dict get $font_data -size]
+        lassign [font_info] family size
         set h1 [expr {int(ceil($size * 1.2))}]
         font create h1 -family $family -size $h1 -weight bold
         font create body -family $family -size $size
