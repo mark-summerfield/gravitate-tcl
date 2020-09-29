@@ -7,6 +7,7 @@ namespace eval const {
     variable APPNAME Gravitate
     variable VERSION 7.0.0
     variable PAD 3
+    variable VGAP 6
     variable BACKGROUND_COLOR "#FFFEE0"
 
     variable BOARD Board

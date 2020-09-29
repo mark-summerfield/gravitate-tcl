@@ -16,7 +16,7 @@ namespace eval main_window {
         make_layout
         make_bindings
         set_size_and_pos
-        make_fonts
+        ui::make_fonts
         actions::on_new
         status_message "Click a tile to play…"
     }
@@ -108,17 +108,6 @@ namespace eval main_window {
         } finally {
             ::ini::close $ini
         }
-    }
-
-
-    proc make_fonts {} {
-        set font_data [ui::font_data]
-        set family [dict get $font_data -family]
-        set size [dict get $font_data -size]
-        set h1 [expr {int(ceil($size * 1.2))}]
-        font create h1 -family $family -size $h1 -weight bold
-        font create body -family $family -size $size
-        font create italic -family $family -size $size -slant italic
     }
 
 

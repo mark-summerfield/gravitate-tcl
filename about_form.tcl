@@ -15,8 +15,8 @@ namespace eval about_form {
 
     proc make_widgets {} {
         tk::toplevel .about
-        tk::text .about.text -width 50 -height 9 -wrap word \
-            -background "#F0F0F0" -font body -spacing3 6
+        tk::text .about.text -width 50 -height 11 -wrap word \
+            -background "#F0F0F0" -font body -spacing3 $const::VGAP
         populate_about_text
         .about.text configure -state disabled
         ttk::button .about.ok_button -text OK -compound left \
@@ -40,6 +40,7 @@ namespace eval about_form {
         }
     }
 
+
     proc on_click_url {index} {
         set indexes [.about.text tag prevrange url $index]
         set url [string trim [.about.text get {*}$indexes]]
@@ -57,10 +58,12 @@ namespace eval about_form {
         destroy .about
     }
 
+
     proc populate_about_text {} {
         ui::create_text_tags .about.text
         set img [.about.text image create end -align center \
                  -image [image create photo -file $::IMG_PATH/icon.png]]
+        .about.text tag add spaceabove $img
         .about.text tag add center $img
         .about.text insert end "\nGravitate v$const::VERSION\n" \
             {center title}
@@ -76,6 +79,7 @@ namespace eval about_form {
         .about.text insert end "Copyright © $year Mark Summerfield.\
                                 \nAll Rights Reserved.\n" {center green}
         .about.text insert end "License: GPLv3.\n" {center green}
+	.about.text insert end "[string repeat " " 60]\n" {center hr}
         .about.text insert end "Tcl v$::tcl_patchLevel ${bits}-bit on\
             $::tcl_platform(os) $::tcl_platform(osVersion)\
             $::tcl_platform(machine)." center

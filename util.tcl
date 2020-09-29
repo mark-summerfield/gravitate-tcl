@@ -11,7 +11,7 @@ namespace eval util {
     }
 
     proc get_ini_filename {} {
-        if {$::tcl_platform(platform) == "windows"} {
+        if {$::tcl_platform(platform) eq "windows"} {
             set names {~/gravitate.ini $::APP_PATH/gravitate.ini}
             set index 0
         } else {
@@ -62,7 +62,7 @@ namespace eval util {
 
 
     proc open_webpage {url} {
-        if {$::tcl_platform(platform) == "windows"} {
+        if {$::tcl_platform(platform) eq "windows"} {
             set cmd [list {*}[auto_execok start] {}]
         } else {
             set cmd [auto_execok xdg-open]

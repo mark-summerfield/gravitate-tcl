@@ -55,7 +55,7 @@ namespace eval help_form {
 
     proc populate_help_text {} {
         ui::create_text_tags .help.text
-        .help.text insert end "Gravitate\n" {center title}
+        .help.text insert end "Gravitate\n" {center title spaceabove}
         .help.text insert end "The purpose of the game is to\
                                remove all the tiles.\n" {center navy}
         # TODO

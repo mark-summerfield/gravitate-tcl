@@ -26,17 +26,20 @@ namespace eval ui {
 
 
     proc create_text_tags {widget} {
+        $widget tag configure spaceabove -spacing1 [expr {$const::VGAP * 2}]
         $widget tag configure center -justify center
         $widget tag configure title -foreground navy -font h1
         $widget tag configure navy -foreground navy
         $widget tag configure green -foreground darkgreen
         $widget tag configure italic -font italic
         $widget tag configure url -underline true -underlinefg darkgreen
+        $widget tag configure hr -overstrike true -overstrikefg lightgray \
+	    -spacing3 10
     }
 
 
     proc font_data {{read_ini true}} {
-        set size [expr {$::tcl_platform(platform) == "unix" ? 12 : 10}]
+        set size [expr {$::tcl_platform(platform) eq "unix" ? 12 : 10}]
         set family Helvetica
         set font_data [font actual TkDefaultFont]
         if {![dict exists $font_data -family]} {
@@ -60,4 +63,17 @@ namespace eval ui {
         }
         return $font_data
     }
+
+
+    proc make_fonts {} {
+        set font_data [ui::font_data]
+        set family [dict get $font_data -family]
+        set size [dict get $font_data -size]
+        set h1 [expr {int(ceil($size * 1.2))}]
+        font create h1 -family $family -size $h1 -weight bold
+        font create body -family $family -size $size
+        font create italic -family $family -size $size -slant italic
+    }
+
+
 }
