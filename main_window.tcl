@@ -81,18 +81,17 @@ namespace eval main_window {
 
 
     proc set_size_and_pos {} {
-        variable high_score
         set ini [::ini::open [util::get_ini_filename] -encoding "utf-8" r]
         try {
             set section $const::BOARD
-            set high_score [::ini::value $ini $section $const::HIGH_SCORE \
-                            -1]
-            if {$high_score == -1} {
-                set high_score [::ini::value $ini $section \
+            set main_window::high_score \
+                [::ini::value $ini $section $const::HIGH_SCORE -1]
+            if {$main_window::high_score == -1} {
+                set main_window::high_score [::ini::value $ini $section \
                     $const::HIGH_SCORE_COMPAT $const::HIGH_SCORE_DEFAULT]
             }
             .main.status_bar.score_label configure \
-                -text "0 • [util::commas $high_score]"
+                -text "0 • [util::commas $main_window::high_score]"
             set section $const::WINDOW
             set invalid $const::WINDOW_INVALID
             set width [::ini::value $ini $section $const::WINDOW_WIDTH \

@@ -6,7 +6,6 @@ namespace eval options_form {
     variable ok false
 
     proc show_modal {} {
-        variable ok
         make_widgets
         make_layout
         make_bindings
@@ -14,7 +13,7 @@ namespace eval options_form {
             { options_form::on_close }
         # focus .options.? # TODO
         tkwait window .options
-        return $ok
+        return $options_form::ok
     }
 
 
@@ -57,8 +56,7 @@ namespace eval options_form {
 
 
     proc do_close {{result false}} {
-        variable ok
-        set ok $result
+        set options_form::ok $result
         grab release .options
         destroy .options
     }
