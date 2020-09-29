@@ -49,7 +49,7 @@ namespace eval util {
             ::ini::set $ini $section $const::WINDOW_WIDTH $invalid
             ::ini::set $ini $section $const::WINDOW_X $invalid
             ::ini::set $ini $section $const::WINDOW_Y $invalid
-            lassign [font_info] family size
+            ui::font_info family size false
             ::ini::set $ini $section $const::FONTFAMILY $family
             ::ini::set $ini $section $const::FONTSIZE $size
             ::ini::commit $ini
