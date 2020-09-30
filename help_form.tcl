@@ -10,7 +10,7 @@ namespace eval help_form {
             make_widgets
             make_layout
             make_bindings
-            ui::prepare_form .help "Help — $const::APPNAME" \
+            ui::prepare_form .help "Help — [tk appname]" \
                 { help_form::on_close } false
         }
         focus .help.text

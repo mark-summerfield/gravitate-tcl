@@ -80,7 +80,7 @@ namespace eval main_window {
 
 
     proc set_size_and_pos {} {
-        set ini [::ini::open [util::get_ini_filename] -encoding "utf-8" r]
+        set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
         try {
             set section $const::BOARD
             set main_window::high_score \

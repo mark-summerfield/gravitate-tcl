@@ -10,7 +10,7 @@ namespace eval options_form {
         make_layout
         make_bindings
 	load_options
-        ui::prepare_form .options "Options — $const::APPNAME" \
+        ui::prepare_form .options "Options — [tk appname]" \
             { options_form::on_close }
         focus .options.columns_spinbox
         tkwait window .options
@@ -41,24 +41,20 @@ namespace eval options_form {
 
 
     proc make_layout {} {
-	set pad $const::PAD
-	grid .options.columns_label -row 0 -column 0 -padx $pad \
-	    -pady $pad
-	grid .options.columns_spinbox -row 0 -column 1 -sticky ew \
-	    -padx $pad -pady $pad
-	grid .options.rows_label -row 1 -column 0 -padx $pad -pady $pad
-	grid .options.rows_spinbox -row 1 -column 1 -sticky ew -padx $pad \
-	    -pady $pad
-	grid .options.max_colors_label -row 2 -column 0 -padx $pad \
-	    -pady $pad
-	grid .options.max_colors_spinbox -row 2 -column 1 -sticky ew \
-	    -padx $pad -pady $pad
-        grid .options.buttons.ok_button -row 0 -column 0 -padx $pad \
-	    -pady $pad
-        grid .options.buttons.close_button -row 0 -column 1 -padx $pad \
-	    -pady $pad
-	grid .options.buttons -row 7 -column 0 -columnspan 2 -padx $pad \
-	    -pady $pad
+	grid .options.columns_label -row 0 -column 0
+	grid .options.columns_spinbox -row 0 -column 1 -sticky ew
+	grid .options.rows_label -row 1 -column 0
+	grid .options.rows_spinbox -row 1 -column 1 -sticky ew
+	grid .options.max_colors_label -row 2 -column 0
+	grid .options.max_colors_spinbox -row 2 -column 1 -sticky ew
+        grid .options.buttons.ok_button -row 0 -column 0
+        grid .options.buttons.close_button -row 0 -column 1
+	grid .options.buttons -row 7 -column 0 -columnspan 2
+        grid .options.columns_label .options.columns_spinbox \
+             .options.rows_label .options.rows_spinbox \
+             .options.max_colors_label .options.max_colors_spinbox \
+             .options.buttons.ok_button .options.buttons.close_button \
+             -padx $const::PAD -pady $const::PAD
         grid columnconfigure .options 1 -weight 1
     }
 

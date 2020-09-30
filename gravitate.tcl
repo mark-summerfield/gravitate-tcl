@@ -20,20 +20,21 @@ foreach filename {
         util.tcl
         ui.tcl
     } {
-    source -encoding "utf-8" $::APP_PATH/$filename
+    source -encoding utf-8 $::APP_PATH/$filename
 }
 
 
 proc main {} {
-    wm withdraw .
-    wm title . $const::APPNAME
-    wm iconname . $const::APPNAME
-    wm iconphoto . -default [image create photo -file $::IMG_PATH/icon.png]
-    wm minsize . 260 300
-    wm protocol . WM_DELETE_WINDOW actions::on_quit
     ui::make_fonts
     option add *font default
     option add *insertOffTime 0
+    tk appname Gravitate
+    wm withdraw .
+    wm title . [tk appname]
+    wm iconname . [tk appname]
+    wm iconphoto . -default [image create photo -file $::IMG_PATH/icon.png]
+    wm minsize . 260 300
+    wm protocol . WM_DELETE_WINDOW actions::on_quit
     main_window::make_window
     wm deiconify .
     raise .

@@ -11,7 +11,7 @@ namespace eval util {
     }
 
     proc get_ini_filename {} {
-        if {$::tcl_platform(platform) eq "windows"} {
+        if {[tk windowingsystem] eq "win32"} {
             set names {~/gravitate.ini $::APP_PATH/gravitate.ini}
             set index 0
         } else {
@@ -32,7 +32,7 @@ namespace eval util {
 
 
     proc make_default_ini {name} {
-        set ini [::ini::open $name -encoding "utf-8" w]
+        set ini [::ini::open $name -encoding utf-8 w]
         try {
             set section $const::BOARD
             ::ini::set $ini $section $const::COLUMNS $const::COLUMNS_DEFAULT
@@ -60,7 +60,7 @@ namespace eval util {
 
 
     proc open_webpage {url} {
-        if {$::tcl_platform(platform) eq "windows"} {
+        if {[tk windowingsystem] eq "win32"} {
             set cmd [list {*}[auto_execok start] {}]
         } else {
             set cmd [auto_execok xdg-open]

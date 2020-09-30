@@ -7,7 +7,7 @@ namespace eval about_form {
         make_widgets
         make_layout
         make_bindings
-        ui::prepare_form .about "About — $const::APPNAME" \
+        ui::prepare_form .about "About — [tk appname]" \
             { about_form::on_close }
         focus .about.text
     }

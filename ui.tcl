@@ -44,7 +44,7 @@ namespace eval ui {
 
     proc font_info_ {family_ size_ {read_ini true}} {
         upvar $family_ family $size_ size
-        set size [expr {$::tcl_platform(platform) eq "unix" ? 12 : 10}]
+        set size [expr {[tk windowingsystem] eq "x11" ? 12 : 10}]
         set family Helvetica
         set font_data [font actual TkDefaultFont]
         if {![dict exists $font_data -family]} {
@@ -54,8 +54,7 @@ namespace eval ui {
             dict set font_data -size $size
         }
         if {$read_ini} {
-            set ini [::ini::open [util::get_ini_filename] \
-                     -encoding "utf-8" r]
+            set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
             try {
                 set section $const::WINDOW
                 dict set font_data -family [::ini::value $ini $section \
