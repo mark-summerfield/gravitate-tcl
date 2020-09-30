@@ -49,7 +49,8 @@ namespace eval util {
             ::ini::set $ini $section $const::WINDOW_WIDTH $invalid
             ::ini::set $ini $section $const::WINDOW_X $invalid
             ::ini::set $ini $section $const::WINDOW_Y $invalid
-            ::ini::set $ini $section $const::SCALING [tk scaling]
+            ::ini::set $ini $section $const::FONTSIZE \
+                [dict get [font actual TkDefaultFont] -size]
             ::ini::commit $ini
         } finally {
             ::ini::close $ini

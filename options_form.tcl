@@ -1,7 +1,6 @@
 #!/usr/bin/env wish
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
-# TODO scaling (make scaling work "live" if poss)
 namespace eval options_form {
 
     variable ok false
@@ -32,10 +31,10 @@ namespace eval options_form {
 	ttk::label .options.delay_label -text "Delay (ms)" -underline 0
 	tk::spinbox .options.delay_spinbox -from 0 -to 1000 -format %4.0f \
             -increment 10
-	ttk::label .options.scaling_label -text "Scaling" -underline 0
-	tk::spinbox .options.scaling_spinbox -from 0.5 -to 3.0 \
-            -format %1.1f -increment 0.1 \
-            -command { options_form::on_update_scaling %s }
+	ttk::label .options.fontsize_label -text "Font Size (pt)" \
+            -underline 0
+	tk::spinbox .options.fontsize_spinbox -from 8 -to 20 -format %2.0f \
+            -command { ui::update_fonts %s }
 	ttk::frame .options.buttons
         ttk::button .options.buttons.ok_button -text OK -compound left \
             -image [image create photo -file $::IMG_PATH/ok.png] \
@@ -56,29 +55,27 @@ namespace eval options_form {
 	grid .options.max_colors_spinbox -row 2 -column 1 -sticky ew
 	grid .options.delay_label -row 3 -column 0
 	grid .options.delay_spinbox -row 3 -column 1 -sticky ew
-	grid .options.scaling_label -row 5 -column 0
-	grid .options.scaling_spinbox -row 5 -column 1 -sticky ew
+	grid .options.fontsize_label -row 4 -column 0
+	grid .options.fontsize_spinbox -row 4 -column 1 -sticky ew
         grid .options.buttons.ok_button -row 0 -column 0
         grid .options.buttons.close_button -row 0 -column 1
-	grid .options.buttons -row 6 -column 0 -columnspan 2
+	grid .options.buttons -row 5 -column 0 -columnspan 2
         grid .options.columns_label .options.columns_spinbox \
              .options.rows_label .options.rows_spinbox \
              .options.max_colors_label .options.max_colors_spinbox \
              .options.delay_label .options.delay_spinbox \
-             .options.scaling_label \
+             .options.fontsize_label .options.fontsize_spinbox \
              .options.buttons.ok_button .options.buttons.close_button \
              -padx $const::PAD -pady $const::PAD
-        grid .options.scaling_spinbox -padx $const::PAD \
-                                      -pady [expr {$const::PAD * 3}]
     }
 
 
     proc make_bindings {} {
 	bind .options <Alt-d> { focus .options.delay_spinbox }
+	bind .options <Alt-f> { focus .options.fontsize_spinbox }
 	bind .options <Alt-l> { focus .options.columns_spinbox }
 	bind .options <Alt-m> { focus .options.max_colors_spinbox }
 	bind .options <Alt-r> { focus .options.rows_spinbox }
-	bind .options <Alt-s> { focus .options.scaling_spinbox }
         bind .options <Alt-o> { options_form::on_ok }
         bind .options <Return> { options_form::on_ok }
         bind .options <Alt-c> { options_form::on_close }
@@ -102,17 +99,12 @@ namespace eval options_form {
             .options.delay_spinbox set \
                 [::ini::value $ini $section $const::DELAY_MS \
                  $const::DELAY_MS_DEFAULT]
-            set section $const::WINDOW
-            .options.scaling_spinbox set \
-                [::ini::value $ini $section $const::SCALING [tk scaling]]
+            .options.fontsize_spinbox set \
+                [::ini::value $ini $const::WINDOW $const::FONTSIZE \
+                 [dict get [font actual TkDefaultFont] -size]]
         } finally {
             ::ini::close $ini
         }
-    }
-
-
-    proc on_update_scaling {scaling} {
-        tk scaling $scaling
     }
 
 
@@ -128,8 +120,8 @@ namespace eval options_form {
                 [.options.max_colors_spinbox get]
             ::ini::set $ini $section $const::DELAY_MS \
                 [.options.delay_spinbox get]
-            ::ini::set $ini $const::WINDOW $const::SCALING \
-                [.options.scaling_spinbox get]
+            ::ini::set $ini $const::WINDOW $const::FONTSIZE \
+                [.options.fontsize_spinbox get]
             ::ini::commit $ini
         } finally {
             ::ini::close $ini

@@ -52,4 +52,12 @@ namespace eval ui {
         font create bold -family $family -size $size -weight bold
         font create italic -family $family -size $size -slant italic
     }
+
+
+    proc update_fonts {size} {
+        font configure h1 -size [expr {int(ceil($size * 1.2))}]
+        font configure default -size $size
+        font configure bold -size $size
+        font configure italic -size $size
+    }
 }

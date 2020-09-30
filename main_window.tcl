@@ -103,10 +103,9 @@ namespace eval main_window {
                     $x != $invalid && $y != $invalid} {
                 wm geometry . "${width}x$height+$x+$y"
             }
-            set scaling [::ini::value $ini $section $const::SCALING \
-                         [tk scaling]]
-            if {[tk scaling] != $scaling} {
-                tk scaling $scaling
+            set size [::ini::value $ini $section $const::FONTSIZE $invalid]
+            if {$size != $invalid} {
+                ui::update_fonts $size
             }
         } finally {
             ::ini::close $ini
