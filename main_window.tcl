@@ -105,10 +105,8 @@ namespace eval main_window {
             }
             set scaling [::ini::value $ini $section $const::SCALING \
                          [tk scaling]]
-            puts "ini=$scaling def=[tk scaling]"
             if {[tk scaling] != $scaling} {
                 tk scaling $scaling
-                puts "updated"
             }
         } finally {
             ::ini::close $ini

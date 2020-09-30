@@ -10,8 +10,9 @@ namespace eval actions {
 
 
     proc on_options {} {
-        set ok [options_form::show_modal]
-        puts "on_options [expr {$ok ? "OK" : "Cancel"}]" ;# TODO
+        if {[options_form::show_modal]} {
+            main_window::status_message "Updated options. Click New…"
+        }
     }
 
 

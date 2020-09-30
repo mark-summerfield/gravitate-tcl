@@ -1,6 +1,7 @@
 #!/usr/bin/env wish
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
+# TODO scaling (make scaling work "live" if poss)
 namespace eval options_form {
 
     variable ok false
@@ -28,7 +29,13 @@ namespace eval options_form {
 	    -underline 0
 	tk::spinbox .options.max_colors_spinbox -from 2 \
 	    -to [board::color_count] -format %2.0f
-        # TODO delayMs scaling
+	ttk::label .options.delay_label -text "Delay (ms)" -underline 0
+	tk::spinbox .options.delay_spinbox -from 0 -to 1000 -format %4.0f \
+            -increment 10
+	ttk::label .options.scaling_label -text "Scaling" -underline 0
+	tk::spinbox .options.scaling_spinbox -from 0.5 -to 3.0 \
+            -format %1.1f -increment 0.1 \
+            -command { options_form::on_update_scaling %s }
 	ttk::frame .options.buttons
         ttk::button .options.buttons.ok_button -text OK -compound left \
             -image [image create photo -file $::IMG_PATH/ok.png] \
@@ -47,22 +54,31 @@ namespace eval options_form {
 	grid .options.rows_spinbox -row 1 -column 1 -sticky ew
 	grid .options.max_colors_label -row 2 -column 0
 	grid .options.max_colors_spinbox -row 2 -column 1 -sticky ew
+	grid .options.delay_label -row 3 -column 0
+	grid .options.delay_spinbox -row 3 -column 1 -sticky ew
+	grid .options.scaling_label -row 5 -column 0
+	grid .options.scaling_spinbox -row 5 -column 1 -sticky ew
         grid .options.buttons.ok_button -row 0 -column 0
         grid .options.buttons.close_button -row 0 -column 1
-	grid .options.buttons -row 7 -column 0 -columnspan 2
+	grid .options.buttons -row 6 -column 0 -columnspan 2
         grid .options.columns_label .options.columns_spinbox \
              .options.rows_label .options.rows_spinbox \
              .options.max_colors_label .options.max_colors_spinbox \
+             .options.delay_label .options.delay_spinbox \
+             .options.scaling_label \
              .options.buttons.ok_button .options.buttons.close_button \
              -padx $const::PAD -pady $const::PAD
-        grid columnconfigure .options 1 -weight 1
+        grid .options.scaling_spinbox -padx $const::PAD \
+                                      -pady [expr {$const::PAD * 3}]
     }
 
 
     proc make_bindings {} {
+	bind .options <Alt-d> { focus .options.delay_spinbox }
 	bind .options <Alt-l> { focus .options.columns_spinbox }
 	bind .options <Alt-m> { focus .options.max_colors_spinbox }
 	bind .options <Alt-r> { focus .options.rows_spinbox }
+	bind .options <Alt-s> { focus .options.scaling_spinbox }
         bind .options <Alt-o> { options_form::on_ok }
         bind .options <Return> { options_form::on_ok }
         bind .options <Alt-c> { options_form::on_close }
@@ -71,12 +87,53 @@ namespace eval options_form {
 
 
     proc load_options {} {
-        # TODO
-	puts "load_options from ini file and set widget values"
+        set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
+        try {
+            set section $const::BOARD
+            .options.columns_spinbox set \
+                [::ini::value $ini $section $const::COLUMNS \
+                 $const::COLUMNS_DEFAULT]
+            .options.rows_spinbox set \
+                [::ini::value $ini $section $const::ROWS \
+                 $const::ROWS_DEFAULT]
+            .options.max_colors_spinbox set \
+                [::ini::value $ini $section $const::MAX_COLORS \
+                 $const::MAX_COLORS_DEFAULT]
+            .options.delay_spinbox set \
+                [::ini::value $ini $section $const::DELAY_MS \
+                 $const::DELAY_MS_DEFAULT]
+            set section $const::WINDOW
+            .options.scaling_spinbox set \
+                [::ini::value $ini $section $const::SCALING [tk scaling]]
+        } finally {
+            ::ini::close $ini
+        }
+    }
+
+
+    proc on_update_scaling {scaling} {
+        tk scaling $scaling
     }
 
 
     proc on_ok {} {
+        set ini [::ini::open [util::get_ini_filename] -encoding utf-8]
+        try {
+            set section $const::BOARD
+            ::ini::set $ini $section $const::COLUMNS \
+                [.options.columns_spinbox get]
+            ::ini::set $ini $section $const::ROWS \
+                [.options.rows_spinbox get]
+            ::ini::set $ini $section $const::MAX_COLORS \
+                [.options.max_colors_spinbox get]
+            ::ini::set $ini $section $const::DELAY_MS \
+                [.options.delay_spinbox get]
+            ::ini::set $ini $const::WINDOW $const::SCALING \
+                [.options.scaling_spinbox get]
+            ::ini::commit $ini
+        } finally {
+            ::ini::close $ini
+        }
         do_close true
     }
 
