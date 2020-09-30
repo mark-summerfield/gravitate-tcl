@@ -33,6 +33,7 @@ proc main {} {
     wm protocol . WM_DELETE_WINDOW actions::on_quit
     ui::make_fonts
     option add *font default
+    option add *insertOffTime 0
     main_window::make_window
     wm deiconify .
     raise .

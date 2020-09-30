@@ -21,12 +21,12 @@ namespace eval options_form {
     proc make_widgets {} {
         tk::toplevel .options
 	ttk::label .options.columns_label -text Columns -underline 2
-	ttk::spinbox .options.columns_spinbox -from 5 -to 30 -format %2.0f
+	tk::spinbox .options.columns_spinbox -from 5 -to 30 -format %2.0f
 	ttk::label .options.rows_label -text Rows -underline 0
-	ttk::spinbox .options.rows_spinbox -from 5 -to 30 -format %2.0f
+	tk::spinbox .options.rows_spinbox -from 5 -to 30 -format %2.0f
 	ttk::label .options.max_colors_label -text "Max. Colors" \
 	    -underline 0
-	ttk::spinbox .options.max_colors_spinbox -from 2 \
+	tk::spinbox .options.max_colors_spinbox -from 2 \
 	    -to [board::color_count] -format %2.0f
         # TODO delayMs fontFamily fontSize
 	ttk::frame .options.buttons
