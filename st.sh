@@ -10,7 +10,7 @@ nagelfar.tcl -H -tab 4 *.tcl \
     | grep -v Unknown.command.*main_window::make_window \
     | grep -v Unknown.command.*struct::set \
     | grep -v Unknown.command.*ttk::spinbox \
-    | grep -v Unknown.command.*ui::create_text_tags \
+    | grep -v Unknown.command.*ui::add_text_tags \
     | grep -v Unknown.command.*ui::font_data \
     | grep -v Unknown.command.*ui::make_fonts \
     | grep -v Unknown.command.*ui::prepare_form \
