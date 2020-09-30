@@ -25,7 +25,7 @@ namespace eval ui {
     }
 
 
-    proc create_text_tags {widget} {
+    proc add_text_tags {widget} {
 	set margin 12
         $widget tag configure spaceabove -spacing1 [expr {$const::VGAP * 2}]
         $widget tag configure margins -lmargin1 $margin -lmargin2 \
@@ -42,36 +42,10 @@ namespace eval ui {
     }
 
 
-    proc font_info_ {family_ size_ {read_ini true}} {
-        upvar $family_ family $size_ size
-        set size [expr {[tk windowingsystem] eq "x11" ? 12 : 10}]
-        set family Helvetica
-        set font_data [font actual TkDefaultFont]
-        if {![dict exists $font_data -family]} {
-            dict set font_data -family $family
-        }
-        if {![dict exists $font_data -size]} {
-            dict set font_data -size $size
-        }
-        if {$read_ini} {
-            set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
-            try {
-                set section $const::WINDOW
-                dict set font_data -family [::ini::value $ini $section \
-                                            $const::FONTFAMILY $family]
-                dict set font_data -size [::ini::value $ini $section \
-                                          $const::FONTSIZE $size]
-            } finally {
-                ::ini::close $ini
-            }
-        }
-        set family [dict get $font_data -family]
-        set size [dict get $font_data -size]
-    }
-
-
     proc make_fonts {} {
-        font_info_ family size
+        set the_font [font actual TkDefaultFont]
+        set family [dict get $the_font -family]
+        set size [dict get $the_font -size]
         set h1 [expr {int(ceil($size * 1.2))}]
         font create h1 -family $family -size $h1 -weight bold
         font create default -family $family -size $size

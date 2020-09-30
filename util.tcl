@@ -49,9 +49,7 @@ namespace eval util {
             ::ini::set $ini $section $const::WINDOW_WIDTH $invalid
             ::ini::set $ini $section $const::WINDOW_X $invalid
             ::ini::set $ini $section $const::WINDOW_Y $invalid
-            ui::font_info_ family size false
-            ::ini::set $ini $section $const::FONTFAMILY $family
-            ::ini::set $ini $section $const::FONTSIZE $size
+            ::ini::set $ini $section $const::SCALING [tk scaling]
             ::ini::commit $ini
         } finally {
             ::ini::close $ini

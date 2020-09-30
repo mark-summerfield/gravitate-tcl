@@ -60,7 +60,7 @@ namespace eval about_form {
 
 
     proc populate_about_text {} {
-        ui::create_text_tags .about.text
+        ui::add_text_tags .about.text
         set img [.about.text image create end -align center \
                  -image [image create photo -file $::IMG_PATH/icon.png]]
         .about.text tag add spaceabove $img

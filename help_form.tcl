@@ -32,10 +32,10 @@ namespace eval help_form {
 
 
     proc make_layout {} {
-        set pad $const::PAD
-        grid .help.text -row 0 -column 0 -sticky nsew -pady $pad
-        grid .help.vbar -row 0 -column 1 -sticky ns -pady $pad
-        grid .help.ok_button -row 1 -column 0 -columnspan 2 -pady $pad
+        grid .help.text -row 0 -column 0 -sticky nsew
+        grid .help.vbar -row 0 -column 1 -sticky ns
+        grid .help.ok_button -row 1 -column 0 -columnspan 2
+        grid .help.text .help.vbar .help.ok_button -pady $const::PAD
         grid columnconfigure .help 0 -weight 1
         grid rowconfigure .help 0 -weight 1
     }
@@ -55,7 +55,7 @@ namespace eval help_form {
 
 
     proc populate_help_text {} {
-        ui::create_text_tags .help.text
+        ui::add_text_tags .help.text
         .help.text insert end "Gravitate\n" {center title spaceabove}
         .help.text insert end "The purpose of the game is to\
                                remove all the tiles.\n" {center navy}

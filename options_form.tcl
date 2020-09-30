@@ -28,7 +28,7 @@ namespace eval options_form {
 	    -underline 0
 	tk::spinbox .options.max_colors_spinbox -from 2 \
 	    -to [board::color_count] -format %2.0f
-        # TODO delayMs fontFamily fontSize
+        # TODO delayMs scaling
 	ttk::frame .options.buttons
         ttk::button .options.buttons.ok_button -text OK -compound left \
             -image [image create photo -file $::IMG_PATH/ok.png] \

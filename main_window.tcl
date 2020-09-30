@@ -15,7 +15,7 @@ namespace eval main_window {
         make_widgets
         make_layout
         make_bindings
-        set_size_and_pos
+        read_options
         actions::on_new
         status_message "Click a tile to play…"
     }
@@ -79,7 +79,7 @@ namespace eval main_window {
     }
 
 
-    proc set_size_and_pos {} {
+    proc read_options {} {
         set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
         try {
             set section $const::BOARD
@@ -102,6 +102,13 @@ namespace eval main_window {
             if {$width != $invalid && $height != $invalid &&
                     $x != $invalid && $y != $invalid} {
                 wm geometry . "${width}x$height+$x+$y"
+            }
+            set scaling [::ini::value $ini $section $const::SCALING \
+                         [tk scaling]]
+            puts "ini=$scaling def=[tk scaling]"
+            if {[tk scaling] != $scaling} {
+                tk scaling $scaling
+                puts "updated"
             }
         } finally {
             ::ini::close $ini
