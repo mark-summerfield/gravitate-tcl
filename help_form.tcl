@@ -21,7 +21,7 @@ namespace eval help_form {
         tk::toplevel .help
         tk::text .help.text -width 50 -height 16 -wrap word \
             -background "#F0F0F0" -yscrollcommand { .help.vbar set } \
-            -font default -spacing3 6 -tabs 4c
+            -spacing3 6 -tabs 4c
         populate_help_text
         .help.text configure -state disabled
         ttk::scrollbar .help.vbar -command { .help.text yview }

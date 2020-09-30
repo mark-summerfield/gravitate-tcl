@@ -4,9 +4,8 @@ gravitate.tcl
 main_window.tcl
 about_form.tcl
 help_form.tcl
-options_form.tcl # TODO: columns rows maxColors delayMs fontSize
-		 # if user changes font try to propagate immediately
-actions.tcl # TODO options
+options_form.tcl
+actions.tcl # TODO on_new
 board.tcl # TODO
 util.tcl
 ui.tcl

@@ -16,7 +16,7 @@ namespace eval about_form {
     proc make_widgets {} {
         tk::toplevel .about
         tk::text .about.text -width 50 -height 11 -wrap word \
-            -background "#F0F0F0" -font default -spacing3 $const::VGAP
+            -background "#F0F0F0" -spacing3 $const::VGAP
         populate_about_text
         .about.text configure -state disabled
         ttk::button .about.ok_button -text OK -compound left \
