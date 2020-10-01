@@ -63,22 +63,17 @@ namespace eval board {
             ::ini::close $ini
         }
         set colors [get_colors $board::max_colors]
-        set tiles [lrepeat [expr {$board::rows * $board::columns}] \
-                   $const::INVALID]
+        set tiles [list]
         for {set x 0} {$x < $board::columns} {incr x} {
+            set row [list]
             for {set y 0} {$y < $board::rows} {incr y} {
                 set index [expr {int(rand() * $board::max_colors)}]
-                lset tiles [board::index_for_x_y $x $y] \
-                    [lindex $colors $index]
+                lappend row [lindex $colors $index]
             }
+            lappend tiles $row
         }
         announce_score
         draw
-    }
-
-
-    proc index_for_x_y {x y} {
-        return [expr {($y * $board::rows) + $x}]
     }
 
 
