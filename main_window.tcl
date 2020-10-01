@@ -8,7 +8,6 @@ package require tooltip
 
 namespace eval main_window {
 
-    variable score 0
     variable high_score 0
     variable status_timer_id {}
 
@@ -45,7 +44,7 @@ namespace eval main_window {
             -image [image create photo -file $::IMG_PATH/shutdown.png] \
             -command actions::on_quit
         tooltip::tooltip .main.toolbar.quit "Quit"
-        tk::canvas .main.board -background $const::BACKGROUND_COLOR
+        board::make
         ttk::frame .main.status_bar
         ttk::label .main.status_bar.label
         ttk::label .main.status_bar.score_label

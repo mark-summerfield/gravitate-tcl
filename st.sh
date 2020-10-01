@@ -12,5 +12,6 @@ nagelfar.tcl -H -tab 4 *.tcl \
     | grep -v Unknown.command.*tooltip::tooltip \
     | grep -v Unknown.command.*ttk::spinbox \
     | grep -v Unknown.command.*ui::* \
-    | grep -v Unknown.command.*util::*
+    | grep -v Unknown.command.*util::* \
+    | grep -v Unknown.variable.*const::.*
 git st
