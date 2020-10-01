@@ -44,7 +44,7 @@ namespace eval util {
             ::ini::set $ini $section $const::HIGH_SCORE \
                 $const::HIGH_SCORE_DEFAULT
             set section $const::WINDOW
-            set invalid $const::WINDOW_INVALID
+            set invalid $const::INVALID
             ::ini::set $ini $section $const::WINDOW_HEIGHT $invalid
             ::ini::set $ini $section $const::WINDOW_WIDTH $invalid
             ::ini::set $ini $section $const::WINDOW_X $invalid

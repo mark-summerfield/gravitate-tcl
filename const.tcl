@@ -8,6 +8,7 @@ namespace eval const {
     variable PAD 3
     variable VGAP 6
     variable BACKGROUND_COLOR "#FFFEE0"
+    variable INVALID -1
 
     variable BOARD Board
         variable COLUMNS columns
@@ -28,5 +29,15 @@ namespace eval const {
     variable MAX_COLORS_DEFAULT 4
     variable DELAY_MS_DEFAULT 200
     variable HIGH_SCORE_DEFAULT 0
-    variable WINDOW_INVALID -1
+
+    variable COLORS {
+        "#FF800000" "#FFF99999"
+        "#FF800000" "#FFF99999"
+        "#FF008000" "#FF99F999"
+        "#FF808000" "#FFF9F999"
+        "#FF000080" "#FF9999F9"
+        "#FF800080" "#FFF999F9"
+        "#FF008080" "#FF99F9F9"
+        "#FF808080" "#FFF9F9F9"
+    }
 }

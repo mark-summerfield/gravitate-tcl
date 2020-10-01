@@ -5,7 +5,7 @@
 namespace eval actions {
 
     proc on_new {} {
-        puts "on_new" ;# TODO
+        board::new_game
     }
 
 
