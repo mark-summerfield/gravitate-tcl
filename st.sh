@@ -9,6 +9,7 @@ nagelfar.tcl -H -tab 4 *.tcl \
     | grep -v Unknown.command.*_form::show.* \
     | grep -v Unknown.command.*main_window::* \
     | grep -v Unknown.command.*struct::set \
+    | grep -v Unknown.command.*tooltip::tooltip \
     | grep -v Unknown.command.*ttk::spinbox \
     | grep -v Unknown.command.*ui::* \
     | grep -v Unknown.command.*util::*

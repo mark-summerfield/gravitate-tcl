@@ -3,6 +3,7 @@
 
 package require inifile
 package require lambda
+package require tooltip
 
 
 namespace eval main_window {
@@ -27,18 +28,23 @@ namespace eval main_window {
         ttk::button .main.toolbar.new -text New -style Toolbutton \
             -image [image create photo -file $::IMG_PATH/new.png] \
             -command actions::on_new
+        tooltip::tooltip .main.toolbar.new "New game"
         ttk::button .main.toolbar.options -text Options -style Toolbutton \
             -image [image create photo -file $::IMG_PATH/options.png] \
             -command actions::on_options
+        tooltip::tooltip .main.toolbar.options "Options…"
         ttk::button .main.toolbar.about -text About -style Toolbutton \
             -image [image create photo -file $::IMG_PATH/about.png] \
             -command actions::on_about
+        tooltip::tooltip .main.toolbar.about "About"
         ttk::button .main.toolbar.help -text Help -style Toolbutton \
             -image [image create photo -file $::IMG_PATH/help.png] \
             -command actions::on_help
+        tooltip::tooltip .main.toolbar.help "Help"
         ttk::button .main.toolbar.quit -text Quit -style Toolbutton \
             -image [image create photo -file $::IMG_PATH/shutdown.png] \
             -command actions::on_quit
+        tooltip::tooltip .main.toolbar.quit "Quit"
         tk::canvas .main.board -background $const::BACKGROUND_COLOR
         ttk::frame .main.status_bar
         ttk::label .main.status_bar.label

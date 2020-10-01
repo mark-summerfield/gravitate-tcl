@@ -1,6 +1,9 @@
 #!/usr/bin/env wish
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
+package require tooltip
+
+
 namespace eval options_form {
 
     variable ok false
@@ -22,19 +25,31 @@ namespace eval options_form {
         tk::toplevel .options
 	ttk::label .options.columns_label -text Columns -underline 2
 	tk::spinbox .options.columns_spinbox -from 5 -to 30 -format %2.0f
+        tooltip::tooltip .options.columns_spinbox \
+            "Columns (default $const::COLUMNS_DEFAULT)"
 	ttk::label .options.rows_label -text Rows -underline 0
 	tk::spinbox .options.rows_spinbox -from 5 -to 30 -format %2.0f
+        tooltip::tooltip .options.rows_spinbox \
+            "Rows (default $const::ROWS_DEFAULT)"
 	ttk::label .options.max_colors_label -text "Max. Colors" \
 	    -underline 0
 	tk::spinbox .options.max_colors_spinbox -from 2 \
 	    -to [board::color_count] -format %2.0f
+        tooltip::tooltip .options.max_colors_spinbox \
+            "Max. Colors (default $const::MAX_COLORS_DEFAULT)"
 	ttk::label .options.delay_label -text "Delay (ms)" -underline 0
 	tk::spinbox .options.delay_spinbox -from 0 -to 1000 -format %4.0f \
             -increment 10
+        tooltip::tooltip .options.delay_spinbox \
+            "Delay to show tile movement (default\
+            $const::DELAY_MS_DEFAULT milliseconds)"
 	ttk::label .options.fontsize_label -text "Font Size (pt)" \
             -underline 0
 	tk::spinbox .options.fontsize_spinbox -from 8 -to 20 -format %2.0f \
             -command { ui::update_fonts %s }
+        tooltip::tooltip .options.fontsize_spinbox \
+            "Base Font Size (default\
+            [dict get [font actual TkDefaultFont] -size] points)"
 	ttk::frame .options.buttons
         ttk::button .options.buttons.ok_button -text OK -compound left \
             -image [image create photo -file $::IMG_PATH/ok.png] \
