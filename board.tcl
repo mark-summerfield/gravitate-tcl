@@ -63,18 +63,22 @@ namespace eval board {
             ::ini::close $ini
         }
         set colors [get_colors $board::max_colors]
-        set tiles {}
-        # TODO create an index_for_x_y function & use a 1D tiles list?
-        #for {set x 0} {$x < $board::columns} {incr x} {
-        #    lappend tiles [list]
-        #    for {set y 0} {$y < $board::rows} {incr y} {
-        #        set index [expr {int(rand() * $board::max_colors)}]
-        #        lappend [lindex $tiles $x] [lindex $colors $index]
-        #    }
-        #}
-        puts "colors=$colors"
-        puts "tiles=$tiles"
-        puts "new_game"
+        set tiles [lrepeat [expr {$board::rows * $board::columns}] \
+                   $const::INVALID]
+        for {set x 0} {$x < $board::columns} {incr x} {
+            for {set y 0} {$y < $board::rows} {incr y} {
+                set index [expr {int(rand() * $board::max_colors)}]
+                lset tiles [board::index_for_x_y $x $y] \
+                    [lindex $colors $index]
+            }
+        }
+        announce_score
+        draw
+    }
+
+
+    proc index_for_x_y {x y} {
+        return [expr {($y * $board::rows) + $x}]
     }
 
 
@@ -86,6 +90,11 @@ namespace eval board {
             ::struct::set include colors [lindex $all_colors $index]
         }
         return $colors
+    }
+
+
+    proc announce_score {} {
+        event generate .main.board <<Modified>> -data $board::score
     }
 
 

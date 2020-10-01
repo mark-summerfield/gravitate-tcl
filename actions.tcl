@@ -9,6 +9,13 @@ namespace eval actions {
     }
 
 
+    proc on_announce_score {score} {
+        .main.status_bar.score_label configure \
+            -text "[util::commas $score] •\
+            [util::commas $main_window::high_score]"
+    }
+
+
     proc on_options {} {
         if {[options_form::show_modal]} {
             main_window::status_message "Updated options. Click New…"

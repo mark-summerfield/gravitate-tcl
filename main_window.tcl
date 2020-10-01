@@ -81,6 +81,7 @@ namespace eval main_window {
         bind . <F1> { actions::on_help }
         bind . q { actions::on_quit }
         bind . <Escape> { actions::on_quit }
+        bind .main.board <<Modified>> { actions::on_announce_score %d }
     }
 
 
