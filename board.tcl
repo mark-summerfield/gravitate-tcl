@@ -31,10 +31,10 @@ namespace eval board {
 
     proc make_bindings {} {
         bind . <space> { board::on_space }
-        bind . <Up> [::lambda {} { board::on_move_key %k }]
-        bind . <Down> [::lambda {} { board::on_move_key %k }]
-        bind . <Left> [::lambda {} { board::on_move_key %k }]
-        bind . <Right> [::lambda {} { board::on_move_key %k }]
+        bind . <Up> [::lambda {} { board::on_move_key %K }]
+        bind . <Down> [::lambda {} { board::on_move_key %K }]
+        bind . <Left> [::lambda {} { board::on_move_key %K }]
+        bind . <Right> [::lambda {} { board::on_move_key %K }]
         bind .main.board <1> { board::on_click %x %y}
         bind .main.board <Configure> { board::on_configure %w %h}
     }
