@@ -9,10 +9,27 @@ namespace eval actions {
     }
 
 
-    proc on_announce_score {score} {
+    proc on_announce {data} {
+        set what [lindex $data 0]
+        if {$what == $const::SCORE_EVENT} {
+            actions::on_score [lindex $data 1]
+        } else {
+            actions::on_game_over {*}[lrange $data 1 2]
+        }
+    }
+
+
+    proc on_score {score} {
         .main.status_bar.score_label configure \
             -text "[util::commas $score] •\
-            [util::commas $main_window::high_score]"
+                   [util::commas $main_window::high_score]"
+    }
+
+
+    proc on_game_over {score outcome} {
+        puts "on_game_over score=$score outcome=$outcome"
+        # TODO
+        on_score $score
     }
 
 

@@ -85,7 +85,15 @@ namespace eval board {
 
 
     proc announce_score {} {
-        event generate .main.board <<Modified>> -data $board::score
+        event generate .main.board <<Modified>> \
+            -data [list $const::SCORE_EVENT $board::score]
+    }
+
+
+    proc announce_game_over {outcome} {
+        # outcome must be $const::USER_WON or $const::GAME_OVER
+        event generate .main.board <<Modified>> \
+            -data [list $const::GAME_OVER_EVENT $board::score $outcome]
     }
 
 

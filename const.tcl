@@ -5,10 +5,10 @@
 namespace eval const {
 
     variable VERSION 7.0.0
+    variable INVALID -1
     variable PAD 3
     variable VGAP 6
     variable BACKGROUND_COLOR "#FFFEE0"
-    variable INVALID -1
 
     variable BOARD Board
         variable COLUMNS columns
@@ -40,4 +40,9 @@ namespace eval const {
         "#FF008080" "#FF99F9F9"
         "#FF808080" "#FFF9F9F9"
     }
+
+    variable SCORE_EVENT score
+    variable GAME_OVER_EVENT gameover
+    variable USER_WON won
+    variable GAME_OVER over
 }
