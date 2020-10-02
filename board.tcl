@@ -2,7 +2,7 @@
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
 package require lambda
-package require struct::set
+package require struct::list
 
 
 namespace eval board {
@@ -62,10 +62,10 @@ namespace eval board {
         } finally {
             ::ini::close $ini
         }
-        set colors [get_colors $board::max_colors]
-        set tiles [list]
+        set colors [get_colors]
+        set tiles {}
         for {set x 0} {$x < $board::columns} {incr x} {
-            set row [list]
+            set row {}
             for {set y 0} {$y < $board::rows} {incr y} {
                 set index [expr {int(rand() * $board::max_colors)}]
                 lappend row [lindex $colors $index]
@@ -77,14 +77,10 @@ namespace eval board {
     }
 
 
-    proc get_colors {max_colors} {
+    proc get_colors {} {
         set all_colors [dict keys $const::COLORS]
-        set colors {}
-        while {[::struct::set size $colors] < $max_colors} {
-            set index [expr {int(rand() * [llength $all_colors])}]
-            ::struct::set include colors [lindex $all_colors $index]
-        }
-        return $colors
+        set colors [struct::list shuffle [lrange $all_colors 0 end]]
+        return [lrange $colors 0 [expr {$board::max_colors - 1}]]
     }
 
 
