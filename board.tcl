@@ -166,7 +166,7 @@ namespace eval board {
             after $delay_ms draw
             return
         }
-        draw_canvas
+        draw_board
         # do I need force or update at all?
         if {$force} {
             update idletasks
@@ -196,7 +196,7 @@ namespace eval board {
     }
 
 
-    proc draw_canvas {} {
-        puts "draw_canvas"
+    proc draw_board {} {
+        puts "draw_board"
     }
 }
