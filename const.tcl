@@ -42,8 +42,6 @@ namespace eval const {
     }
     variable INVALID_COLOR ""
 
-    variable SCORE_EVENT score
-    variable GAME_OVER_EVENT gameover
     variable USER_WON won
     variable GAME_OVER over
 }

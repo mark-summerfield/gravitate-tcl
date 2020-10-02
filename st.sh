@@ -3,6 +3,7 @@ tokei -f -c80 -tTcl -slines
 nagelfar.tcl -H -tab 4 *.tcl \
     | grep -v '^[ \t]\+Argument' \
     | grep -v Found.constant.. \
+    | grep -v Wrong.number.of.arguments.*to..actions::on_game_over \
     | grep -v Wrong.number.of.arguments.*to..ini::open \
     | grep -v board.tcl.*Unknown.variable.*width \
     | grep -v board.tcl.*Unknown.variable.*height \
