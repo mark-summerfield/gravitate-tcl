@@ -4,6 +4,8 @@ nagelfar.tcl -H -tab 4 *.tcl \
     | grep -v '^[ \t]\+Argument' \
     | grep -v Found.constant.. \
     | grep -v Wrong.number.of.arguments.*to..ini::open \
+    | grep -v board.tcl.*Unknown.variable.*width \
+    | grep -v board.tcl.*Unknown.variable.*height \
     | grep -v Unknown.command.*::ini:: \
     | grep -v Unknown.command.*::lambda \
     | grep -v Unknown.command.*_form::show.* \

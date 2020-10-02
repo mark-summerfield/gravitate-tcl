@@ -65,14 +65,14 @@ namespace eval board {
             ::ini::close $ini
         }
         set colors [get_colors]
-        set tiles {}
+        set board::tiles {}
         for {set x 0} {$x < $board::columns} {incr x} {
             set row {}
             for {set y 0} {$y < $board::rows} {incr y} {
                 set index [expr {int(rand() * $board::max_colors)}]
                 lappend row [lindex $colors $index]
             }
-            lappend tiles $row
+            lappend board::tiles $row
         }
         announce_score
         draw
@@ -114,9 +114,26 @@ namespace eval board {
         if {![is_selected_valid]} {
             set board::selectedx [expr {$board::columns / 2}]
             set board::selectedy [expr {$board::rows / 2}]
+        } else {
+            set x $board::selectedx
+            set y $board::selectedy
+            if {$key eq "Left"} {
+                incr x -1
+            } elseif {$key eq "Right"} {
+                incr x
+            } elseif {$key eq "Up"} {
+                incr y -1
+            } elseif {$key eq "Down"} {
+                incr y
+            }
+            if {0 <= $x && $x <= $board::columns &&
+                    0 <= $y && $y <= $board::rows &&
+                    [lindex $board::tiles $x $y] ne $const::INVALID_COLOR} {
+                set board::selectedx $x
+                set board::selectedy $y
+            }
         }
-        # TODO
-        puts "on_move_key $key selected=($board::selectedx,$board::selectedy)"
+        draw
     }
 
 
@@ -124,7 +141,15 @@ namespace eval board {
         if {$board::game_over || $board::drawing} {
             return
         }
-        puts "on_click ($x, $y)"
+        tile_size_ width height
+        set x [expr {int($x / round($width))}]
+        set y [expr {int($y / round($height))}]
+        if {[is_selected_valid]} {
+            set board::selectedx $const::INVALID
+            set board::selectedy $const::INVALID
+            draw
+        }
+        board::delete_tile $x $y
     }
 
 
@@ -139,7 +164,11 @@ namespace eval board {
     proc draw {{delay_ms 0} {force false}} {
         if {$delay_ms > 0} {
             after $delay_ms draw
-        } elseif {$force} {
+            return
+        }
+        draw_canvas
+        # do I need force or update at all?
+        if {$force} {
             update idletasks
         } else {
             update
@@ -147,12 +176,12 @@ namespace eval board {
     }
 
 
-    proc tile_size {} {
+    proc tile_size_ {width_ height_} {
+        upvar 1 $width_ width $height_ height
         set width [expr {[winfo width .main.board] / \
                          double($board::columns)}]
         set height [expr {[winfo height .main.board] / \
                           double($board::rows)}]
-        return [list $width $height]
     }
 
     
@@ -164,5 +193,10 @@ namespace eval board {
 
     proc delete_tile {x y} {
         puts "delete_tile ($x,$y)" 
+    }
+
+
+    proc draw_canvas {} {
+        puts "draw_canvas"
     }
 }

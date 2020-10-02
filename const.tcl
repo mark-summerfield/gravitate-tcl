@@ -40,6 +40,7 @@ namespace eval const {
         "#FF008080" "#FF99F9F9"
         "#FF808080" "#FFF9F9F9"
     }
+    variable INVALID_COLOR ""
 
     variable SCORE_EVENT score
     variable GAME_OVER_EVENT gameover
