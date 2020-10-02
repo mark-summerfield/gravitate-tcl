@@ -14,7 +14,8 @@ namespace eval board {
     variable rows $const::ROWS_DEFAULT
     variable max_colors $const::MAX_COLORS_DEFAULT
     variable delay_ms $const::DELAY_MS_DEFAULT
-    variable selected {$const::INVALID $const::INVALID}
+    variable selectedx $const::INVALID
+    variable selectedy $const::INVALID
     variable tiles {}
     variable drawing false
     # TODO a dict with keys size,color1,color2 and values tk images
@@ -47,7 +48,8 @@ namespace eval board {
         set board::game_over false
         set board::user_won false
         set board::score 0
-        set board::selected {$const::INVALID $const::INVALID}
+        set board::selectedx $const::INVALID
+        set board::selectedy $const::INVALID
         set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
         try {
             set section $const::BOARD
@@ -98,16 +100,30 @@ namespace eval board {
 
 
     proc on_space {} {
-        puts "on_space"
+        if {$board::game_over || $board::drawing || ![is_selected_valid]} {
+            return
+        }
+        board::delete_tile $board::selectedx $board::selectedy
     }
 
 
     proc on_move_key {key} {
-        puts "on_move_key $key"
+        if {$board::game_over || $board::drawing} {
+            return
+        }
+        if {![is_selected_valid]} {
+            set board::selectedx [expr {$board::columns / 2}]
+            set board::selectedy [expr {$board::rows / 2}]
+        }
+        # TODO
+        puts "on_move_key $key selected=($board::selectedx,$board::selectedy)"
     }
 
 
     proc on_click {x y} {
+        if {$board::game_over || $board::drawing} {
+            return
+        }
         puts "on_click ($x, $y)"
     }
 
@@ -120,7 +136,33 @@ namespace eval board {
     }
 
 
-    proc draw {} {
-        puts "draw"
+    proc draw {{delay_ms 0} {force false}} {
+        if {$delay_ms > 0} {
+            after $delay_ms draw
+        } elseif {$force} {
+            update idletasks
+        } else {
+            update
+        }
+    }
+
+
+    proc tile_size {} {
+        set width [expr {[winfo width .main.board] / \
+                         double($board::columns)}]
+        set height [expr {[winfo height .main.board] / \
+                          double($board::rows)}]
+        return [list $width $height]
+    }
+
+    
+    proc is_selected_valid {} {
+        return [expr {$board::selectedx != $const::INVALID &&
+                      $board::selectedy != $const::INVALID}]
+    }
+
+
+    proc delete_tile {x y} {
+        puts "delete_tile ($x,$y)" 
     }
 }
