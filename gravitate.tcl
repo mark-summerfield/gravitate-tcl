@@ -1,6 +1,10 @@
 #!/usr/bin/env wish
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
+if {[llength $argv] > 0 && [tk windowingsystem] eq "win32" &&
+	[lindex $argv 0] in {-D --debug} } {
+    console show 
+}
 if {[info exists ::freewrap::runMode] &&
         $::freewrap::runMode eq "wrappedExec"} {
     set ::APP_PATH /zvfs/home/mark/app/gravitate/tcl
