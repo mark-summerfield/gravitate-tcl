@@ -47,6 +47,8 @@ namespace eval ui {
         set family [dict get $the_font -family]
         set size [dict get $the_font -size]
         set h1 [expr {int(ceil($size * 1.2))}]
+        set big [expr {int(ceil($size * 2.5))}]
+        font create big -family $family -size $big -weight bold
         font create h1 -family $family -size $h1 -weight bold
         font create default -family $family -size $size
         font create bold -family $family -size $size -weight bold

@@ -209,7 +209,9 @@ namespace eval board {
                 board::draw_tile $x $y $width $height $edge $edge2
             }
         }
-        # TODO if user won or game over draw game over text on top
+        if {$board::user_won || $board::game_over} {
+            board::draw_game_over
+        }
         set $board::drawing false
     }
 
@@ -227,6 +229,9 @@ namespace eval board {
             board::get_color_pair_ $color $board::game_over light dark
             # TODO segments + gradient filled center rect
             .main.board create rectangle $x1 $y1 $x2 $y2 -fill $light
+            if {$x == $board::selectedx && $y == $board::selectedy} {
+                board::draw_focus $x1 $y1 $x2 $y2 $edge
+            }
         }
     }
 
@@ -244,5 +249,25 @@ namespace eval board {
                 # TODO make dim
             }
         }
+    }
+
+
+    proc draw_game_over {} {
+        set msg [expr {$board::user_won ? "You Won!" : "Game Over"}]
+        set color [expr {$board::user_won ? "#0000BB" : "#009900"}]
+        set x [expr {[winfo width .main.board] / 2}]
+        set y [expr {[winfo height .main.board] / 2}]
+        .main.board create text $x $y -font big -justify center \
+            -fill $color -text $msg
+    }
+
+
+    proc draw_focus {x1 y1 x2 y2 edge} {
+        set edge [expr {$edge * 4 / 3.0 }]
+        set x1 [expr {$x1 + $edge}]
+        set y1 [expr {$y1 + $edge}]
+        set x2 [expr {$x2 - $edge}]
+        set y2 [expr {$y2 - $edge}]
+        .main.board create rectangle $x1 $y1 $x2 $y2 -dash -
     }
 }
