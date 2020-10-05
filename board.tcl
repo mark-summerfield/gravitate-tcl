@@ -224,7 +224,7 @@ namespace eval board {
         set color [lindex $board::tiles $x $y]
         if {$color eq $const::INVALID_COLOR} {
             .main.board create rectangle $x1 $y1 $x2 $y2 \
-                -fill $const::BACKGROUND_COLOR
+                -fill $const::BACKGROUND_COLOR -outline white
         } else {
             board::get_color_pair_ $color $board::game_over light dark
             # TODO segments + gradient filled center rect
