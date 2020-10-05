@@ -196,6 +196,53 @@ namespace eval board {
 
 
     proc draw_board {} {
-        puts "draw_board"
+        if {![llength $board::tiles] || $board::drawing} {
+            return
+        }
+        set $board::drawing true
+        .main.board delete all
+        tile_size_ width height
+        set edge [expr {min($width, $height) / 9.0}]
+        set edge2 [expr {$edge * 2.0}]
+        for {set x 0} {$x < $board::columns} {incr x} {
+            for {set y 0} {$y < $board::rows} {incr y} {
+                board::draw_tile $x $y $width $height $edge $edge2
+            }
+        }
+        # TODO if user won or game over draw game over text on top
+        set $board::drawing false
+    }
+
+
+    proc draw_tile {x y width height edge edge2} {
+        set x1 [expr {$x * $width}]
+        set y1 [expr {$y * $height}]
+        set x2 [expr {$x1 + $width}]
+        set y2 [expr {$y1 + $height}]
+        set color [lindex $board::tiles $x $y]
+        if {$color eq $const::INVALID_COLOR} {
+            .main.board create rectangle $x1 $y1 $x2 $y2 \
+                -fill $const::BACKGROUND_COLOR
+        } else {
+            board::get_color_pair_ $color $board::game_over light dark
+            # TODO segments + gradient filled center rect
+            .main.board create rectangle $x1 $y1 $x2 $y2 -fill $light
+        }
+    }
+
+
+    proc get_color_pair_ {color game_over light_ dark_} {
+        upvar 1 $light_ light $dark_ dark
+        if {![dict exists $const::COLORS $color]} {
+            # Not found ∴ dimmed
+            set light $color
+            set dark $color ;# TODO darken
+        } else {
+            set light [dict get $const::COLORS $color]
+            set dark $color
+            if {$game_over} {
+                # TODO make dim
+            }
+        }
     }
 }
