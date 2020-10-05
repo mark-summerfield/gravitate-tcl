@@ -228,7 +228,8 @@ namespace eval board {
         } else {
             board::get_color_pair_ $color $board::game_over light dark
             # TODO segments + gradient filled center rect
-            .main.board create rectangle $x1 $y1 $x2 $y2 -fill $light
+            .main.board create rectangle $x1 $y1 $x2 $y2 -fill $light \
+                -outline $const::BACKGROUND_COLOR
             if {$x == $board::selectedx && $y == $board::selectedy} {
                 board::draw_focus $x1 $y1 $x2 $y2 $edge
             }
