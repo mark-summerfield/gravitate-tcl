@@ -19,8 +19,6 @@ namespace eval board {
     variable selectedy $const::INVALID
     variable tiles {}
     variable drawing false
-    # TODO a dict with keys size,color1,color2 and values tk images
-    variable cache
     variable PAUSE_MS 5
 
 

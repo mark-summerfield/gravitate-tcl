@@ -47,8 +47,8 @@ namespace eval ui {
         set family [dict get $the_font -family]
         set size [dict get $the_font -size]
         set h1 [expr {int(ceil($size * 1.2))}]
-        set big [expr {int(ceil($size * 2.5))}]
-        font create big -family $family -size $big -weight bold
+        set big [expr {int(ceil($size * 3.5))}]
+        font create big -family Times -size $big -weight bold
         font create h1 -family $family -size $h1 -weight bold
         font create default -family $family -size $size
         font create bold -family $family -size $size -weight bold
@@ -64,24 +64,13 @@ namespace eval ui {
     }
 
 
-    # Copy of Tcl/Tk's palette.tcl's ::tk::Darken
-    # percent < 100 darken (0 = darkest); percent > 100 brighten
+    # Modified copy of Tcl/Tk's palette.tcl's ::tk::Darken
+    # percent < 100 darken (1 = darkest); percent > 100 brighten
     proc adjusted_color {color percent} {
-        foreach {red green blue} [winfo rgb . $color] {
-            set red [expr {($red / 256) * $percent / 100}]
-            set green [expr {($green / 256) * $percent / 100}]
-            set blue [expr {($blue / 256) * $percent / 100}]
-            break
-        }
-        if {$red > 255} {
-            set red 255
-        }
-        if {$green > 255} {
-            set green 255
-        }
-        if {$blue > 255} {
-            set blue 255
-        }
-        return [format "#%02X%02X%02X" $red $green $blue]
+        lassign [winfo rgb . $color] r g b
+        set r [expr {min(255, ($r / 256) * $percent / 100)}]
+        set g [expr {min(255, ($g / 256) * $percent / 100)}]
+        set b [expr {min(255, ($b / 256) * $percent / 100)}]
+        return [format "#%02X%02X%02X" $r $g $b]
     }
 }
