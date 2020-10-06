@@ -21,6 +21,7 @@ namespace eval board {
     variable drawing false
     # TODO a dict with keys size,color1,color2 and values tk images
     variable cache
+    variable PAUSE_MS 5
 
 
     proc color_count {} {
@@ -82,7 +83,7 @@ namespace eval board {
 
     proc get_colors {} {
         set all_colors [dict keys $const::COLORS]
-        set colors [struct::list shuffle [lrange $all_colors 0 end]]
+        set colors [struct::list shuffle $all_colors]
         return [lrange $colors 0 [expr {$board::max_colors - 1}]]
     }
 
@@ -309,10 +310,10 @@ namespace eval board {
             set color [ui::adjusted_color [lindex $board::tiles $x $y] 95]
             lset board::tiles $x $y $color
         }
-        draw 5
+        draw $board::PAUSE_MS
         set callback [::lambda {adjoining} \
             {board::delete_adjoining $adjoining} $adjoining]
-        after [expr {5 + $board::delay_ms}] $callback
+        after [expr {$board::PAUSE_MS + $board::delay_ms}] $callback
     }
 
 
@@ -338,6 +339,72 @@ namespace eval board {
 
 
     proc delete_adjoining {adjoining} {
-        puts "delete_adjoining=$adjoining" ;# TODO
+        foreach point $adjoining {
+            set x [lindex $point 0]
+            set y [lindex $point 1]
+            lset board::tiles $x $y $const::INVALID_COLOR
+        }
+        draw $board::PAUSE_MS
+        set size [::struct::set size $adjoining]
+        set callback [::lambda {size} {board::close_tiles_up $size} $size]
+        after [expr {$board::PAUSE_MS + $board::delay_ms}] $callback
+    }
+
+
+    proc close_tiles_up {size} {
+        move_tiles
+        if {[is_selected_valid] && \
+                [lindex $board::tiles $board::selectedx $board::selectedy] \
+                eq $const::INVALID_COLOR} {
+            set board::selectedx [expr {$board::columns / 2}]
+            set board::selectedy [expr {$board::rows / 2}]
+        }
+        draw
+        incr board::score [expr {int(round(sqrt(double($board::columns) *
+                                     $board::rows)) +
+                                     pow($size, $board::max_colors / 2))}]
+        announce_score
+        check_game_over
+    }
+
+
+    proc move_tiles {} {
+        set moves {}
+        set moved true
+        while {$moved} {
+            set moved false
+            foreach x [shuffled_numbers $board::columns] {
+                foreach y [shuffled_numbers $board::rows] {
+                    if {[lindex $board::tiles $x $y] ne 
+                            $const::INVALID_COLOR } {
+                        if {[move_is_possible_ $x $y moves]} {
+                            set moved true
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    proc shuffled_numbers {count} {
+        set numbers {}
+        for {set i 0} {$i < $count} {incr i} {
+            lappend numbers $i
+        }
+        return [struct::list shuffle $numbers]
+    }
+
+
+    proc move_is_possible_ {x y moves_} {
+        upvar 1 $moves_ moves
+        puts "move_is_possible_ ($x,$y) $moves" ;# TODO
+        return false ;# TODO
+    }
+
+
+    proc check_game_over {} {
+        puts "check_game_over" ;# TODO
     }
 }
