@@ -3,6 +3,7 @@
 
 package require lambda
 package require struct::list
+package require struct::set
 
 
 namespace eval board {
@@ -18,6 +19,7 @@ namespace eval board {
     variable selectedy $const::INVALID
     variable tiles {}
     variable drawing false
+    variable adjoining {}
     # TODO a dict with keys size,color1,color2 and values tk images
     variable cache
 
@@ -190,11 +192,6 @@ namespace eval board {
     }
 
 
-    proc delete_tile {x y} {
-        puts "delete_tile ($x,$y)" 
-    }
-
-
     proc draw_board {} {
         if {![llength $board::tiles] || $board::drawing} {
             return
@@ -270,5 +267,68 @@ namespace eval board {
         set x2 [expr {$x2 - $edge}]
         set y2 [expr {$y2 - $edge}]
         .main.board create rectangle $x1 $y1 $x2 $y2 -dash -
+    }
+
+
+    proc delete_tile {x y} {
+        set color [lindex $board::tiles $x $y]
+        if {$color eq $const::INVALID_COLOR ||
+                ![board::is_legal $x $y $color]} {
+            return
+        }
+        board::dim_adjoining $x $y $color
+    }
+
+
+    proc is_legal {x y color} {
+        # A legal click is on a colored tile that is adjacent to another
+        # tile of the same color.
+        if {$x > 0 && [lindex $board::tiles [expr {$x - 1}] $y] eq $color} {
+            return true
+        }
+        if {$x + 1 < $board::columns && 
+                [lindex $board::tiles [expr {$x + 1}] $y] eq $color} {
+            return true
+        }
+        if {$y > 0 && [lindex $board::tiles $x [expr {$y - 1}]] eq $color} {
+            return true
+        }
+        if {$y + 1 < $board::rows &&
+                [lindex $board::tiles $x [expr {$y + 1}]] eq $color} {
+            return true
+        }
+        return false
+    }
+
+
+    proc dim_adjoining {x y color} {
+        set board::adjoining {}
+        puts "before populate_adjoining ($x,$y) $color" 
+        populate_adjoining $x $y $color
+        puts "after adjoining=$board::adjoining"
+        # TODO
+        puts "dim_adjoining ($x,$y) $color" 
+    }
+
+
+    proc populate_adjoining {x y color} {
+        if {$x < 0 || $x >= $board::columns || $y < 0 ||
+                $y >= $board::rows} {
+            return ;# Fallen off an edge
+        }
+        if {[lindex $board::tiles $x $y] ne $color} {
+            return ;# Color doesn't match
+        }
+        set point [list $x $y]
+        puts "populate_adjoining ($x,$y) $color $point <$board::adjoining>
+in=[::struct::set contains $board::adjoining $point]"
+        if {[::struct::set contains $board::adjoining $point]} {
+            return ;# Already done
+        }
+        ::struct::set include board::adjoining $point
+        board::populate_adjoining [expr {$x - 1}] $y $color
+        board::populate_adjoining [expr {$x + 1}] $y $color
+        board::populate_adjoining $x [expr {$y - 1}] $color
+        board::populate_adjoining $x [expr {$y + 1}] $color
     }
 }
