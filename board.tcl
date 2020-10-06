@@ -19,7 +19,6 @@ namespace eval board {
     variable selectedy $const::INVALID
     variable tiles {}
     variable drawing false
-    variable adjoining {}
     # TODO a dict with keys size,color1,color2 and values tk images
     variable cache
 
@@ -104,7 +103,7 @@ namespace eval board {
         if {$board::game_over || $board::drawing || ![is_selected_valid]} {
             return
         }
-        board::delete_tile $board::selectedx $board::selectedy
+        delete_tile $board::selectedx $board::selectedy
     }
 
 
@@ -150,7 +149,7 @@ namespace eval board {
             set board::selectedy $const::INVALID
             draw
         }
-        board::delete_tile $x $y
+        delete_tile $x $y
     }
 
 
@@ -164,7 +163,7 @@ namespace eval board {
 
     proc draw {{delay_ms 0} {force false}} {
         if {$delay_ms > 0} {
-            after $delay_ms draw
+            after $delay_ms board::draw
             return
         }
         draw_board
@@ -203,11 +202,11 @@ namespace eval board {
         set edge2 [expr {$edge * 2.0}]
         for {set x 0} {$x < $board::columns} {incr x} {
             for {set y 0} {$y < $board::rows} {incr y} {
-                board::draw_tile $x $y $width $height $edge $edge2
+                draw_tile $x $y $width $height $edge $edge2
             }
         }
         if {$board::user_won || $board::game_over} {
-            board::draw_game_over
+            draw_game_over
         }
         set $board::drawing false
     }
@@ -223,12 +222,12 @@ namespace eval board {
             .main.board create rectangle $x1 $y1 $x2 $y2 \
                 -fill $const::BACKGROUND_COLOR -outline white
         } else {
-            board::get_color_pair_ $color $board::game_over light dark
+            get_color_pair_ $color $board::game_over light dark
             # TODO segments + gradient filled center rect
             .main.board create rectangle $x1 $y1 $x2 $y2 -fill $light \
                 -outline $const::BACKGROUND_COLOR
             if {$x == $board::selectedx && $y == $board::selectedy} {
-                board::draw_focus $x1 $y1 $x2 $y2 $edge
+                draw_focus $x1 $y1 $x2 $y2 $edge
             }
         }
     }
@@ -239,12 +238,13 @@ namespace eval board {
         if {![dict exists $const::COLORS $color]} {
             # Not found ∴ dimmed
             set light $color
-            set dark $color ;# TODO darken
+            set dark [ui::adjusted_color $color 50] ;# darken by 50%
         } else {
             set light [dict get $const::COLORS $color]
             set dark $color
             if {$game_over} {
-                # TODO make dim
+                set light [ui::adjusted_color $light 67] ;# darken by 67%
+                set dark [ui::adjusted_color $dark 67] ;# darken by 67%
             }
         }
     }
@@ -272,11 +272,10 @@ namespace eval board {
 
     proc delete_tile {x y} {
         set color [lindex $board::tiles $x $y]
-        if {$color eq $const::INVALID_COLOR ||
-                ![board::is_legal $x $y $color]} {
+        if {$color eq $const::INVALID_COLOR || ![is_legal $x $y $color]} {
             return
         }
-        board::dim_adjoining $x $y $color
+        dim_adjoining $x $y $color
     }
 
 
@@ -302,16 +301,23 @@ namespace eval board {
 
 
     proc dim_adjoining {x y color} {
-        set board::adjoining {}
-        puts "before populate_adjoining ($x,$y) $color" 
-        populate_adjoining $x $y $color
-        puts "after adjoining=$board::adjoining"
-        # TODO
-        puts "dim_adjoining ($x,$y) $color" 
+        set adjoining {}
+        populate_adjoining_ $x $y $color adjoining
+        foreach point $adjoining {
+            set x [lindex $point 0]
+            set y [lindex $point 1]
+            set color [ui::adjusted_color [lindex $board::tiles $x $y] 95]
+            lset board::tiles $x $y $color
+        }
+        draw 5
+        set callback [::lambda {adjoining} \
+            {board::delete_adjoining $adjoining} $adjoining]
+        after [expr {5 + $board::delay_ms}] $callback
     }
 
 
-    proc populate_adjoining {x y color} {
+    proc populate_adjoining_ {x y color adjoining_} {
+        upvar 1 $adjoining_ adjoining
         if {$x < 0 || $x >= $board::columns || $y < 0 ||
                 $y >= $board::rows} {
             return ;# Fallen off an edge
@@ -320,15 +326,18 @@ namespace eval board {
             return ;# Color doesn't match
         }
         set point [list $x $y]
-        puts "populate_adjoining ($x,$y) $color $point <$board::adjoining>
-in=[::struct::set contains $board::adjoining $point]"
-        if {[::struct::set contains $board::adjoining $point]} {
+        if {[::struct::set contains $adjoining $point]} {
             return ;# Already done
         }
-        ::struct::set include board::adjoining $point
-        board::populate_adjoining [expr {$x - 1}] $y $color
-        board::populate_adjoining [expr {$x + 1}] $y $color
-        board::populate_adjoining $x [expr {$y - 1}] $color
-        board::populate_adjoining $x [expr {$y + 1}] $color
+        ::struct::set include adjoining $point
+        populate_adjoining_ [expr {$x - 1}] $y $color adjoining
+        populate_adjoining_ [expr {$x + 1}] $y $color adjoining
+        populate_adjoining_ $x [expr {$y - 1}] $color adjoining
+        populate_adjoining_ $x [expr {$y + 1}] $color adjoining
+    }
+
+
+    proc delete_adjoining {adjoining} {
+        puts "delete_adjoining=$adjoining" ;# TODO
     }
 }
