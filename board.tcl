@@ -408,9 +408,25 @@ namespace eval board {
         set empties [get_empty_neighbours $x $y]
         if {![::struct::set empty $empties]} {
             nearest_to_middle_ $x $y $empties move nx ny
-            puts "move=$move ($x,$y)→($nx,$ny)"
+            set new_point [list $nx $ny]
+            if {[dict exists $moves $new_point]} {
+                lassign [dict get $moves $new_point] vx vy
+                if {$vx == $x && $vy == $y} {
+                    return false ;# avoid endless loop
+                }
+            }
+            if {$move} {
+                set color [lindex $board::tiles $x $y]
+                lset board::tiles $nx $ny $color
+                lset board::tiles $x $y $const::INVALID_COLOR
+                set delay [expr {max(1, int(round($board::delay_ms / 7)))}]
+                draw $delay true
+                set point [list $x $y]
+                dict set moves $point $new_point
+                return true
+            }
         }
-        return false ;# TODO
+        return false
     }
 
 
