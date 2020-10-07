@@ -79,14 +79,14 @@ namespace eval about_form {
         .about.text insert end "Copyright © $year Mark Summerfield.\
                                 \nAll Rights Reserved.\n" {center green}
         .about.text insert end "License: GPLv3.\n" {center green}
-	.about.text insert end "[string repeat " " 60]\n" {center hr}
+        .about.text insert end "[string repeat " " 60]\n" {center hr}
         .about.text insert end "Tcl v$::tcl_patchLevel ${bits}-bit on\
             $::tcl_platform(os) $::tcl_platform(osVersion)\
             $::tcl_platform(machine).\n" center
-	if {[info exists ::freewrap::runMode] &&
-		$::freewrap::runMode eq "wrappedExec"} {
-	    .about.text insert end "freeWrap $::freewrap::patchLevel\n" \
-		center
-	}
+        if {[info exists ::freewrap::runMode] &&
+                $::freewrap::runMode eq "wrappedExec"} {
+            .about.text insert end "freeWrap $::freewrap::patchLevel\n" \
+                center
+        }
     }
 }

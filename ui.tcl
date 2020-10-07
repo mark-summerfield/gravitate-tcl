@@ -26,10 +26,10 @@ namespace eval ui {
 
 
     proc add_text_tags {widget} {
-	set margin 12
+        set margin 12
         $widget tag configure spaceabove -spacing1 [expr {$const::VGAP * 2}]
         $widget tag configure margins -lmargin1 $margin -lmargin2 \
-	    $margin -rmargin $margin
+            $margin -rmargin $margin
         $widget tag configure center -justify center
         $widget tag configure title -foreground navy -font h1
         $widget tag configure navy -foreground navy
@@ -38,7 +38,7 @@ namespace eval ui {
         $widget tag configure italic -font italic
         $widget tag configure url -underline true -underlinefg darkgreen
         $widget tag configure hr -overstrike true -overstrikefg lightgray \
-	    -spacing3 10
+            -spacing3 10
     }
 
 
@@ -57,6 +57,7 @@ namespace eval ui {
 
 
     proc update_fonts {size} {
+        font configure big -size [expr {int(ceil($size * 3.5))}]
         font configure h1 -size [expr {int(ceil($size * 1.2))}]
         font configure default -size $size
         font configure bold -size $size

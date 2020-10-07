@@ -310,9 +310,9 @@ namespace eval board {
             lset board::tiles $x $y $color
         }
         draw [expr {max(5, $board::delay_ms / 10)}]
-        set callback [::lambda {adjoining} \
+        set do_delete_adjoining [::lambda {adjoining} \
             {board::delete_adjoining $adjoining} $adjoining]
-        after $board::delay_ms $callback
+        after $board::delay_ms $do_delete_adjoining
     }
 
 
@@ -344,8 +344,9 @@ namespace eval board {
         }
         draw [expr {max(5, $board::delay_ms / 10)}]
         set size [::struct::set size $adjoining]
-        set callback [::lambda {size} {board::close_tiles_up $size} $size]
-        after $board::delay_ms $callback
+        set do_close_tiles_up [::lambda {size} \
+            {board::close_tiles_up $size} $size]
+        after $board::delay_ms $do_close_tiles_up
     }
 
 
@@ -358,9 +359,9 @@ namespace eval board {
             set board::selectedy [expr {$board::rows / 2}]
         }
         draw
-        incr board::score [expr {int(round(sqrt(double($board::columns) *
-                                     $board::rows)) +
-                                     pow($size, $board::max_colors / 2))}]
+        incr board::score [
+            expr {int(round(sqrt(double($board::columns) * $board::rows)) +
+                  pow($size, $board::max_colors / 2))}]
         announce_score
         check_game_over
     }
@@ -404,7 +405,7 @@ namespace eval board {
             if {[dict exists $moves $new_point]} {
                 lassign [dict get $moves $new_point] vx vy
                 if {$vx == $x && $vy == $y} {
-                    return false ;# avoid endless loop
+                    return false ;# Avoid endless loop
                 }
             }
             if {$move} {
@@ -505,7 +506,8 @@ namespace eval board {
         if {$board::user_won} {
             announce_game_over $const::USER_WON
         } elseif {!$can_move} {
-            announce_game_over $const::GAME_OVER}
+            announce_game_over $const::GAME_OVER
+        }
     }
 
 

@@ -59,48 +59,48 @@ namespace eval help_form {
         .help.text insert end "Gravitate\n" {center title spaceabove}
         .help.text insert end "The purpose of the game is to\
                                remove all the tiles.\n" {center navy}
-	.help.text insert end "Click a tile that has at least one\
-	    vertically or horizontally adjoining tile of the same color\
-	    to remove it and any vertically or horizontally adjoining\
-	    tiles of the same color, and "
-	.help.text insert end their italic
-	.help.text insert end " vertically or horizontally adjoining\
-			       tiles, and so on."
-	.help.text insert end " (So clicking a tile with no adjoining\
-			       tiles of the same color does nothing.) " \
-			       italic
-	.help.text insert end "The more tiles that are removed in one\
-			       go, the higher the score.\n"
-	.help.text insert end "Gravitate works like TileFall and the\
-	    SameGame except that instead of tiles falling to the bottom\
-	    and moving off to the left, they “gravitate” to the\
-	    middle.\n"
-	.help.text insert end "[string repeat " " 60]\n" {center hr}
-	.help.text insert end "Key\tAction\n" green
-	.help.text insert end "a\t" bold
-	.help.text insert end "Show About box\n"
-	.help.text insert end "h" bold
-	.help.text insert end " or "
-	.help.text insert end "F1\t" bold
-	.help.text insert end "Show Help (this window)\n"
-	.help.text insert end "n\t" bold
-	.help.text insert end "New game\n"
-	.help.text insert end "o\t" bold
-	.help.text insert end "View or edit options\n"
-	.help.text insert end "q" bold
-	.help.text insert end " or "
-	.help.text insert end "Esc\t" bold
-	.help.text insert end "Quit\n"
-	.help.text insert end "←\t" bold
-	.help.text insert end "Move focus left\n"
-	.help.text insert end "→\t" bold
-	.help.text insert end "Move focus right\n"
-	.help.text insert end "↑\t" bold
-	.help.text insert end "Move focus up\n"
-	.help.text insert end "↓\t" bold
-	.help.text insert end "Move focus down\n"
-	.help.text insert end "Space\t" bold
-	.help.text insert end "Click focused tile\n"
-	.help.text tag add margins 1.0 end
+        .help.text insert end "Click a tile that has at least one\
+            vertically or horizontally adjoining tile of the same color\
+            to remove it and any vertically or horizontally adjoining\
+            tiles of the same color, and "
+        .help.text insert end their italic
+        .help.text insert end " vertically or horizontally adjoining\
+                               tiles, and so on."
+        .help.text insert end " (So clicking a tile with no adjoining\
+                               tiles of the same color does nothing.) " \
+                               italic
+        .help.text insert end "The more tiles that are removed in one\
+                               go, the higher the score.\n"
+        .help.text insert end "Gravitate works like TileFall and the\
+            SameGame except that instead of tiles falling to the bottom\
+            and moving off to the left, they “gravitate” to the\
+            middle.\n"
+        .help.text insert end "[string repeat " " 60]\n" {center hr}
+        .help.text insert end "Key\tAction\n" green
+        .help.text insert end "a\t" bold
+        .help.text insert end "Show About box\n"
+        .help.text insert end "h" bold
+        .help.text insert end " or "
+        .help.text insert end "F1\t" bold
+        .help.text insert end "Show Help (this window)\n"
+        .help.text insert end "n\t" bold
+        .help.text insert end "New game\n"
+        .help.text insert end "o\t" bold
+        .help.text insert end "View or edit options\n"
+        .help.text insert end "q" bold
+        .help.text insert end " or "
+        .help.text insert end "Esc\t" bold
+        .help.text insert end "Quit\n"
+        .help.text insert end "←\t" bold
+        .help.text insert end "Move focus left\n"
+        .help.text insert end "→\t" bold
+        .help.text insert end "Move focus right\n"
+        .help.text insert end "↑\t" bold
+        .help.text insert end "Move focus up\n"
+        .help.text insert end "↓\t" bold
+        .help.text insert end "Move focus down\n"
+        .help.text insert end "Space\t" bold
+        .help.text insert end "Click focused tile\n"
+        .help.text tag add margins 1.0 end
     }
 }
