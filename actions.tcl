@@ -22,7 +22,6 @@ namespace eval actions {
                 $score > $main_window::high_score} {
             set msg [string cat "New Highscore! " $msg]
             set main_window::high_score $score
-            main_window::status_message $msg
             set ini [::ini::open [util::get_ini_filename] -encoding utf-8]
             try {
                 ::ini::set $ini $const::BOARD $const::HIGH_SCORE $score
@@ -30,6 +29,7 @@ namespace eval actions {
                 ::ini::close $ini
             }
         }
+        main_window::status_message $msg
         on_score $score
     }
 

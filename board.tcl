@@ -19,7 +19,6 @@ namespace eval board {
     variable selectedy $const::INVALID
     variable tiles {}
     variable drawing false
-    variable PAUSE_MS 5
 
 
     proc make {} {
@@ -308,10 +307,10 @@ namespace eval board {
             set color [ui::adjusted_color [lindex $board::tiles $x $y] 95]
             lset board::tiles $x $y $color
         }
-        draw $board::PAUSE_MS
+        draw [expr {max(5, $board::delay_ms / 10)}]
         set callback [::lambda {adjoining} \
             {board::delete_adjoining $adjoining} $adjoining]
-        after [expr {$board::PAUSE_MS + $board::delay_ms}] $callback
+        after $board::delay_ms $callback
     }
 
 
@@ -341,10 +340,10 @@ namespace eval board {
             lassign $point x y
             lset board::tiles $x $y $const::INVALID_COLOR
         }
-        draw $board::PAUSE_MS
+        draw [expr {max(5, $board::delay_ms / 10)}]
         set size [::struct::set size $adjoining]
         set callback [::lambda {size} {board::close_tiles_up $size} $size]
-        after [expr {$board::PAUSE_MS + $board::delay_ms}] $callback
+        after $board::delay_ms $callback
     }
 
 
