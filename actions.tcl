@@ -6,6 +6,7 @@ namespace eval actions {
 
     proc on_new {} {
         board::new_game
+        focus .main.board
     }
 
 
@@ -38,11 +39,13 @@ namespace eval actions {
         if {[options_form::show_modal]} {
             main_window::status_message "Updated options. Click New…"
         }
+        focus .main.board
     }
 
 
     proc on_about {} {
         about_form::show_modal
+        focus .main.board
     }
 
 

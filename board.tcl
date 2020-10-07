@@ -19,6 +19,7 @@ namespace eval board {
     variable selectedy $const::INVALID
     variable tiles {}
     variable drawing false
+    variable moving false
 
 
     proc make {} {
@@ -169,6 +170,7 @@ namespace eval board {
             after $delay_ms board::draw
         } else {
             draw_board
+            set board::moving false
         }
     }
 
@@ -410,7 +412,9 @@ namespace eval board {
                 lset board::tiles $nx $ny $color
                 lset board::tiles $x $y $const::INVALID_COLOR
                 set delay [expr {max(1, int(round($board::delay_ms / 7)))}]
+                set board::moving true
                 draw $delay
+                vwait board::moving
                 set point [list $x $y]
                 dict set moves $point $new_point
                 return true
