@@ -26,6 +26,9 @@ namespace eval actions {
             set ini [::ini::open [util::get_ini_filename] -encoding utf-8]
             try {
                 ::ini::set $ini $const::BOARD $const::HIGH_SCORE $score
+                ::ini::set $ini $const::BOARD $const::HIGH_SCORE_COMPAT \
+                    $score
+                ::ini::commit $ini
             } finally {
                 ::ini::close $ini
             }

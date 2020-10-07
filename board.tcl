@@ -251,7 +251,7 @@ namespace eval board {
 
     proc draw_game_over {} {
         set msg [expr {$board::user_won ? "You Won!" : "Game Over"}]
-        set color [expr {$board::user_won ? "#0000CC" : "#00CC00"}]
+        set color [expr {$board::user_won ? "#FF00FF" : "#00FF00"}]
         set x [expr {[winfo width .main.board] / 2}]
         set y [expr {[winfo height .main.board] / 2}]
         .main.board create text [expr {$x + 2}] [expr {$y + 2}] \
