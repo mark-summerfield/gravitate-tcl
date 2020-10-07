@@ -50,6 +50,14 @@ namespace eval board {
         set board::score 0
         set board::selectedx $const::INVALID
         set board::selectedy $const::INVALID
+        read_options
+        initialize_board
+        announce_score
+        draw
+    }
+
+
+    proc read_options {} {
         set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
         try {
             set section $const::BOARD
@@ -64,6 +72,10 @@ namespace eval board {
         } finally {
             ::ini::close $ini
         }
+    }
+
+
+    proc initialize_board {} {
         set colors [get_colors]
         set board::tiles {}
         for {set x 0} {$x < $board::columns} {incr x} {
@@ -74,8 +86,6 @@ namespace eval board {
             }
             lappend board::tiles $row
         }
-        announce_score
-        draw
     }
 
 
@@ -303,8 +313,7 @@ namespace eval board {
         set adjoining {}
         populate_adjoining_ $x $y $color adjoining
         foreach point $adjoining {
-            set x [lindex $point 0]
-            set y [lindex $point 1]
+            lassign $point x y
             set color [ui::adjusted_color [lindex $board::tiles $x $y] 95]
             lset board::tiles $x $y $color
         }
@@ -338,8 +347,7 @@ namespace eval board {
 
     proc delete_adjoining {adjoining} {
         foreach point $adjoining {
-            set x [lindex $point 0]
-            set y [lindex $point 1]
+            lassign $point x y
             lset board::tiles $x $y $const::INVALID_COLOR
         }
         draw $board::PAUSE_MS

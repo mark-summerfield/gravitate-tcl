@@ -41,8 +41,8 @@ namespace eval actions {
 
 
     proc on_quit {} {
-        set geom [wm geometry .]
-        regexp {(\d+)x(\d+)[-+](\d+)[-+](\d+)} $geom _ width height x y
+        regexp {(\d+)x(\d+)[-+](\d+)[-+](\d+)} [wm geometry .] \
+            _ width height x y
         set section $const::WINDOW
         set ini [::ini::open [util::get_ini_filename] -encoding utf-8]
         try {
