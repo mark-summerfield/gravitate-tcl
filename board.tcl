@@ -163,7 +163,7 @@ namespace eval board {
 
 
     proc on_configure {width height} {
-        if {$width != [.main.board cget -width] || \
+        if {$width != [.main.board cget -width] ||
                 $height != [.main.board cget -height]} {
             draw
         }
@@ -359,8 +359,8 @@ namespace eval board {
 
     proc close_tiles_up {size} {
         move_tiles
-        if {[is_selected_valid] && \
-                [lindex $board::tiles $board::selectedx $board::selectedy] \
+        if {[is_selected_valid] &&
+                [lindex $board::tiles $board::selectedx $board::selectedy]
                 eq $const::INVALID_COLOR} {
             set board::selectedx [expr {$board::columns / 2}]
             set board::selectedy [expr {$board::rows / 2}]
@@ -405,8 +405,88 @@ namespace eval board {
 
     proc move_is_possible_ {x y moves_} {
         upvar 1 $moves_ moves
-        puts "move_is_possible_ ($x,$y) $moves" ;# TODO
+        set empties [get_empty_neighbours $x $y]
+        if {![::struct::set empty $empties]} {
+            nearest_to_middle_ $x $y $empties move nx ny
+            puts "move=$move ($x,$y)→($nx,$ny)"
+        }
         return false ;# TODO
+    }
+
+
+    proc get_empty_neighbours {x y} {
+        set neighbours {}
+        foreach {x y} [list [expr {$x - 1}] $y [expr {$x + 1}] $y \
+                            $x [expr {$y - 1}] $x [expr {$y + 1}]] {
+            if {0 <= $x && $x < $board::columns && 0 <= $y &&
+                    $y < $board::rows && [lindex $board::tiles $x $y] eq 
+                                         $const::INVALID_COLOR } {
+                set point [list $x $y]
+                ::struct::set include neighbours $point
+            }
+        }
+        return $neighbours
+    }
+
+
+    proc nearest_to_middle_ {x y empties move_ nx_ ny_} {
+        upvar 1 $move_ move $nx_ nx $ny_ ny
+        set color [lindex $board::tiles $x $y]
+        set midx [expr {$board::columns / 2}]
+        set midy [expr {$board::rows / 2}]
+        set old_radius [expr {hypot($midx - $x, $midy - $y)}]
+        set shortest_radius NaN
+        set rx $const::INVALID
+        set ry $const::INVALID
+        foreach point $empties {
+            lassign $point nx ny
+            if {[is_square $nx $ny]} {
+                set new_radius [expr {hypot($midx - $nx, $midy - $ny)}]
+                if {[is_legal $nx $ny $color]} {
+                    # Make same colors slightly attract
+                    set new_radius [expr {$new_radius - 0.1}]
+                }
+                if {$rx == $const::INVALID || $ry == $const::INVALID ||
+                        $shortest_radius > $new_radius} {
+                    set shortest_radius $new_radius
+                    set rx $nx
+                    set ry $ny
+                }
+            }
+        }
+        if {![util::isnan $shortest_radius] &&
+                $old_radius > $shortest_radius} {
+            set move true
+            set nx $rx
+            set ny $ry
+            return
+        }
+        set move false
+        set nx $x
+        set ny $y
+    }
+
+
+    proc is_square {x y} {
+        if {$x > 0 && [lindex $board::tiles [expr {$x - 1}] $y] ne
+                $const::INVALID_COLOR} {
+            return true
+        }
+        if {$x + 1 < $board::columns &&
+                [lindex $board::tiles [expr {$x + 1}] $y] ne
+                $const::INVALID_COLOR} {
+            return true
+        }
+        if {$y > 0 && [lindex $board::tiles $x [expr {$y - 1}]] ne
+                $const::INVALID_COLOR} {
+            return true
+        }
+        if {$y + 1 < $board::rows &&
+                [lindex $board::tiles $x [expr {$y + 1}]] ne
+                $const::INVALID_COLOR} {
+            return true
+        }
+        return false
     }
 
 

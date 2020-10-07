@@ -15,7 +15,7 @@ namespace eval util {
             set names {~/gravitate.ini $::APP_PATH/gravitate.ini}
             set index 0
         } else {
-            set names {~/.config/gravitate.ini ~/.gravitate.ini \
+            set names {~/.config/gravitate.ini ~/.gravitate.ini
                        $::APP_PATH/gravitate.ini}
             set index [expr {[file isdirectory ~/.config] ? 0 : 1}]
         }
@@ -69,5 +69,10 @@ namespace eval util {
         } trap CHILDSTATUS {err opts} {
             puts "failed to open $url: $err"
         }
+    }
+
+
+    proc isnan {x} {
+        return [expr {![string is double $x] || $x != $x}]
     }
 }
