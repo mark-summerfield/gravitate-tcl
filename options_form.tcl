@@ -34,7 +34,7 @@ namespace eval options_form {
 	ttk::label .options.max_colors_label -text "Max. Colors" \
 	    -underline 0
 	tk::spinbox .options.max_colors_spinbox -from 2 \
-	    -to [board::color_count] -format %2.0f
+	    -to [dict size $const::COLORS] -format %2.0f
         tooltip::tooltip .options.max_colors_spinbox \
             "Max. Colors (default $const::MAX_COLORS_DEFAULT)"
 	ttk::label .options.delay_label -text "Delay (ms)" -underline 0

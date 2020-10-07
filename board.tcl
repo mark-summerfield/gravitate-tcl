@@ -22,11 +22,6 @@ namespace eval board {
     variable PAUSE_MS 5
 
 
-    proc color_count {} {
-        return [dict size $const::COLORS]
-    }
-
-
     proc make {} {
         tk::canvas .main.board -background $const::BACKGROUND_COLOR
         make_bindings
@@ -170,17 +165,11 @@ namespace eval board {
     }
 
 
-    proc draw {{delay_ms 0} {force false}} {
+    proc draw {{delay_ms 0}} {
         if {$delay_ms > 0} {
             after $delay_ms board::draw
-            return
-        }
-        draw_board
-        # do I need force or update at all?
-        if {$force} {
-            update idletasks
         } else {
-            update
+            draw_board
         }
     }
 
@@ -261,9 +250,11 @@ namespace eval board {
 
     proc draw_game_over {} {
         set msg [expr {$board::user_won ? "You Won!" : "Game Over"}]
-        set color [expr {$board::user_won ? "#0000BB" : "#009900"}]
+        set color [expr {$board::user_won ? "#0000CC" : "#00CC00"}]
         set x [expr {[winfo width .main.board] / 2}]
         set y [expr {[winfo height .main.board] / 2}]
+        .main.board create text [expr {$x + 2}] [expr {$y + 2}] \
+            -font big -justify center -fill "#C0C0C0" -text $msg
         .main.board create text $x $y -font big -justify center \
             -fill $color -text $msg
     }
@@ -420,7 +411,7 @@ namespace eval board {
                 lset board::tiles $nx $ny $color
                 lset board::tiles $x $y $const::INVALID_COLOR
                 set delay [expr {max(1, int(round($board::delay_ms / 7)))}]
-                draw $delay true
+                draw $delay
                 set point [list $x $y]
                 dict set moves $point $new_point
                 return true
@@ -507,6 +498,44 @@ namespace eval board {
 
 
     proc check_game_over {} {
-        puts "check_game_over" ;# TODO
+        set can_move [check_tiles]
+        if {$board::user_won} {
+            announce_game_over $const::USER_WON
+        } elseif {!$can_move} {
+            announce_game_over $const::GAME_OVER}
+    }
+
+
+    proc check_tiles {} {
+        set count_for_color {}
+        set board::user_won true
+        set can_move false
+        for {set x 0} {$x < $board::columns} {incr x} {
+            for {set y 0} {$y < $board::rows} {incr y} {
+                set color [lindex $board::tiles $x $y]
+                if {$color ne $const::INVALID_COLOR} {
+                    if {![dict exists $count_for_color $color]} {
+                        dict set count_for_color $color 1
+                    } else {
+                        dict incr count_for_color $color
+                    }
+                    set board::user_won false
+                    if {[is_legal $x $y $color]} {
+                        set can_move true
+                    }
+                }
+            }
+        }
+        dict for {color count} $count_for_color {
+            if {$count == 1} {
+                set can_move false
+                break
+            }
+        }
+        if {$board::user_won || !$can_move} {
+            set board::game_over true
+            draw
+        }
+        return $can_move
     }
 }

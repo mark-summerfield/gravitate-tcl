@@ -6,7 +6,7 @@ about_form.tcl
 help_form.tcl
 options_form.tcl
 actions.tcl
-board.tcl # TODO (cache created tk images with keys: size,color1,color2
+board.tcl # TODO gradient filled 2½D tiles
 util.tcl
 ui.tcl
 const.tcl # VERSION
