@@ -198,10 +198,9 @@ namespace eval board {
         .main.board delete all
         tile_size_ width height
         set edge [expr {min($width, $height) / 9.0}]
-        set edge2 [expr {$edge * 2.0}]
         for {set x 0} {$x < $board::columns} {incr x} {
             for {set y 0} {$y < $board::rows} {incr y} {
-                draw_tile $x $y $width $height $edge $edge2
+                draw_tile $x $y $width $height $edge
             }
         }
         if {$board::user_won || $board::game_over} {
@@ -211,7 +210,7 @@ namespace eval board {
     }
 
 
-    proc draw_tile {x y width height edge edge2} {
+    proc draw_tile {x y width height edge} {
         set x1 [expr {$x * $width}]
         set y1 [expr {$y * $height}]
         set x2 [expr {$x1 + $width}]
@@ -222,13 +221,36 @@ namespace eval board {
                 -fill $const::BACKGROUND_COLOR -outline white
         } else {
             get_color_pair_ $color $board::game_over light dark
-            # TODO segments + gradient filled center rect
-            .main.board create rectangle $x1 $y1 $x2 $y2 -fill $light \
-                -outline $const::BACKGROUND_COLOR
+            draw_segments $x1 $y1 $x2 $y2 $light $dark $edge
+            set ix1 [expr {$x1 + $edge}]
+            set iy1 [expr {$y1 + $edge}]
+            set ix2 [expr {$x2 - $edge}]
+            set iy2 [expr {$y2 - $edge}]
+            ui::draw_gradient .main.board $ix1 $iy1 $ix2 $iy2 $light $dark
             if {$x == $board::selectedx && $y == $board::selectedy} {
                 draw_focus $x1 $y1 $x2 $y2 $edge
             }
         }
+    }
+
+
+    proc draw_segments {x1 y1 x2 y2 light dark edge} {
+        draw_segment $light $x1 $y1 [expr {$x1 + $edge}] \
+            [expr {$y1 + $edge}] [expr {$x2 - $edge}] \
+            [expr {$y1 + $edge}] $x2 $y1
+        draw_segment $light $x1 $y1 $x1 $y2 [expr {$x1 + $edge}] \
+            [expr {$y2 - $edge}] [expr {$x1 + $edge}] \
+            [expr {$y1 + $edge}]
+        draw_segment $dark [expr {$x2 - $edge}] [expr {$y1 + $edge}] \
+            $x2 $y1 $x2 $y2 [expr {$x2 - $edge}] [expr {$y2 - $edge}]
+        draw_segment $dark $x1 $y2 [expr {$x1 + $edge}] \
+            [expr {$y2 - $edge}] [expr {$x2 - $edge}] \
+            [expr {$y2 - $edge}] $x2 $y2
+    }
+
+
+    proc draw_segment {color args} {
+        .main.board create polygon {*}$args -fill $color
     }
 
 

@@ -74,4 +74,23 @@ namespace eval ui {
         set b [expr {min(255, ($b / 256) * $percent / 100)}]
         return [format "#%02X%02X%02X" $r $g $b]
     }
+
+
+    proc draw_gradient {canv x1 y1 x2 y2 color1 color2} {
+        lassign [winfo rgb $canv $color1] r1 g1 b1
+        lassign [winfo rgb $canv $color2] r2 g2 b2
+        set steps [expr {$y2 - $y1}]
+        set r_ratio [expr {(double($r2) - $r1) / $steps}]
+        set g_ratio [expr {(double($g2) - $g1) / $steps}]
+        set b_ratio [expr {(double($b2) - $b1) / $steps}]
+        for {set i 0} {$i < $steps} {incr i} {
+            set x $x1
+            set y [expr {$y1 + $i}]
+            set r [expr int( $r1 + ($r_ratio * $i) )]
+            set g [expr int( $g1 + ($g_ratio * $i) )]
+            set b [expr int( $b1 + ($b_ratio * $i) )]
+            set color [format "#%04X%04X%04X" $r $g $b]
+            $canv create line $x $y $x2 $y -fill $color
+        }
+    }
 }

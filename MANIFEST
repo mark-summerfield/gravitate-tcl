@@ -4,7 +4,7 @@ about_form.tcl
 help_form.tcl
 options_form.tcl
 actions.tcl
-board.tcl # TODO gradient filled 2½D tiles
+board.tcl
 util.tcl
 ui.tcl
 const.tcl # VERSION
