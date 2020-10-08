@@ -84,13 +84,12 @@ namespace eval ui {
         set g_ratio [expr {(double($g2) - $g1) / $steps}]
         set b_ratio [expr {(double($b2) - $b1) / $steps}]
         for {set i 0} {$i < $steps} {incr i} {
-            set x $x1
             set y [expr {$y1 + $i}]
-            set r [expr int( $r1 + ($r_ratio * $i) )]
-            set g [expr int( $g1 + ($g_ratio * $i) )]
-            set b [expr int( $b1 + ($b_ratio * $i) )]
+            set r [expr {int($r1 + ($r_ratio * $i))}]
+            set g [expr {int($g1 + ($g_ratio * $i))}]
+            set b [expr {int($b1 + ($b_ratio * $i))}]
             set color [format "#%04X%04X%04X" $r $g $b]
-            $canv create line $x $y $x2 $y -fill $color
+            $canv create line $x1 $y $x2 $y -fill $color
         }
     }
 }
