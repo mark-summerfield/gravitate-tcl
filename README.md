@@ -4,8 +4,8 @@ A SameGame/TileFall-like game written in Tcl/Tk
 
 ![Screenshot](screenshot.png)
 
-**gravitate.exe is a precompiled Windows binary that will run on pretty well
-any 32- or 64-bit version of Windows from XP to 10**
+*_gravitate.exe_ is a precompiled Windows binary that will run on pretty
+well any 32- or 64-bit version of Windows from XP to 10*
 
 ## Dependencies
 
