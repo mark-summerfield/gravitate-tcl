@@ -9,7 +9,12 @@ if {[info exists ::freewrap::runMode] &&
         $::freewrap::runMode eq "wrappedExec"} {
     set ::APP_PATH /zvfs/home/mark/app/gravitate/tcl
 } else {
-    set ::APP_PATH [file normalize [file dirname [info script]]]
+    set name [info script]
+    if {[file type $name] == "link"} {
+        set ::APP_PATH [file dirname [file readlink $name]]
+    } else {
+        set ::APP_PATH [file normalize [file dirname $name]]
+    }
 }
 set ::IMG_PATH "$::APP_PATH/images"
 
