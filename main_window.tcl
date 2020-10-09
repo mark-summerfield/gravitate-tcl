@@ -8,7 +8,6 @@ package require tooltip
 
 namespace eval main_window {
 
-    variable high_score 0
     variable status_timer_id {}
 
     proc make_window {} {
@@ -90,14 +89,14 @@ namespace eval main_window {
         set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
         try {
             set section $const::BOARD
-            set main_window::high_score \
+            set board::high_score \
                 [::ini::value $ini $section $const::HIGH_SCORE -1]
-            if {$main_window::high_score == -1} {
-                set main_window::high_score [::ini::value $ini $section \
+            if {$board::high_score == -1} {
+                set board::high_score [::ini::value $ini $section \
                     $const::HIGH_SCORE_COMPAT $const::HIGH_SCORE_DEFAULT]
             }
             .main.status_bar.score_label configure \
-                -text "0 • [util::commas $main_window::high_score]"
+                -text "0 • [util::commas $board::high_score]"
             set section $const::WINDOW
             set invalid $const::INVALID
             set width [::ini::value $ini $section $const::WINDOW_WIDTH \

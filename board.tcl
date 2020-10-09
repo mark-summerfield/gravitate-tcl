@@ -8,6 +8,7 @@ package require struct::set
 
 namespace eval board {
 
+    variable high_score $const::HIGH_SCORE_DEFAULT
     variable score 0
     variable game_over true
     variable user_won false
@@ -271,7 +272,7 @@ namespace eval board {
 
     proc draw_game_over {} {
         set msg [expr {$board::user_won ? "You Won!" : "Game Over"}]
-        if {$board::user_won && $board::score > $main_window::high_score} {
+        if {$board::user_won && $board::score > $board::high_score} {
             append msg "\nNew Highscore"
         }
         set color [expr {$board::user_won ? "#FF00FF" : "#00FF00"}]
@@ -527,8 +528,8 @@ namespace eval board {
     proc check_game_over {} {
         set can_move [check_tiles]
         if {$board::user_won} {
-            if {$board::score > $main_window::high_score} {
-                set main_window::high_score $board::score
+            if {$board::score > $board::high_score} {
+                set board::high_score $board::score
                 set ini [::ini::open [util::get_ini_filename] \
                     -encoding utf-8]
                 try {

@@ -13,7 +13,7 @@ namespace eval actions {
     proc on_score {score} {
         .main.status_bar.score_label configure \
             -text "[util::commas $score] •\
-                   [util::commas $main_window::high_score]"
+                   [util::commas $board::high_score]"
     }
 
 
