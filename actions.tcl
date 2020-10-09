@@ -17,23 +17,8 @@ namespace eval actions {
     }
 
 
-    proc on_game_over {score outcome} {
-        set msg "Click New…"
-        if {$outcome eq $const::USER_WON &&
-                $score > $main_window::high_score} {
-            set msg [string cat "New Highscore! " $msg]
-            set main_window::high_score $score
-            set ini [::ini::open [util::get_ini_filename] -encoding utf-8]
-            try {
-                ::ini::set $ini $const::BOARD $const::HIGH_SCORE $score
-                ::ini::set $ini $const::BOARD $const::HIGH_SCORE_COMPAT \
-                    $score
-                ::ini::commit $ini
-            } finally {
-                ::ini::close $ini
-            }
-        }
-        main_window::status_message $msg
+    proc on_game_over {score} {
+        main_window::status_message "Click New…"
         on_score $score
     }
 

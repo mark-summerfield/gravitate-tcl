@@ -31,17 +31,14 @@ namespace eval const {
     variable HIGH_SCORE_DEFAULT 0
 
     variable COLORS {
-        "#800000" "#F99999"
-        "#800000" "#F99999"
-        "#008000" "#99F999"
-        "#808000" "#F9F999"
-        "#000080" "#9999F9"
-        "#800080" "#F999F9"
-        "#008080" "#99F9F9"
-        "#808080" "#F9F9F9"
+        "#A00000" "#F88888"
+        "#A00000" "#F88888"
+        "#00A000" "#88F888"
+        "#A0A000" "#F8F888"
+        "#0000A0" "#8888F8"
+        "#A000A0" "#F888F8"
+        "#00A0A0" "#88F8F8"
+        "#A0A0A0" "#F8F8F8"
     }
     variable INVALID_COLOR ""
-
-    variable USER_WON won
-    variable GAME_OVER over
 }

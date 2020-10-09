@@ -96,10 +96,8 @@ namespace eval board {
     }
 
 
-    proc announce_game_over {outcome} {
-        # outcome must be $const::USER_WON or $const::GAME_OVER
-        event generate .main.board <<GameOver>> \
-            -data [list $board::score $outcome]
+    proc announce_game_over {} {
+        event generate .main.board <<GameOver>> -data $board::score
     }
 
 
@@ -273,6 +271,9 @@ namespace eval board {
 
     proc draw_game_over {} {
         set msg [expr {$board::user_won ? "You Won!" : "Game Over"}]
+        if {$board::user_won && $board::score > $main_window::high_score} {
+            append msg "\nNew Highscore"
+        }
         set color [expr {$board::user_won ? "#FF00FF" : "#00FF00"}]
         set x [expr {[winfo width .main.board] / 2}]
         set y [expr {[winfo height .main.board] / 2}]
@@ -328,7 +329,7 @@ namespace eval board {
         populate_adjoining_ $x $y $color adjoining
         foreach point $adjoining {
             lassign $point x y
-            set color [ui::adjusted_color [lindex $board::tiles $x $y] 95]
+            set color [ui::adjusted_color [lindex $board::tiles $x $y] 98]
             lset board::tiles $x $y $color
         }
         draw [expr {max(5, $board::delay_ms / 10)}]
@@ -526,9 +527,23 @@ namespace eval board {
     proc check_game_over {} {
         set can_move [check_tiles]
         if {$board::user_won} {
-            announce_game_over $const::USER_WON
+            if {$board::score > $main_window::high_score} {
+                set main_window::high_score $board::score
+                set ini [::ini::open [util::get_ini_filename] \
+                    -encoding utf-8]
+                try {
+                    ::ini::set $ini $const::BOARD \
+                        $const::HIGH_SCORE $board::score
+                    ::ini::set $ini $const::BOARD \
+                        $const::HIGH_SCORE_COMPAT $board::score
+                    ::ini::commit $ini
+                } finally {
+                    ::ini::close $ini
+                }
+            }
+            announce_game_over
         } elseif {!$can_move} {
-            announce_game_over $const::GAME_OVER
+            announce_game_over
         }
     }
 
