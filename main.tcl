@@ -16,6 +16,7 @@ namespace eval main {
         wm protocol . WM_DELETE_WINDOW actions::on_quit
         ui::make_fonts
         option add *font default
+        ttk::style configure TButton -font default
         main_window::make_window
         wm deiconify .
         raise .
