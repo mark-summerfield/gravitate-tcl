@@ -21,6 +21,7 @@ namespace eval board {
     variable tiles {}
     variable drawing false
     variable moving false
+    variable DELAY_SCALER 5
 
 
     proc make {} {
@@ -333,7 +334,7 @@ namespace eval board {
             set color [ui::adjusted_color [lindex $board::tiles $x $y] 98]
             lset board::tiles $x $y $color
         }
-        draw [expr {max(5, $board::delay_ms / 10)}]
+        draw [expr {max(5, $board::delay_ms / $board::DELAY_SCALER)}]
         set do_delete_adjoining [::lambda {adjoining} \
             {board::delete_adjoining $adjoining} $adjoining]
         after $board::delay_ms $do_delete_adjoining
@@ -366,7 +367,7 @@ namespace eval board {
             lassign $point x y
             lset board::tiles $x $y $const::INVALID_COLOR
         }
-        draw [expr {max(5, $board::delay_ms / 10)}]
+        draw [expr {max(5, $board::delay_ms / $board::DELAY_SCALER)}]
         set size [::struct::set size $adjoining]
         set do_close_tiles_up [::lambda {size} \
             {board::close_tiles_up $size} $size]
@@ -436,7 +437,8 @@ namespace eval board {
                 set color [lindex $board::tiles $x $y]
                 lset board::tiles $nx $ny $color
                 lset board::tiles $x $y $const::INVALID_COLOR
-                set delay [expr {max(1, int(round($board::delay_ms / 7)))}]
+                set delay [expr {max(1, int(round($board::delay_ms /
+                                            $board::DELAY_SCALER)))}]
                 set board::moving true
                 draw $delay
                 vwait board::moving

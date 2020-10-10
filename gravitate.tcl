@@ -11,15 +11,15 @@ if {[info exists ::freewrap::runMode] &&
 } else {
     set name [info script]
     if {[file type $name] == "link"} {
-        set ::APP_PATH [file dirname [file readlink $name]]
-    } else {
-        set ::APP_PATH [file normalize [file dirname $name]]
+        set name [file readlink $name]
     }
+    set ::APP_PATH [file normalize [file dirname $name]]
 }
 set ::IMG_PATH "$::APP_PATH/images"
 
 foreach filename {
         const.tcl
+        main.tcl
         main_window.tcl
         about_form.tcl
         help_form.tcl
@@ -33,22 +33,4 @@ foreach filename {
 }
 
 
-proc main {} {
-    option add *insertOffTime 0
-    tk appname Gravitate
-    wm withdraw .
-    wm title . [tk appname]
-    wm iconname . [tk appname]
-    wm iconphoto . -default [image create photo -file $::IMG_PATH/icon.png]
-    wm minsize . 260 300
-    wm protocol . WM_DELETE_WINDOW actions::on_quit
-    ui::make_fonts
-    option add *font default
-    main_window::make_window
-    wm deiconify .
-    raise .
-    focus .
-}
-
-
-main
+main::main

@@ -4,7 +4,7 @@
 
 namespace eval const {
 
-    variable VERSION 7.0.1
+    variable VERSION 7.0.2
     variable INVALID -1
     variable PAD 3
     variable VGAP 6

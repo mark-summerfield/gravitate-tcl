@@ -1,4 +1,5 @@
 gravitate.tcl
+main.tcl
 main_window.tcl
 about_form.tcl
 help_form.tcl
