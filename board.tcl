@@ -49,7 +49,7 @@ namespace eval board {
         set board::selectedy $const::INVALID
         read_options
         initialize_board
-        announce_score
+        announce $const::SCORE_EVENT
         draw
     }
 
@@ -93,13 +93,8 @@ namespace eval board {
     }
 
 
-    proc announce_score {} {
-        event generate .main.board <<Score>> -data $board::score
-    }
-
-
-    proc announce_game_over {} {
-        event generate .main.board <<GameOver>> -data $board::score
+    proc announce {event} {
+        event generate .main.board $event -data $board::score
     }
 
 
@@ -387,7 +382,7 @@ namespace eval board {
         incr board::score [
             expr {int(round(sqrt(double($board::columns) * $board::rows)) +
                   pow($size, $board::max_colors / 2))}]
-        announce_score
+        announce $const::SCORE_EVENT
         check_game_over
     }
 
@@ -544,9 +539,9 @@ namespace eval board {
                     ::ini::close $ini
                 }
             }
-            announce_game_over
+            announce $const::GAME_OVER_EVENT
         } elseif {!$can_move} {
-            announce_game_over
+            announce $const::GAME_OVER_EVENT
         }
     }
 

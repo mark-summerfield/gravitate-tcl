@@ -17,7 +17,7 @@ namespace eval main {
         ui::make_fonts
         option add *font default
         ttk::style configure TButton -font default
-        main_window::make_window
+        main_window::show
         wm deiconify .
         raise .
         focus .

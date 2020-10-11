@@ -10,7 +10,7 @@ namespace eval main_window {
 
     variable status_timer_id {}
 
-    proc make_window {} {
+    proc show {} {
         make_widgets
         make_layout
         make_bindings
@@ -80,8 +80,9 @@ namespace eval main_window {
         bind . <F1> { actions::on_help }
         bind . q { actions::on_quit }
         bind . <Escape> { actions::on_quit }
-        bind .main.board <<Score>> { actions::on_score %d }
-        bind .main.board <<GameOver>> { actions::on_game_over {*}%d }
+        bind .main.board $const::SCORE_EVENT { actions::on_score %d }
+        bind .main.board $const::GAME_OVER_EVENT \
+            { actions::on_game_over %d }
     }
 
 

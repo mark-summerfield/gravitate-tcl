@@ -4,7 +4,7 @@
 
 namespace eval const {
 
-    variable VERSION 7.0.3
+    variable VERSION 7.0.4
     variable INVALID -1
     variable PAD 3
     variable VGAP 6
@@ -41,4 +41,6 @@ namespace eval const {
         "#A0A0A0" "#F8F8F8"
     }
     variable INVALID_COLOR ""
+    variable GAME_OVER_EVENT <<GameOver>>
+    variable SCORE_EVENT <<Score>>
 }
