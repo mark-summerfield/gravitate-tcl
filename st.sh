@@ -2,6 +2,7 @@
 cd src
 tokei -f -c80 -tTcl -slines
 nagelfar.tcl -H -tab 4 *.tcl \
+    | grep -v Checking.file \
     | grep -v '^[ \t]\+Argument' \
     | grep -v Found.constant.. \
     | grep -v Wrong.number.of.arguments.*to..actions::on_game_over \
