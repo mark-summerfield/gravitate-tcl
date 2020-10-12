@@ -7,7 +7,7 @@ if {[llength $argv] > 0 && [tk windowingsystem] eq "win32" &&
 }
 if {[info exists ::freewrap::runMode] &&
         $::freewrap::runMode eq "wrappedExec"} {
-    set ::APP_PATH /zvfs/home/mark/app/gravitate/tcl
+    set ::APP_PATH /zvfs/home/mark/app/gravitate/tcl/src
 } else {
     set name [info script]
     if {[file type $name] == "link"} {
