@@ -9,4 +9,5 @@ freewrap $MAIN \
     -9 \
     `ls *.tcl|grep -v $MAIN` \
     images/*.png
+rm -f results.txt
 mv $EXE ..
