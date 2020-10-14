@@ -66,7 +66,7 @@ namespace eval util {
         }
         try {
             exec {*}$cmd $url &
-        } trap CHILDSTATUS {err opts} {
+        } trap CHILDSTATUS {err} {
             puts "failed to open $url: $err"
         }
     }
