@@ -6,6 +6,7 @@ src/help_form.tcl
 src/options_form.tcl
 src/actions.tcl
 src/board.tcl
+src/board_delete_tile.tcl
 src/util.tcl
 src/ui.tcl
 src/const.tcl # VERSION

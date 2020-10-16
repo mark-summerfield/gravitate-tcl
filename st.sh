@@ -7,13 +7,14 @@ nagelfar.tcl -H -tab 4 *.tcl \
     | grep -v Found.constant.. \
     | grep -v Wrong.number.of.arguments.*to..actions::on_game_over \
     | grep -v Wrong.number.of.arguments.*to..ini::open \
-    | grep -v board.tcl.*Suspicious.variable.*board::drawing \
-    | grep -v board.tcl.*Unknown.variable.*dark \
-    | grep -v board.tcl.*Unknown.variable.*height \
-    | grep -v board.tcl.*Unknown.variable.*light \
-    | grep -v board.tcl.*Unknown.variable.*move \
-    | grep -v board.tcl.*Unknown.variable.*n[xy] \
-    | grep -v board.tcl.*Unknown.variable.*width \
+    | grep -v board.*tcl.*Suspicious.variable.*board::drawing \
+    | grep -v board.*tcl.*Unknown.variable.*dark \
+    | grep -v board.*tcl.*Unknown.variable.*height \
+    | grep -v board.*tcl.*Unknown.variable.*light \
+    | grep -v board.*tcl.*Unknown.variable.*move \
+    | grep -v board.*tcl.*Unknown.variable.*n[xy] \
+    | grep -v board.*tcl.*Unknown.variable.*width \
+    | grep -v board_delete_tile.*Unknown.command.* \
     | grep -v Unknown.command.*::ini:: \
     | grep -v Unknown.command.*::lambda \
     | grep -v Unknown.command.*_form::show.* \
@@ -26,4 +27,5 @@ nagelfar.tcl -H -tab 4 *.tcl \
     | grep -v Unknown.command.*ui::* \
     | grep -v Unknown.command.*util::* \
     | grep -v Unknown.variable.*const::.*
+cd ..
 git st

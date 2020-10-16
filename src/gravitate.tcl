@@ -26,6 +26,7 @@ foreach filename {
         options_form.tcl
         actions.tcl
         board.tcl
+        board_delete_tile.tcl
         util.tcl
         ui.tcl
     } {
