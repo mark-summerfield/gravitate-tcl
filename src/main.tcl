@@ -11,8 +11,7 @@ proc main::main {} {
     wm withdraw .
     wm title . [tk appname]
     wm iconname . [tk appname]
-    wm iconphoto . -default [image create photo \
-                                -file $::IMG_PATH/icon.png]
+    wm iconphoto . -default [image create photo -file $::IMG_PATH/icon.png]
     wm minsize . 260 300
     wm protocol . WM_DELETE_WINDOW actions::on_quit
     ui::make_fonts
