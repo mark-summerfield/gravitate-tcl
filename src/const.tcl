@@ -4,7 +4,7 @@
 namespace eval const {}
 
 
-variable const::VERSION 7.0.6
+variable const::VERSION 7.0.7
 variable const::INVALID -1
 variable const::PAD 3
 variable const::VGAP 6
