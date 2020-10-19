@@ -106,10 +106,12 @@ proc board::close_tiles_up {size} {
 proc board::move_tiles {} {
     set moves {}
     set moved true
+    set number_proc [lindex [struct::list shuffle {
+        shuffled_numbers rippled_numbers_outer rippled_numbers_inner}] 0]
     while {$moved} {
         set moved false
-        foreach x [rippled_numbers $board::columns] {
-            foreach y [rippled_numbers $board::rows] {
+        foreach x [$number_proc $board::columns] {
+            foreach y [$number_proc $board::rows] {
                 if {[lindex $board::tiles $x $y] ne 
                         $const::INVALID_COLOR } {
                     if {[move_is_possible_ $x $y moves]} {
@@ -123,14 +125,43 @@ proc board::move_tiles {} {
 }
 
 
-proc rippled_numbers {count} {
+proc shuffled_numbers {count} {
+    set numbers {}
+    for {set i 0} {$i < $count} {incr i} {
+        lappend numbers $i
+    }
+    return [struct::list shuffle $numbers]
+}
+
+
+proc rippled_numbers_outer {count} {
     set a 0
     set b [expr {$count - 1}]
     set numbers {}
     while {[llength $numbers] < $count} {
-        lappend numbers $a $b
+        lappend numbers $a
+        if {$b != $a} {
+            lappend numbers $b
+        }
         incr a
         incr b -1
+    }
+    return $numbers
+}
+
+proc rippled_numbers_inner {count} {
+    set a [expr {$count / 2}]
+    set b [expr {$a + 1}]
+    set numbers {}
+    while {[llength $numbers] < $count} {
+        if {$a >= 0} {
+            lappend numbers $a
+        }
+        if {$b < $count} {
+            lappend numbers $b
+        }
+        incr a -1
+        incr b
     }
     return $numbers
 }
