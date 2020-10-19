@@ -15,7 +15,9 @@ proc about_form::show_modal {} {
 
 proc about_form::make_widgets {} {
     tk::toplevel .about
-    tk::text .about.text -width 50 -height 11 -wrap word \
+    set height [expr {[info exists ::freewrap::runMode] &&
+                       $::freewrap::runMode eq "wrappedExec" ? 12 : 11}]
+    tk::text .about.text -width 50 -height $height -wrap word \
         -background "#F0F0F0" -spacing3 $const::VGAP
     populate_about_text
     .about.text configure -state disabled
