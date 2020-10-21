@@ -27,7 +27,7 @@ proc ui::prepare_form {window title on_close {modal true} {dx 20} {dy 40}} {
 
 proc ui::add_text_tags {widget} {
     set margin 12
-    $widget tag configure spaceabove -spacing1 [expr {$const::VGAP * 2}]
+    $widget tag configure spaceabove -spacing1 [expr {$app::VGAP * 2}]
     $widget tag configure margins -lmargin1 $margin -lmargin2 $margin \
         -rmargin $margin
     $widget tag configure center -justify center

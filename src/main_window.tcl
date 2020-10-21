@@ -60,7 +60,7 @@ proc main_window::make_layout {} {
     grid .main.toolbar.quit -row 0 -column 4 -sticky e
     grid columnconfigure .main.toolbar 1 -weight 1
     grid columnconfigure .main.toolbar 4 -weight 1
-    grid .main.board -sticky nsew -pady $const::PAD
+    grid .main.board -sticky nsew -pady $app::PAD
     grid .main.status_bar -sticky ew
     grid .main.status_bar.label -row 0 -column 0 -sticky we
     grid .main.status_bar.score_label -row 0 -column 1 -sticky e
@@ -80,36 +80,34 @@ proc main_window::make_bindings {} {
     bind . <F1> { actions::on_help }
     bind . q { actions::on_quit }
     bind . <Escape> { actions::on_quit }
-    bind .main.board $const::SCORE_EVENT { actions::on_score %d }
-    bind .main.board $const::GAME_OVER_EVENT { actions::on_game_over %d }
+    bind .main.board $app::SCORE_EVENT { actions::on_score %d }
+    bind .main.board $app::GAME_OVER_EVENT { actions::on_game_over %d }
 }
 
 
 proc main_window::read_options {} {
     set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
     try {
-        set section $const::BOARD
+        set section $app::BOARD
         set board::high_score \
-            [::ini::value $ini $section $const::HIGH_SCORE -1]
+            [::ini::value $ini $section $app::HIGH_SCORE -1]
         if {$board::high_score == -1} {
             set board::high_score [::ini::value $ini $section \
-                $const::HIGH_SCORE_COMPAT $const::HIGH_SCORE_DEFAULT]
+                $app::HIGH_SCORE_COMPAT $app::HIGH_SCORE_DEFAULT]
         }
         .main.status_bar.score_label configure \
             -text "0 • [util::commas $board::high_score]"
-        set section $const::WINDOW
-        set invalid $const::INVALID
-        set width [::ini::value $ini $section $const::WINDOW_WIDTH \
-                    $invalid]
-        set height [::ini::value $ini $section $const::WINDOW_HEIGHT \
-                    $invalid] 
-        set x [::ini::value $ini $section $const::WINDOW_X $invalid] 
-        set y [::ini::value $ini $section $const::WINDOW_Y $invalid] 
+        set section $app::WINDOW
+        set invalid $app::INVALID
+        set width [::ini::value $ini $section $app::WINDOW_WIDTH $invalid]
+        set height [::ini::value $ini $section $app::WINDOW_HEIGHT $invalid]
+        set x [::ini::value $ini $section $app::WINDOW_X $invalid] 
+        set y [::ini::value $ini $section $app::WINDOW_Y $invalid] 
         if {$width != $invalid && $height != $invalid &&
                 $x != $invalid && $y != $invalid} {
             wm geometry . "${width}x$height+$x+$y"
         }
-        set size [::ini::value $ini $section $const::FONTSIZE $invalid]
+        set size [::ini::value $ini $section $app::FONTSIZE $invalid]
         if {$size != $invalid} {
             ui::update_fonts $size
         }

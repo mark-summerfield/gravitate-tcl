@@ -36,7 +36,7 @@ proc help_form::make_layout {} {
     grid .help.text -row 0 -column 0 -sticky nsew
     grid .help.vbar -row 0 -column 1 -sticky ns
     grid .help.ok_button -row 1 -column 0 -columnspan 2
-    grid .help.text .help.vbar .help.ok_button -pady $const::PAD
+    grid .help.text .help.vbar .help.ok_button -pady $app::PAD
     grid columnconfigure .help 0 -weight 1
     grid rowconfigure .help 0 -weight 1
 }

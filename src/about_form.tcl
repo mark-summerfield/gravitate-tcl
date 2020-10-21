@@ -18,7 +18,7 @@ proc about_form::make_widgets {} {
     set height [expr {[info exists ::freewrap::runMode] &&
                        $::freewrap::runMode eq "wrappedExec" ? 12 : 11}]
     tk::text .about.text -width 50 -height $height -wrap word \
-        -background "#F0F0F0" -spacing3 $const::VGAP
+        -background "#F0F0F0" -spacing3 $app::VGAP
     populate_about_text
     .about.text configure -state disabled
     ttk::button .about.ok_button -text OK -compound left \
@@ -28,8 +28,8 @@ proc about_form::make_widgets {} {
 
 
 proc about_form::make_layout {} {
-    grid .about.text -sticky nsew -pady $const::PAD
-    grid .about.ok_button -pady $const::PAD
+    grid .about.text -sticky nsew -pady $app::PAD
+    grid .about.ok_button -pady $app::PAD
 }
 
 
@@ -67,7 +67,7 @@ proc about_form::populate_about_text {} {
              -image [image create photo -file $::IMG_PATH/icon.png]]
     .about.text tag add spaceabove $img
     .about.text tag add center $img
-    .about.text insert end "\nGravitate v$const::VERSION\n" {center title}
+    .about.text insert end "\nGravitate v$app::VERSION\n" {center title}
     .about.text insert end "A TileFall/SameGame-like game.\n" {center navy}
     set year [clock format [clock seconds] -format %Y]
     if {$year > 2020} {

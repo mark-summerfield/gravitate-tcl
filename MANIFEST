@@ -1,3 +1,4 @@
+# TODO make a Config class to ensure ini is closed
 src/gravitate.tcl
 src/main.tcl
 src/main_window.tcl

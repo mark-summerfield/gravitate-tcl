@@ -2,10 +2,10 @@
 # Copyright © 2020 Mark Summerfield. All rights reserved.
 
 
-namespace eval main {}
+namespace eval app {}
 
 
-proc main::main {} {
+proc app::main {} {
     option add *insertOffTime 0
     tk appname Gravitate
     wm withdraw .

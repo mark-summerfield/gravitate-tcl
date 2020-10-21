@@ -7,16 +7,16 @@ package require struct::list
 namespace eval board {}
 
 
-variable board::high_score $const::HIGH_SCORE_DEFAULT
+variable board::high_score $app::HIGH_SCORE_DEFAULT
 variable board::score 0
 variable board::game_over true
 variable board::user_won false
-variable board::columns $const::COLUMNS_DEFAULT
-variable board::rows $const::ROWS_DEFAULT
-variable board::max_colors $const::MAX_COLORS_DEFAULT
-variable board::delay_ms $const::DELAY_MS_DEFAULT
-variable board::selectedx $const::INVALID
-variable board::selectedy $const::INVALID
+variable board::columns $app::COLUMNS_DEFAULT
+variable board::rows $app::ROWS_DEFAULT
+variable board::max_colors $app::MAX_COLORS_DEFAULT
+variable board::delay_ms $app::DELAY_MS_DEFAULT
+variable board::selectedx $app::INVALID
+variable board::selectedy $app::INVALID
 variable board::tiles {}
 variable board::drawing false
 variable board::moving false
@@ -24,7 +24,7 @@ variable board::DELAY_SCALER 5
 
 
 proc board::make {} {
-    tk::canvas .main.board -background $const::BACKGROUND_COLOR
+    tk::canvas .main.board -background $app::BACKGROUND_COLOR
     make_bindings
 }
 
@@ -44,11 +44,11 @@ proc board::new_game {} {
     set board::game_over false
     set board::user_won false
     set board::score 0
-    set board::selectedx $const::INVALID
-    set board::selectedy $const::INVALID
+    set board::selectedx $app::INVALID
+    set board::selectedy $app::INVALID
     read_options
     initialize_board
-    announce $const::SCORE_EVENT
+    announce $app::SCORE_EVENT
     draw
 }
 
@@ -56,15 +56,15 @@ proc board::new_game {} {
 proc board::read_options {} {
     set ini [::ini::open [util::get_ini_filename] -encoding utf-8 r]
     try {
-        set section $const::BOARD
-        set board::columns [::ini::value $ini $section $const::COLUMNS \
-            $const::COLUMNS_DEFAULT]
-        set board::rows [::ini::value $ini $section $const::ROWS \
-            $const::ROWS_DEFAULT]
+        set section $app::BOARD
+        set board::columns [::ini::value $ini $section $app::COLUMNS \
+            $app::COLUMNS_DEFAULT]
+        set board::rows [::ini::value $ini $section $app::ROWS \
+            $app::ROWS_DEFAULT]
         set board::max_colors [::ini::value $ini $section \
-            $const::MAX_COLORS $const::MAX_COLORS_DEFAULT]
+            $app::MAX_COLORS $app::MAX_COLORS_DEFAULT]
         set board::delay_ms [::ini::value $ini $section \
-            $const::DELAY_MS $const::DELAY_MS_DEFAULT]
+            $app::DELAY_MS $app::DELAY_MS_DEFAULT]
     } finally {
         ::ini::close $ini
     }
@@ -86,7 +86,7 @@ proc board::initialize_board {} {
 
 
 proc board::get_colors {} {
-    set all_colors [dict keys $const::COLORS]
+    set all_colors [dict keys $app::COLORS]
     set colors [struct::list shuffle $all_colors]
     return [lrange $colors 0 [expr {$board::max_colors - 1}]]
 }
@@ -126,7 +126,7 @@ proc board::on_move_key {key} {
         }
         if {0 <= $x && $x <= $board::columns &&
                 0 <= $y && $y <= $board::rows &&
-                [lindex $board::tiles $x $y] ne $const::INVALID_COLOR} {
+                [lindex $board::tiles $x $y] ne $app::INVALID_COLOR} {
             set board::selectedx $x
             set board::selectedy $y
         }
@@ -143,8 +143,8 @@ proc board::on_click {x y} {
     set x [expr {int($x / round($width))}]
     set y [expr {int($y / round($height))}]
     if {[is_selected_valid]} {
-        set board::selectedx $const::INVALID
-        set board::selectedy $const::INVALID
+        set board::selectedx $app::INVALID
+        set board::selectedy $app::INVALID
         draw
     }
     delete_tile $x $y
@@ -177,8 +177,8 @@ proc board::tile_size_ {width_ height_} {
 
 
 proc board::is_selected_valid {} {
-    return [expr {$board::selectedx != $const::INVALID &&
-                  $board::selectedy != $const::INVALID}]
+    return [expr {$board::selectedx != $app::INVALID &&
+                  $board::selectedy != $app::INVALID}]
 }
 
 
@@ -208,9 +208,9 @@ proc board::draw_tile {x y width height edge} {
     set x2 [expr {$x1 + $width}]
     set y2 [expr {$y1 + $height}]
     set color [lindex $board::tiles $x $y]
-    if {$color eq $const::INVALID_COLOR} {
+    if {$color eq $app::INVALID_COLOR} {
         .main.board create rectangle $x1 $y1 $x2 $y2 \
-            -fill $const::BACKGROUND_COLOR -outline white
+            -fill $app::BACKGROUND_COLOR -outline white
     } else {
         get_color_pair_ $color $board::game_over light dark
         draw_segments $x1 $y1 $x2 $y2 $light $dark $edge
@@ -248,12 +248,12 @@ proc board::draw_segment {color args} {
 
 proc board::get_color_pair_ {color game_over light_ dark_} {
     upvar 1 $light_ light $dark_ dark
-    if {![dict exists $const::COLORS $color]} {
+    if {![dict exists $app::COLORS $color]} {
         # Not found ∴ dimmed
         set light $color
         set dark [ui::adjusted_color $color 50] ;# darken by 50%
     } else {
-        set light [dict get $const::COLORS $color]
+        set light [dict get $app::COLORS $color]
         set dark $color
         if {$game_over} {
             set light [ui::adjusted_color $light 67] ;# darken by 67%

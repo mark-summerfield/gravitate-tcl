@@ -34,4 +34,4 @@ foreach filename {
 }
 
 
-main::main
+app::main

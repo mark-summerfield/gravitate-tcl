@@ -35,21 +35,19 @@ proc util::get_ini_filename {} {
 proc util::make_default_ini {name} {
     set ini [::ini::open $name -encoding utf-8 w]
     try {
-        set section $const::BOARD
-        ::ini::set $ini $section $const::COLUMNS $const::COLUMNS_DEFAULT
-        ::ini::set $ini $section $const::ROWS $const::ROWS_DEFAULT
-        ::ini::set $ini $section $const::MAX_COLORS \
-            $const::MAX_COLORS_DEFAULT
-        ::ini::set $ini $section $const::DELAY_MS $const::DELAY_MS_DEFAULT
-        ::ini::set $ini $section $const::HIGH_SCORE \
-            $const::HIGH_SCORE_DEFAULT
-        set section $const::WINDOW
-        set invalid $const::INVALID
-        ::ini::set $ini $section $const::WINDOW_HEIGHT $invalid
-        ::ini::set $ini $section $const::WINDOW_WIDTH $invalid
-        ::ini::set $ini $section $const::WINDOW_X $invalid
-        ::ini::set $ini $section $const::WINDOW_Y $invalid
-        ::ini::set $ini $section $const::FONTSIZE \
+        set section $app::BOARD
+        ::ini::set $ini $section $app::COLUMNS $app::COLUMNS_DEFAULT
+        ::ini::set $ini $section $app::ROWS $app::ROWS_DEFAULT
+        ::ini::set $ini $section $app::MAX_COLORS $app::MAX_COLORS_DEFAULT
+        ::ini::set $ini $section $app::DELAY_MS $app::DELAY_MS_DEFAULT
+        ::ini::set $ini $section $app::HIGH_SCORE $app::HIGH_SCORE_DEFAULT
+        set section $app::WINDOW
+        set invalid $app::INVALID
+        ::ini::set $ini $section $app::WINDOW_HEIGHT $invalid
+        ::ini::set $ini $section $app::WINDOW_WIDTH $invalid
+        ::ini::set $ini $section $app::WINDOW_X $invalid
+        ::ini::set $ini $section $app::WINDOW_Y $invalid
+        ::ini::set $ini $section $app::FONTSIZE \
             [dict get [font actual TkDefaultFont] -size]
         ::ini::commit $ini
     } finally {

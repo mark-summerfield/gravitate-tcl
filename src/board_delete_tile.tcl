@@ -10,7 +10,7 @@ namespace eval board {}
 
 proc board::delete_tile {x y} {
     set color [lindex $board::tiles $x $y]
-    if {$color eq $const::INVALID_COLOR || ![is_legal $x $y $color]} {
+    if {$color eq $app::INVALID_COLOR || ![is_legal $x $y $color]} {
         return
     }
     dim_adjoining $x $y $color
@@ -76,7 +76,7 @@ proc board::populate_adjoining_ {x y color adjoining_} {
 proc board::delete_adjoining {adjoining} {
     foreach point $adjoining {
         lassign $point x y
-        lset board::tiles $x $y $const::INVALID_COLOR
+        lset board::tiles $x $y $app::INVALID_COLOR
     }
     draw [expr {max(5, $board::delay_ms / $board::DELAY_SCALER)}]
     set size [::struct::set size $adjoining]
@@ -90,7 +90,7 @@ proc board::close_tiles_up {size} {
     move_tiles
     if {[is_selected_valid] &&
             [lindex $board::tiles $board::selectedx $board::selectedy]
-            eq $const::INVALID_COLOR} {
+            eq $app::INVALID_COLOR} {
         set board::selectedx [expr {$board::columns / 2}]
         set board::selectedy [expr {$board::rows / 2}]
     }
@@ -98,7 +98,7 @@ proc board::close_tiles_up {size} {
     incr board::score [
         expr {int(round(sqrt(double($board::columns) * $board::rows)) +
               pow($size, $board::max_colors / 2))}]
-    announce $const::SCORE_EVENT
+    announce $app::SCORE_EVENT
     check_game_over
 }
 
@@ -112,8 +112,7 @@ proc board::move_tiles {} {
         set moved false
         foreach x [$number_proc $board::columns] {
             foreach y [$number_proc $board::rows] {
-                if {[lindex $board::tiles $x $y] ne 
-                        $const::INVALID_COLOR } {
+                if {[lindex $board::tiles $x $y] ne $app::INVALID_COLOR } {
                     if {[move_is_possible_ $x $y moves]} {
                         set moved true
                         break
@@ -182,7 +181,7 @@ proc board::move_is_possible_ {x y moves_} {
         if {$move} {
             set color [lindex $board::tiles $x $y]
             lset board::tiles $nx $ny $color
-            lset board::tiles $x $y $const::INVALID_COLOR
+            lset board::tiles $x $y $app::INVALID_COLOR
             set delay [expr {max(1, int(round($board::delay_ms /
                                         $board::DELAY_SCALER)))}]
             set board::moving true
@@ -203,7 +202,7 @@ proc board::get_empty_neighbours {x y} {
             [expr {$y - 1}] $x [expr {$y + 1}]] {
         if {0 <= $x && $x < $board::columns && 0 <= $y &&
                 $y < $board::rows && [lindex $board::tiles $x $y] eq 
-                                     $const::INVALID_COLOR } {
+                                     $app::INVALID_COLOR } {
             set point [list $x $y]
             ::struct::set include neighbours $point
         }
@@ -219,8 +218,8 @@ proc board::nearest_to_middle_ {x y empties move_ nx_ ny_} {
     set midy [expr {$board::rows / 2}]
     set old_radius [expr {hypot($midx - $x, $midy - $y)}]
     set shortest_radius NaN
-    set rx $const::INVALID
-    set ry $const::INVALID
+    set rx $app::INVALID
+    set ry $app::INVALID
     foreach point $empties {
         lassign $point nx ny
         if {[is_square $nx $ny]} {
@@ -229,7 +228,7 @@ proc board::nearest_to_middle_ {x y empties move_ nx_ ny_} {
                 # Make same colors slightly attract
                 set new_radius [expr {$new_radius - 0.1}]
             }
-            if {$rx == $const::INVALID || $ry == $const::INVALID ||
+            if {$rx == $app::INVALID || $ry == $app::INVALID ||
                     $shortest_radius > $new_radius} {
                 set shortest_radius $new_radius
                 set rx $nx
@@ -251,21 +250,21 @@ proc board::nearest_to_middle_ {x y empties move_ nx_ ny_} {
 
 proc board::is_square {x y} {
     if {$x > 0 && [lindex $board::tiles [expr {$x - 1}] $y] ne
-            $const::INVALID_COLOR} {
+            $app::INVALID_COLOR} {
         return true
     }
     if {$x + 1 < $board::columns &&
             [lindex $board::tiles [expr {$x + 1}] $y] ne
-            $const::INVALID_COLOR} {
+            $app::INVALID_COLOR} {
         return true
     }
     if {$y > 0 && [lindex $board::tiles $x [expr {$y - 1}]] ne
-            $const::INVALID_COLOR} {
+            $app::INVALID_COLOR} {
         return true
     }
     if {$y + 1 < $board::rows &&
             [lindex $board::tiles $x [expr {$y + 1}]] ne
-            $const::INVALID_COLOR} {
+            $app::INVALID_COLOR} {
         return true
     }
     return false
@@ -279,18 +278,17 @@ proc board::check_game_over {} {
             set board::high_score $board::score
             set ini [::ini::open [util::get_ini_filename] -encoding utf-8]
             try {
-                ::ini::set $ini $const::BOARD \
-                    $const::HIGH_SCORE $board::score
-                ::ini::set $ini $const::BOARD \
-                    $const::HIGH_SCORE_COMPAT $board::score
+                ::ini::set $ini $app::BOARD $app::HIGH_SCORE $board::score
+                ::ini::set $ini $app::BOARD \
+                    $app::HIGH_SCORE_COMPAT $board::score
                 ::ini::commit $ini
             } finally {
                 ::ini::close $ini
             }
         }
-        announce $const::GAME_OVER_EVENT
+        announce $app::GAME_OVER_EVENT
     } elseif {!$can_move} {
-        announce $const::GAME_OVER_EVENT
+        announce $app::GAME_OVER_EVENT
     }
 }
 
@@ -302,7 +300,7 @@ proc board::check_tiles {} {
     for {set x 0} {$x < $board::columns} {incr x} {
         for {set y 0} {$y < $board::rows} {incr y} {
             set color [lindex $board::tiles $x $y]
-            if {$color ne $const::INVALID_COLOR} {
+            if {$color ne $app::INVALID_COLOR} {
                 if {![dict exists $count_for_color $color]} {
                     dict set count_for_color $color 1
                 } else {
