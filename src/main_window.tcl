@@ -10,6 +10,7 @@ namespace eval main_window {}
 
 variable main_window::status_timer_id {}
 
+
 proc main_window::show {} {
     make_widgets
     make_layout

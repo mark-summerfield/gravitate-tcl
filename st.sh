@@ -19,7 +19,7 @@ nagelfar.tcl -H -tab 4 *.tcl \
     | grep -v Unknown.command.*::lambda \
     | grep -v Unknown.command.*_form::show.* \
     | grep -v Unknown.command.*board::* \
-    | grep -v Unknown.command.*main::main \
+    | grep -v Unknown.command.*app::main \
     | grep -v Unknown.command.*main_window::* \
     | grep -v Unknown.command.*struct::set \
     | grep -v Unknown.command.*tooltip::tooltip \
