@@ -47,10 +47,16 @@ proc actions::on_quit {} {
     set section $app::WINDOW
     set ini [::ini::open [util::get_ini_filename] -encoding utf-8]
     try {
-        ::ini::set $ini $section $app::WINDOW_WIDTH $width
-        ::ini::set $ini $section $app::WINDOW_HEIGHT $height
-        ::ini::set $ini $section $app::WINDOW_X $x
-        ::ini::set $ini $section $app::WINDOW_Y $y
+        set scale [::ini::value $ini $section $app::SCALE 1.0]
+        ::ini::set $ini $section $app::SCALE $scale
+        ::ini::set $ini $section $app::WINDOW_WIDTH \
+            [expr int($width / $scale)]
+        ::ini::set $ini $section $app::WINDOW_HEIGHT \
+            [expr int($height / $scale)]
+        ::ini::set $ini $section $app::WINDOW_X \
+            [expr int($x / $scale)]
+        ::ini::set $ini $section $app::WINDOW_Y \
+            [expr int($y / $scale)]
         ::ini::commit $ini
     } finally {
         ::ini::close $ini

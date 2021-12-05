@@ -100,12 +100,17 @@ proc main_window::read_options {} {
             -text "0 • [util::commas $board::high_score]"
         set section $app::WINDOW
         set invalid $app::INVALID
+        set scale [::ini::value $ini $section $app::SCALE 1.0]
         set width [::ini::value $ini $section $app::WINDOW_WIDTH $invalid]
         set height [::ini::value $ini $section $app::WINDOW_HEIGHT $invalid]
         set x [::ini::value $ini $section $app::WINDOW_X $invalid] 
         set y [::ini::value $ini $section $app::WINDOW_Y $invalid] 
         if {$width != $invalid && $height != $invalid &&
                 $x != $invalid && $y != $invalid} {
+            set x [expr int($scale * $x)]
+            set y [expr int($scale * $y)]
+            set width [expr int($scale * $width)]
+            set height [expr int($scale * $height)]
             wm geometry . "${width}x$height+$x+$y"
         }
         set size [::ini::value $ini $section $app::FONTSIZE $invalid]

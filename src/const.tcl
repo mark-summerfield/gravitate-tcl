@@ -23,6 +23,7 @@ variable app::WINDOW Window
     variable app::WINDOW_X x
     variable app::WINDOW_Y y
     variable app::FONTSIZE fontSize
+    variable app::SCALE scale
 
 variable app::COLUMNS_DEFAULT 9
 variable app::ROWS_DEFAULT 9
