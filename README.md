@@ -2,6 +2,8 @@
 
 A SameGame/TileFall-like game written in Tcl/Tk
 
+Superceded by the superior [Rust/FLTK](https://github.com/mark-summerfield/gravitate-rs) version.
+
 ![Screenshot](screenshot.png)
 
 ## Dependencies
