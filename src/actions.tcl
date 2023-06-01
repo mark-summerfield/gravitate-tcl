@@ -50,13 +50,13 @@ proc actions::on_quit {} {
         set scale [::ini::value $ini $section $app::SCALE 1.0]
         ::ini::set $ini $section $app::SCALE $scale
         ::ini::set $ini $section $app::WINDOW_WIDTH \
-            [expr int($width / $scale)]
+            [expr {int($width / $scale)}]
         ::ini::set $ini $section $app::WINDOW_HEIGHT \
-            [expr int($height / $scale)]
+            [expr {int($height / $scale)}]
         ::ini::set $ini $section $app::WINDOW_X \
-            [expr int($x / $scale)]
+            [expr {int($x / $scale)}]
         ::ini::set $ini $section $app::WINDOW_Y \
-            [expr int($y / $scale)]
+            [expr {int($y / $scale)}]
         ::ini::commit $ini
     } finally {
         ::ini::close $ini

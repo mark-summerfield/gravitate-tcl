@@ -1,6 +1,6 @@
 #!/bin/bash
 cd src
-tokei -f -c80 -tTcl -slines
+clc -ltcl -s
 nagelfar.tcl -H -tab 4 *.tcl \
     | grep -v Checking.file \
     | grep -v '^[ \t]\+Argument' \

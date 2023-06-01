@@ -107,10 +107,10 @@ proc main_window::read_options {} {
         set y [::ini::value $ini $section $app::WINDOW_Y $invalid] 
         if {$width != $invalid && $height != $invalid &&
                 $x != $invalid && $y != $invalid} {
-            set x [expr int($scale * $x)]
-            set y [expr int($scale * $y)]
-            set width [expr int($scale * $width)]
-            set height [expr int($scale * $height)]
+            set x [expr {int($scale * $x)}]
+            set y [expr {int($scale * $y)}]
+            set width [expr {int($scale * $width)}]
+            set height [expr {int($scale * $height)}]
             wm geometry . "${width}x$height+$x+$y"
         }
         set size [::ini::value $ini $section $app::FONTSIZE $invalid]
