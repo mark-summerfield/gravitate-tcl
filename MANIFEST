@@ -1,5 +1,5 @@
 src/gravitate.tcl
-src/main.tcl
+src/app.tcl
 src/main_window.tcl
 src/about_form.tcl
 src/help_form.tcl
