@@ -1,7 +1,7 @@
 #!/bin/bash
 cd src
 clc -ltcl -s
-nagelfar.tcl -H -tab 4 *.tcl \
+nagelfar.tcl -quiet -H -tab 4 *.tcl \
     | grep -v Checking.file \
     | grep -v '^[ \t]\+Argument' \
     | grep -v Found.constant.. \
