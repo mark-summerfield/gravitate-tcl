@@ -1,7 +1,7 @@
 #!/bin/bash
 cd src
 clc -ltcl -s
-nagelfar.tcl -quiet -H -tab 4 -len 76 -Wunusedvar *.tcl \
+nagelfar.sh \
     | grep -v 'W Variable "moves" is never read' \
     | grep -v '^[ \t]\+Argument' \
     | grep -v Found.constant.. \
@@ -14,7 +14,7 @@ nagelfar.tcl -quiet -H -tab 4 -len 76 -Wunusedvar *.tcl \
     | grep -v board.*tcl.*Unknown.variable.*move \
     | grep -v board.*tcl.*Unknown.variable.*n[xy] \
     | grep -v board.*tcl.*Unknown.variable.*width \
-    | grep -v board_delete_tile.*Unknown.command.* \
+    | grep -v Unknown.command.*delete_tile \
     | grep -v Unknown.command.*::ini:: \
     | grep -v Unknown.command.*::lambda \
     | grep -v Unknown.command.*_form::show.* \
