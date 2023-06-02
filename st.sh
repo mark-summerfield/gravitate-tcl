@@ -1,8 +1,8 @@
 #!/bin/bash
 cd src
 clc -ltcl -s
-nagelfar.tcl -quiet -H -tab 4 *.tcl \
-    | grep -v Checking.file \
+nagelfar.tcl -quiet -H -tab 4 -len 76 -Wunusedvar *.tcl \
+    | grep -v 'W Variable "moves" is never read' \
     | grep -v '^[ \t]\+Argument' \
     | grep -v Found.constant.. \
     | grep -v Wrong.number.of.arguments.*to..actions::on_game_over \
