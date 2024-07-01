@@ -1,6 +1,6 @@
 #!/bin/bash
 cd src
-clc -ltcl -s
+clc -l tcl -s
 nagelfar.sh \
     | grep -v 'W Variable "moves" is never read' \
     | grep -v '^[ \t]\+Argument' \
