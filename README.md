@@ -1,8 +1,9 @@
 # Gravitate
 
-A SameGame/TileFall-like game written in Tcl/Tk
+A SameGame/TileFall-like game written in Tcl/Tk 8.6
 
-Superceded by the superior [Rust/FLTK](https://github.com/mark-summerfield/gravitate-rs) version.
+Superceded by the superior [Tcl/Tk
+9](https://github.com/mark-summerfield/gravitate-tcl9) version.
 
 ![Screenshot](screenshot.png)
 
