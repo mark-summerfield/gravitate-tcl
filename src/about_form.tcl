@@ -16,7 +16,7 @@ proc about_form::show_modal {} {
 proc about_form::make_widgets {} {
     tk::toplevel .about
     set height [expr {[info exists ::freewrap::runMode] &&
-                       $::freewrap::runMode eq "wrappedExec" ? 12 : 11}]
+                       $::freewrap::runMode eq "wrappedExec" ? 13 : 12}]
     tk::text .about.text -width 50 -height $height -wrap word \
         -background "#F0F0F0" -spacing3 $app::VGAP
     populate_about_text
@@ -43,7 +43,7 @@ proc about_form::make_bindings {} {
 }
 
 
-proc about_form::on_click_url {index} {
+proc about_form::on_click_url index {
     set indexes [.about.text tag prevrange url $index]
     set url [string trim [.about.text get {*}$indexes]]
     if {$url ne ""} {
@@ -68,7 +68,8 @@ proc about_form::populate_about_text {} {
     .about.text tag add spaceabove $img
     .about.text tag add center $img
     .about.text insert end "\nGravitate v$app::VERSION\n" {center title}
-    .about.text insert end "A TileFall/SameGame-like game.\n" {center navy}
+    .about.text insert end "A TileFall/SameGame-like game.\n \
+        (Superceded by Tcl/Tk 9 version)\n" {center navy}
     set year [clock format [clock seconds] -format %Y]
     if {$year > 2020} {
         set year "2020-[string range $year end-1 end]"

@@ -6,7 +6,7 @@ namespace eval app {}
 
 
 proc app::main {} {
-    option add *insertOffTime 0
+    prepare_gui
     tk appname Gravitate
     wm withdraw .
     wm title . [tk appname]
@@ -21,4 +21,12 @@ proc app::main {} {
     wm deiconify .
     raise .
     focus .
+}
+
+proc prepare_gui {} {
+    catch {
+        set fh [open [file join [file home] .wishinit.tcl]]
+        eval [read $fh]
+        close $fh
+    }
 }
