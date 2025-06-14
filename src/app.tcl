@@ -34,4 +34,5 @@ proc wishinit {} {
     ttk::style configure Treeview -rowheight $LINEHEIGHT
     ttk::style configure TCheckbutton -indicatorsize \
         [expr {$LINEHEIGHT * 0.75}]
+    set ::ICON_SIZE [expr {max(24, round(20 * [tk scaling]))}]
 }
